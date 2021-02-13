@@ -11,11 +11,11 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class WinsAggregator : IWinsAggregator
     {
-        private IResultsDataAccess _resulstDataAccess;
+        private IResultsDataAccess _resultsDataAccess;
 
-        public WinsAggregator(IResultsDataAccess resulstDataAccess)
+        public WinsAggregator(IResultsDataAccess resultsDataAccess)
         {
-            _resulstDataAccess = resulstDataAccess;
+            _resultsDataAccess = resultsDataAccess;
         }
 
         public List<WinsModel> GetDriversWins(int from, int to)
@@ -24,7 +24,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var races = _resulstDataAccess.GetWinnersFrom(year);
+                var races = _resultsDataAccess.GetWinnersFrom(year);
 
                 foreach (var race in races)
                 {
