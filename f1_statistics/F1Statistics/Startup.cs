@@ -1,3 +1,11 @@
+using F1Statistics.Library.DataAccess;
+using F1Statistics.Library.DataAccess.Interfaces;
+using F1Statistics.Library.DataAggregation;
+using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Services;
+using F1Statistics.Library.Services.Interfaces;
+using F1Statistics.Library.Validators;
+using F1Statistics.Library.Validators.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +36,12 @@ namespace F1Statistics
         {
 
             services.AddControllers();
+
+            services.AddTransient<IWinsService, WinsService>();
+            services.AddTransient<IOptionsValidator, OptionsValidator>();
+            services.AddTransient<IWinsAggregator, WinsAggregator>();
+            services.AddTransient<IResultsDataAccess, ResultsDataAccess>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "F1Statistics", Version = "v1" });
