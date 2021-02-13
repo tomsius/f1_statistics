@@ -24,7 +24,7 @@ namespace F1Statistics.Tests.Controllers
             _controller = new WinsController(_service.Object);
         }
 
-        private List<WinsModel> GenerateResult()
+        private List<WinsModel> GenerateWinners()
         {
             var winners = new List<WinsModel> { new WinsModel { Name = "First", WinCount = 2 }, new WinsModel { Name = "Second", WinCount = 1 } };
 
@@ -32,11 +32,11 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetDriversWins_ReturnAggregatedDriverList_IfThereAreAnyDrivers()
+        public void GetDriversWins_ReturnAggregatedWinnersList_IfThereAreAnyDrivers()
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = GenerateResult();
+            var expectedWinners = GenerateWinners();
             _service.Setup((service) => service.AggregateDriversWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
 
             // Act
