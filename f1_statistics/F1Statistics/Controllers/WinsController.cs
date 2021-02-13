@@ -19,7 +19,7 @@ namespace F1Statistics.Controllers
             _service = service;
         }
 
-        // GET: api/<WinsController>
+        // GET: api/wins/drivers
         [HttpPost]
         [Route("api/[controller]/drivers")]
         public List<WinsModel> GetDriversWins(OptionsModel options)
@@ -27,13 +27,6 @@ namespace F1Statistics.Controllers
             var data = _service.AggregateDriversWins(options);
 
             return data;
-        }
-
-        // GET api/<WinsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
         }
     }
 }
