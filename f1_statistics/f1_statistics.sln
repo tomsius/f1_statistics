@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F1Statistics", "F1Statistics\F1Statistics.csproj", "{C9A8EF8C-6FCF-48DA-BD96-E106997C352D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F1Statistics", "F1Statistics\F1Statistics.csproj", "{C9A8EF8C-6FCF-48DA-BD96-E106997C352D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F1Statistics.Library", "F1Statistics.Library\F1Statistics.Library.csproj", "{966320FD-CEE6-43A3-B44A-26C40FA761B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F1Statistics.Library", "F1Statistics.Library\F1Statistics.Library.csproj", "{966320FD-CEE6-43A3-B44A-26C40FA761B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F1Statistics.Tests", "F1Statistics.Tests\F1Statistics.Tests.csproj", "{1374EED5-6A69-42DA-881B-CA5840637273}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F1Statistics.Library.Tests", "F1Statistics.Library.Tests\F1Statistics.Library.Tests.csproj", "{C73605FB-C60C-4468-82DF-93A0AA1E037F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{966320FD-CEE6-43A3-B44A-26C40FA761B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{966320FD-CEE6-43A3-B44A-26C40FA761B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{966320FD-CEE6-43A3-B44A-26C40FA761B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1374EED5-6A69-42DA-881B-CA5840637273}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1374EED5-6A69-42DA-881B-CA5840637273}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1374EED5-6A69-42DA-881B-CA5840637273}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1374EED5-6A69-42DA-881B-CA5840637273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C73605FB-C60C-4468-82DF-93A0AA1E037F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C73605FB-C60C-4468-82DF-93A0AA1E037F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C73605FB-C60C-4468-82DF-93A0AA1E037F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C73605FB-C60C-4468-82DF-93A0AA1E037F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
