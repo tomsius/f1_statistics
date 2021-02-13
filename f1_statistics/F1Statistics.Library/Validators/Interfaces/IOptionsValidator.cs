@@ -1,6 +1,6 @@
 ﻿using F1Statistics.Library.Models;
 
-namespace F1Statistics.Library.Validators
+namespace F1Statistics.Library.Validators.Interfaces
 {
     public interface IOptionsValidator
     {
