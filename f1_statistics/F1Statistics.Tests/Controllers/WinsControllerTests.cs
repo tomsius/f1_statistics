@@ -31,6 +31,13 @@ namespace F1Statistics.Tests.Controllers
             return winners;
         }
 
+        private List<AverageWinsModel> GenerateWinnersWithAverageWins()
+        {
+            var winners = new List<AverageWinsModel> { new AverageWinsModel { Name = "First", WinCount = 2, ParticipationCount = 4 }, new AverageWinsModel { Name = "Second", WinCount = 1, ParticipationCount = 1 } };
+
+            return winners;
+        }
+
         [TestMethod]
         public void GetDriversWins_ReturnAggregatedWinnersList_IfThereAreAnyDrivers()
         {
@@ -98,6 +105,44 @@ namespace F1Statistics.Tests.Controllers
 
             // Act
             var actual = _controller.GetConstructorsWins(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetDriversAverageWins_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinnersWithAverageWins = GenerateWinnersWithAverageWins();
+            _service.Setup((service) => service.AggregateDriversAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
+
+            // Act
+            var actual = _controller.GetDriversAverageWins(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinnersWithAverageWins.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinnersWithAverageWins.Count; i++)
+            {
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].ParticipationCount, actual[i].ParticipationCount);
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].AverageWins, actual[i].AverageWins);
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversAverageWins_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinners = new List<AverageWinsModel>();
+            _service.Setup((service) => service.AggregateDriversAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+
+            // Act
+            var actual = _controller.GetDriversAverageWins(options);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);

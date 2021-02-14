@@ -35,6 +35,13 @@ namespace F1Statistics.Library.Tests.Services
             return winners;
         }
 
+        private List<AverageWinsModel> GenerateWinnersWithAverageWins()
+        {
+            var winners = new List<AverageWinsModel> { new AverageWinsModel { Name = "Second", WinCount = 1, ParticipationCount = 10 }, new AverageWinsModel { Name = "First", WinCount = 2, ParticipationCount = 2 } };
+
+            return winners;
+        }
+
         [TestMethod]
         public void AggregateDriversWins_ReturnSortedAggregatedWinnersList_IfThereAreAnyDrivers()
         {
@@ -109,6 +116,46 @@ namespace F1Statistics.Library.Tests.Services
 
             // Act
             var actual = _service.AggregateConstructorsWins(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateDriversAverageWins_ReturnSortedAggregatedWinnersListWithAverageWins_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedWinners = GenerateWinnersWithAverageWins();
+            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            _aggregator.Setup((aggregator) => aggregator.GetDriversAverageWins(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateWinnersWithAverageWins());
+
+            // Act
+            var actual = _service.AggregateDriversAverageWins(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+            }
+        }
+
+        [TestMethod]
+        public void AggregateDriversAverageWins_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedWinners = new List<AverageWinsModel>();
+            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            _aggregator.Setup((aggregator) => aggregator.GetDriversAverageWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
+
+            // Act
+            var actual = _service.AggregateDriversAverageWins(options);
 
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());

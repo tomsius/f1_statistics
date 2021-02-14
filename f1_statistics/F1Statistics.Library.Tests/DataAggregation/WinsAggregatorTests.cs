@@ -28,11 +28,76 @@ namespace F1Statistics.Library.Tests.DataAggregation
         {
             var racesList = new List<List<RacesDataResponse>>
             {
-                new List<RacesDataResponse> { new RacesDataResponse { Results = new List<ResultsDataResponse> { new ResultsDataResponse { Driver = new DriverDataResponse { familyName = "FirstFamily", givenName= "FirstName" }, Constructor = new ConstructorDataResponse { name = "FirstConstructor"} } } } },
+                new List<RacesDataResponse>
+                { 
+                    new RacesDataResponse
+                    { 
+                        Results = new List<ResultsDataResponse>
+                        {
+                            new ResultsDataResponse 
+                            {
+                                Driver = new DriverDataResponse 
+                                { 
+                                    familyName = "FirstFamily", givenName= "FirstName" 
+                                },
+                                Constructor = new ConstructorDataResponse 
+                                { 
+                                    name = "FirstConstructor"
+                                } 
+                            },
+                            new ResultsDataResponse
+                            { 
+                                Driver = new DriverDataResponse 
+                                { 
+                                    familyName = "SecondFamily", 
+                                    givenName= "SecondName" 
+                                }, 
+                                Constructor = new ConstructorDataResponse 
+                                { 
+                                    name = "SecondConstructor"
+                                } 
+                            }
+                        }
+                    } 
+                },
                 new List<RacesDataResponse>
                 {
-                    new RacesDataResponse { Results = new List<ResultsDataResponse> { new ResultsDataResponse { Driver = new DriverDataResponse { familyName = "FirstFamily", givenName = "FirstName" }, Constructor = new ConstructorDataResponse { name = "FirstConstructor" } } } },
-                    new RacesDataResponse { Results = new List<ResultsDataResponse> { new ResultsDataResponse { Driver = new DriverDataResponse { familyName = "SecondFamily", givenName = "SecondName" }, Constructor = new ConstructorDataResponse { name = "SecondConstructor" } } } }
+                    new RacesDataResponse 
+                    { 
+                        Results = new List<ResultsDataResponse> 
+                        { 
+                            new ResultsDataResponse 
+                            {
+                                Driver = new DriverDataResponse 
+                                { 
+                                    familyName = "FirstFamily", 
+                                    givenName = "FirstName" 
+                                }, 
+                                Constructor = new ConstructorDataResponse 
+                                { 
+                                    name = "FirstConstructor" 
+                                } 
+                            } 
+                        } 
+                    },
+                    new RacesDataResponse 
+                    { 
+                        Results = new List<ResultsDataResponse>
+                        { 
+                            new ResultsDataResponse 
+                            { 
+                                Driver = new DriverDataResponse 
+                                { 
+                                    familyName = "SecondFamily", 
+                                    givenName = "SecondName" 
+                                }, 
+                                Constructor = new ConstructorDataResponse 
+                                { 
+                                    name = "SecondConstructor" 
+                                }
+                            }
+                        }
+                    }
                 }
             };
 
@@ -85,7 +150,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinners = new List<WinsModel> { new WinsModel { Name = "FirstConstructor", WinCount = 2 }, new WinsModel { Name = "SecondConstructor", WinCount = 1 } };
+            var expectedWinners = new List<AverageWinsModel> { new AverageWinsModel { Name = "FirstConstructor", WinCount = 2 }, new AverageWinsModel { Name = "SecondConstructor", WinCount = 1 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -114,6 +179,48 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
             // Act
             var actual = _aggregator.GetConstructorsWins(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetDriversAverageWins_ReturnAggregatedDriversWithAverageWinsList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedWinners = new List<AverageWinsModel> { new AverageWinsModel { Name = "FirstName FirstFamily", WinCount = 2, ParticipationCount = 2 }, new AverageWinsModel { Name = "SecondName SecondFamily", WinCount = 1, ParticipationCount = 2 } };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
+
+            // Act
+            var actual = _aggregator.GetDriversAverageWins(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinners[i].ParticipationCount, actual[i].ParticipationCount);
+                Assert.AreEqual(expectedWinners[i].AverageWins, actual[i].AverageWins);
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversAverageWins_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedWinners = new List<AverageWinsModel>();
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
+
+            // Act
+            var actual = _aggregator.GetDriversAverageWins(from, to);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
