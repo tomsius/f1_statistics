@@ -38,5 +38,25 @@ namespace F1Statistics.Library.Services
 
             return driversWins;
         }
+
+        public List<WinsModel> AggregateConstructorsWins(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<WinsModel> constructorsWins;
+
+            if (options.YearFrom != 0)
+            {
+                constructorsWins = _aggregator.GetConstructorsWins(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                constructorsWins = _aggregator.GetConstructorsWins(options.Season, options.Season);
+            }
+
+            constructorsWins.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+
+            return constructorsWins;
+        }
     }
 }

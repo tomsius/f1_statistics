@@ -28,5 +28,15 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        // GET: api/wins/constructors
+        [HttpPost]
+        [Route("api/[controller]/constructors")]
+        public List<WinsModel> GetConstructorsWins(OptionsModel options)
+        {
+            var data = _service.AggregateConstructorsWins(options);
+
+            return data;
+        }
     }
 }

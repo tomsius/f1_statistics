@@ -43,5 +43,31 @@ namespace F1Statistics.Library.DataAggregation
 
             return driversWins;
         }
+
+        public List<WinsModel> GetConstructorsWins(int from, int to)
+        {
+            var constructorsWins = new List<WinsModel>();
+
+            for (int year = from; year <= to; year++)
+            {
+                var races = _resultsDataAccess.GetWinnersFrom(year);
+
+                foreach (var race in races)
+                {
+                    string winner = $"{race.Results[0].Constructor.name}";
+
+                    if (!constructorsWins.Where(constructor => constructor.Name == winner).Any())
+                    {
+                        constructorsWins.Add(new WinsModel { Name = winner, WinCount = 1 });
+                    }
+                    else
+                    {
+                        constructorsWins.Where(constructor => constructor.Name == winner).First().WinCount++;
+                    }
+                }
+            }
+
+            return constructorsWins;
+        }
     }
 }
