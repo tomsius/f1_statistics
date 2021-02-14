@@ -104,5 +104,70 @@ namespace F1Statistics.Library.DataAggregation
 
             return driversAverageWins;
         }
+
+        public List<AverageWinsModel> GetConstructorsAverageWins(int from, int to)
+        {
+            var constructorsAverageWins = new List<AverageWinsModel>();
+
+            for (int year = from; year <= to; year++)
+            {
+                var races = _resultsDataAccess.GetRacesFrom(year);
+
+                foreach (var race in races)
+                {
+                    // Fill participations
+                    foreach (var result in race.Results)
+                    {
+                        string constructorName = $"{result.Constructor.name}";
+
+                        if (!constructorsAverageWins.Where(constructor => constructor.Name == constructorName).Any())
+                        {
+                            constructorsAverageWins.Add(new AverageWinsModel { Name = constructorName, ParticipationCount = 1 });
+                        }
+                        else
+                        {
+                            constructorsAverageWins.Where(constructor => constructor.Name == constructorName).First().ParticipationCount++;
+                        }
+                    }
+
+                    RemoveDoubleCarCountingInARace(constructorsAverageWins, race);
+
+                    // Fill winner
+                    string winner = $"{race.Results[0].Constructor.name}";
+
+                    constructorsAverageWins.Where(driver => driver.Name == winner).First().WinCount++;
+                }
+            }
+
+            return constructorsAverageWins;
+        }
+
+        private void RemoveDoubleCarCountingInARace(List<AverageWinsModel> constructorsAverageWins, RacesDataResponse race)
+        {
+            foreach (var constructor in constructorsAverageWins)
+            {
+                if (AreTwoConstructorsCarsInARace(race, constructor.Name) == 2)
+                {
+                    constructor.ParticipationCount--;
+                }
+            }
+        }
+
+        private int AreTwoConstructorsCarsInARace(RacesDataResponse race, string constructor)
+        {
+            int carCount = 0;
+
+            foreach (var result in race.Results)
+            {
+                string constructorName = $"{result.Constructor.name}";
+
+                if (constructorName == constructor)
+                {
+                    carCount++;
+                }
+            }
+
+            return carCount;
+        }
     }
 }

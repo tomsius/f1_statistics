@@ -8,5 +8,6 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
         List<WinsModel> GetDriversWins(int from, int to);
         List<WinsModel> GetConstructorsWins(int from, int to);
         List<AverageWinsModel> GetDriversAverageWins(int from, int to);
+        List<AverageWinsModel> GetConstructorsAverageWins(int from, int to);
     }
 }

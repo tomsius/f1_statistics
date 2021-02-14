@@ -48,5 +48,15 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        // GET: api/wins/constructors/average
+        [HttpPost]
+        [Route("api/[controller]/constructors/average")]
+        public List<AverageWinsModel> GetConstructorsAverageWins(OptionsModel options)
+        {
+            var data = _service.AggregateConstructorsAverageWins(options);
+
+            return data;
+        }
     }
 }
