@@ -363,5 +363,65 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Assert
             Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
         }
+
+        [TestMethod]
+        public void GetUniqueSeasonDriverWinners_ReturnAggregatedUniqueSeasonWinners_IfThereAreAnyWinners()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel>
+            {
+                new UniqueSeasonWinnersModel
+                {
+                    Season = 1,
+                    Winners = new List<string>
+                    {
+                        "FirstName FirstFamily"
+                    }
+                },
+                new UniqueSeasonWinnersModel
+                {
+                    Season = 2,
+                    Winners = new List<string>
+                    {
+                        "FirstName FirstFamily",
+                        "SecondName SecondFamily"
+                    }
+                }
+            };
+
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
+
+            // Act
+            var actual = _aggregator.GetUniqueSeasonDriverWinners(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
+            }
+        }
+
+        [TestMethod]
+        public void GetUniqueSeasonDriverWinners_ReturnEmptyList_IfThereAreNoWinners()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel> { new UniqueSeasonWinnersModel(), new UniqueSeasonWinnersModel() };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
+
+            // Act
+            var actual = _aggregator.GetUniqueSeasonDriverWinners(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+        }
     }
 }

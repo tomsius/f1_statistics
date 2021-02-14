@@ -102,6 +102,34 @@ namespace F1Statistics.Tests.Controllers
             return circuitWinners;
         }
 
+        private List<UniqueSeasonWinnersModel> GenerateUniqueSeasonWinners()
+        {
+            var uniqueSeaosnWinners = new List<UniqueSeasonWinnersModel>
+            {
+                new UniqueSeasonWinnersModel
+                {
+                    Season = 2020,
+                    Winners = new List<string>
+                    {
+                        "First",
+                        "Second"
+                    }
+                },
+                new UniqueSeasonWinnersModel
+                {
+                    Season = 2021,
+                    Winners = new List<string>
+                    {
+                        "First",
+                        "Second",
+                        "Third"
+                    }
+                }
+            };
+
+            return uniqueSeaosnWinners;
+        }
+
         [TestMethod]
         public void GetDriversWins_ReturnAggregatedWinnersList_IfThereAreAnyDrivers()
         {
@@ -251,7 +279,7 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetCircuitWinners_ReturnAggregatedCircuitWinnersListWithAverageWins_IfThereAreAnyCircuits()
+        public void GetCircuitWinners_ReturnAggregatedCircuitWinnersList_IfThereAreAnyCircuits()
         {
             // Arrange
             var options = new OptionsModel();
@@ -289,6 +317,42 @@ namespace F1Statistics.Tests.Controllers
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetUniqueSeasonDriverWinners_ReturnAggregatedUniqueSeasonWinnersList_IfThereAreAnyWinners()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedUniqueWinners = GenerateUniqueSeasonWinners();
+            _service.Setup((service) => service.AggregateUniqueSeasonDriverWinners(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+
+            // Act
+            var actual = _controller.GetUniqueSeasonDriverWinners(options);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
+            }
+        }
+
+        [TestMethod]
+        public void GetUniqueSeasonDriverWinners_ReturnEmptyList_IfThereAreNoCircuits()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel>();
+            _service.Setup((service) => service.AggregateUniqueSeasonDriverWinners(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+
+            // Act
+            var actual = _controller.GetUniqueSeasonDriverWinners(options);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
         }
     }
 }
