@@ -147,5 +147,43 @@ namespace F1Statistics.Tests.Controllers
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
         }
+
+        [TestMethod]
+        public void GetConstructorsAverageWins_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinnersWithAverageWins = GenerateWinnersWithAverageWins();
+            _service.Setup((service) => service.AggregateConstructorsAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
+
+            // Act
+            var actual = _controller.GetConstructorsAverageWins(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinnersWithAverageWins.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinnersWithAverageWins.Count; i++)
+            {
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].ParticipationCount, actual[i].ParticipationCount);
+                Assert.AreEqual(expectedWinnersWithAverageWins[i].AverageWins, actual[i].AverageWins);
+            }
+        }
+
+        [TestMethod]
+        public void GetConstructorsAverageWins_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinners = new List<AverageWinsModel>();
+            _service.Setup((service) => service.AggregateConstructorsAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+
+            // Act
+            var actual = _controller.GetConstructorsAverageWins(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
     }
 }

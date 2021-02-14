@@ -225,5 +225,47 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
         }
+
+        [TestMethod]
+        public void GetConstructorsAverageWins_ReturnAggregatedConstructorsWithAverageWinsList_IfThereAreAnyConstructors()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedWinners = new List<AverageWinsModel> { new AverageWinsModel { Name = "FirstConstructor", WinCount = 2, ParticipationCount = 2 }, new AverageWinsModel { Name = "SecondConstructor", WinCount = 1, ParticipationCount = 2 } };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
+
+            // Act
+            var actual = _aggregator.GetConstructorsAverageWins(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinners[i].ParticipationCount, actual[i].ParticipationCount);
+                Assert.AreEqual(expectedWinners[i].AverageWins, actual[i].AverageWins);
+            }
+        }
+
+        [TestMethod]
+        public void GetConstructorsAverageWins_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedWinners = new List<AverageWinsModel>();
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
+
+            // Act
+            var actual = _aggregator.GetConstructorsAverageWins(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
     }
 }
