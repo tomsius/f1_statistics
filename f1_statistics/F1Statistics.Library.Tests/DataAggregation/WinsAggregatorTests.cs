@@ -46,8 +46,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedWinners = new List<WinsModel> { new WinsModel { Name = "FirstName FirstFamily", WinCount = 2 }, new WinsModel { Name = "SecondName SecondFamily", WinCount = 1 } };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(1)).Returns(GenerateRaces()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(2)).Returns(GenerateRaces()[1]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
             // Act
             var actual = _aggregator.GetDriversWins(from, to);
@@ -69,8 +69,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedWinners = new List<WinsModel>();
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(1)).Returns(new List<RacesDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(2)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
             // Act
             var actual = _aggregator.GetDriversWins(from, to);
@@ -86,8 +86,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedWinners = new List<WinsModel> { new WinsModel { Name = "FirstConstructor", WinCount = 2 }, new WinsModel { Name = "SecondConstructor", WinCount = 1 } };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(1)).Returns(GenerateRaces()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(2)).Returns(GenerateRaces()[1]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
             // Act
             var actual = _aggregator.GetConstructorsWins(from, to);
@@ -109,8 +109,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedWinners = new List<WinsModel>();
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(1)).Returns(new List<RacesDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetWinnersFrom(2)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
             // Act
             var actual = _aggregator.GetConstructorsWins(from, to);

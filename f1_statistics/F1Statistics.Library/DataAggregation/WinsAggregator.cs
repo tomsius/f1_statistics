@@ -24,7 +24,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var races = _resultsDataAccess.GetWinnersFrom(year);
+                var races = _resultsDataAccess.GetRacesFrom(year);
 
                 foreach (var race in races)
                 {
@@ -50,7 +50,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var races = _resultsDataAccess.GetWinnersFrom(year);
+                var races = _resultsDataAccess.GetRacesFrom(year);
 
                 foreach (var race in races)
                 {
@@ -76,7 +76,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var races = _resultsDataAccess.GetWinnersFrom(year);
+                var races = _resultsDataAccess.GetRacesFrom(year);
 
                 foreach (var race in races)
                 {

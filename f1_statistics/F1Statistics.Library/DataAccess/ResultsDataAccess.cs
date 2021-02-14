@@ -10,7 +10,7 @@ namespace F1Statistics.Library.DataAccess
 {
     public class ResultsDataAccess : IResultsDataAccess
     {
-        public List<RacesDataResponse> GetWinnersFrom(int year)
+        public List<RacesDataResponse> GetRacesFrom(int year)
         {
             var client = new RestClient($"http://ergast.com/api/f1/{year}/results.json?limit=1000");
             client.Timeout = -1;
