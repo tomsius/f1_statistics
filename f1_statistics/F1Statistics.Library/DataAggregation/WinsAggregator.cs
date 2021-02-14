@@ -69,5 +69,40 @@ namespace F1Statistics.Library.DataAggregation
 
             return constructorsWins;
         }
+
+        public List<AverageWinsModel> GetDriversAverageWins(int from, int to)
+        {
+            var driversAverageWins = new List<AverageWinsModel>();
+
+            for (int year = from; year <= to; year++)
+            {
+                var races = _resultsDataAccess.GetWinnersFrom(year);
+
+                foreach (var race in races)
+                {
+                    // Fill participations
+                    foreach (var result in race.Results)
+                    {
+                        string driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+
+                        if (!driversAverageWins.Where(driver => driver.Name == driverName).Any())
+                        {
+                            driversAverageWins.Add(new AverageWinsModel { Name = driverName, ParticipationCount = 1 });
+                        }
+                        else
+                        {
+                            driversAverageWins.Where(driver => driver.Name == driverName).First().ParticipationCount++;
+                        }
+                    }
+
+                    // Fill winner
+                    string winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+
+                    driversAverageWins.Where(driver => driver.Name == winner).First().WinCount++;
+                }
+            }
+
+            return driversAverageWins;
+        }
     }
 }

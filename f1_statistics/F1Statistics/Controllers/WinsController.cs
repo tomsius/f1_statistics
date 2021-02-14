@@ -38,5 +38,15 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        // GET: api/wins/drivers/average
+        [HttpPost]
+        [Route("api/[controller]/drivers/average")]
+        public List<AverageWinsModel> GetDriversAverageWins(OptionsModel options)
+        {
+            var data = _service.AggregateDriversAverageWins(options);
+
+            return data;
+        }
     }
 }
