@@ -32,6 +32,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 { 
                     new RacesDataResponse
                     { 
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse 
@@ -63,7 +67,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 new List<RacesDataResponse>
                 {
                     new RacesDataResponse 
-                    { 
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        },
                         Results = new List<ResultsDataResponse> 
                         { 
                             new ResultsDataResponse 
@@ -81,7 +89,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         } 
                     },
                     new RacesDataResponse 
-                    { 
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "ThirdCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         { 
                             new ResultsDataResponse 
@@ -266,6 +278,90 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetCircuitWinners_ReturnAggregatedCircuitWinnersList_IfThereAreAnyCircuits()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedCircuitWinners = new List<CircuitWinsModel>
+            {
+                new CircuitWinsModel
+                {
+                    Name = "FirstCircuit",
+                    Winners = new List<WinsModel>
+                    {
+                        new WinsModel
+                        {
+                            Name = "FirstName FirstFamily",
+                            WinCount = 1
+                        }
+                    }
+                },
+                new CircuitWinsModel
+                {
+                    Name = "SecondCircuit",
+                    Winners = new List<WinsModel>
+                    {
+                        new WinsModel
+                        {
+                            Name = "FirstName FirstFamily",
+                            WinCount = 1
+                        }
+                    }
+                },
+                new CircuitWinsModel
+                {
+                    Name = "ThirdCircuit",
+                    Winners = new List<WinsModel>
+                    {
+                        new WinsModel
+                        {
+                            Name = "SecondName SecondFamily",
+                            WinCount = 1
+                        }
+                    }
+                }
+            };
+
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
+
+            // Act
+            var actual = _aggregator.GetCircuitWinners(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedCircuitWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedCircuitWinners[i].Name, actual[i].Name);
+
+                for (int j = 0; j < expectedCircuitWinners[i].Winners.Count; j++)
+                {
+                    Assert.AreEqual(expectedCircuitWinners[i].Winners[j].Name, actual[i].Winners[j].Name);
+                    Assert.AreEqual(expectedCircuitWinners[i].Winners[j].WinCount, actual[i].Winners[j].WinCount);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetCircuitWinners_ReturnEmptyList_IfThereAreNoCircuits()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedCircuitWinners = new List<CircuitWinsModel>();
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
+
+            // Act
+            var actual = _aggregator.GetCircuitWinners(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
         }
     }
 }

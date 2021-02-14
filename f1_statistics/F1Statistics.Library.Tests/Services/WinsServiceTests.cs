@@ -30,16 +30,79 @@ namespace F1Statistics.Library.Tests.Services
 
         private List<WinsModel> GenerateWinners()
         {
-            var winners = new List<WinsModel> { new WinsModel { Name = "Second", WinCount = 1 }, new WinsModel { Name = "First", WinCount = 2 } };
+            var winners = new List<WinsModel> 
+            { 
+                new WinsModel 
+                {
+                    Name = "Second",
+                    WinCount = 1 
+                },
+                new WinsModel 
+                { Name = "First",
+                    WinCount = 2 
+                }
+            };
 
             return winners;
         }
 
         private List<AverageWinsModel> GenerateWinnersWithAverageWins()
         {
-            var winners = new List<AverageWinsModel> { new AverageWinsModel { Name = "Second", WinCount = 1, ParticipationCount = 10 }, new AverageWinsModel { Name = "First", WinCount = 2, ParticipationCount = 2 } };
+            var winners = new List<AverageWinsModel> 
+            {
+                new AverageWinsModel 
+                {
+                    Name = "Second", 
+                    WinCount = 1, 
+                    ParticipationCount = 10 
+                },
+                new AverageWinsModel 
+                {
+                    Name = "First",
+                    WinCount = 2, 
+                    ParticipationCount = 2 
+                }
+            };
 
             return winners;
+        }
+
+        private List<CircuitWinsModel> GenerateCircuitWinners()
+        {
+            var circuitWinners = new List<CircuitWinsModel>
+            {
+                new CircuitWinsModel
+                {
+                    Name = "FirstCircuit",
+                    Winners = new List<WinsModel>
+                    {
+                        new WinsModel
+                        {
+                            Name = "FirstDriver",
+                            WinCount = 2
+                        }
+                    }
+                },
+                new CircuitWinsModel
+                {
+                    Name = "SecondCircuit",
+                    Winners = new List<WinsModel>
+                    {
+                        new WinsModel
+                        {
+                            Name = "FirstDriver",
+                            WinCount = 1
+                        },
+                        new WinsModel
+                        {
+                            Name = "SecondDriver",
+                            WinCount = 1
+                        }
+                    }
+                }
+            };
+
+            return circuitWinners;
         }
 
         [TestMethod]
@@ -204,6 +267,51 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateCircuitsWinners_ReturnSortedAggregatedCircuitWinnersList_IfThereAreAnyCircuits()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedCircuitWinners = GenerateCircuitWinners();
+            expectedCircuitWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
+            _aggregator.Setup((aggregator) => aggregator.GetCircuitWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateCircuitWinners());
+
+            // Act
+            var actual = _service.AggregateCircuitsWinners(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedCircuitWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedCircuitWinners[i].Name, actual[i].Name);
+
+                for (int j = 0; j < expectedCircuitWinners[i].Winners.Count; j++)
+                {
+                    Assert.AreEqual(expectedCircuitWinners[i].Winners[j].Name, actual[i].Winners[j].Name);
+                    Assert.AreEqual(expectedCircuitWinners[i].Winners[j].WinCount, actual[i].Winners[j].WinCount);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateCircuitsWinners_ReturnEmptyList_IfThereAreNoCircuits()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedCircuitWinners = new List<CircuitWinsModel>();
+            expectedCircuitWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
+            _aggregator.Setup((aggregator) => aggregator.GetCircuitWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedCircuitWinners);
+
+            // Act
+            var actual = _service.AggregateCircuitsWinners(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
         }
     }
 }

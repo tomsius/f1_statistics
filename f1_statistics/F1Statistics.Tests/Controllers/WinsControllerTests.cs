@@ -26,16 +26,80 @@ namespace F1Statistics.Tests.Controllers
 
         private List<WinsModel> GenerateWinners()
         {
-            var winners = new List<WinsModel> { new WinsModel { Name = "First", WinCount = 2 }, new WinsModel { Name = "Second", WinCount = 1 } };
+            var winners = new List<WinsModel> 
+            { 
+                new WinsModel 
+                { 
+                    Name = "First", 
+                    WinCount = 2 
+                }, 
+                new WinsModel 
+                { 
+                    Name = "Second", 
+                    WinCount = 1 
+                } 
+            };
 
             return winners;
         }
 
         private List<AverageWinsModel> GenerateWinnersWithAverageWins()
         {
-            var winners = new List<AverageWinsModel> { new AverageWinsModel { Name = "First", WinCount = 2, ParticipationCount = 4 }, new AverageWinsModel { Name = "Second", WinCount = 1, ParticipationCount = 1 } };
+            var winners = new List<AverageWinsModel> 
+            {
+                new AverageWinsModel 
+                {
+                    Name = "First", 
+                    WinCount = 2, 
+                    ParticipationCount = 4 
+                },
+                new AverageWinsModel
+                {
+                    Name = "Second", 
+                    WinCount = 1,
+                    ParticipationCount = 1 
+                }
+            };
 
             return winners;
+        }
+
+        private List<CircuitWinsModel> GenerateCircuitWinners()
+        {
+            var circuitWinners = new List<CircuitWinsModel>
+            {
+                new CircuitWinsModel
+                {
+                    Name = "FirstCircuit",
+                    Winners = new List<WinsModel>
+                    {
+                        new WinsModel
+                        {
+                            Name = "FirstDriver",
+                            WinCount = 2
+                        }
+                    }
+                },
+                new CircuitWinsModel
+                {
+                    Name = "SecondCircuit",
+                    Winners = new List<WinsModel>
+                    {
+                        new WinsModel
+                        {
+                            Name = "FirstDriver",
+                            WinCount = 1
+                        },
+                        new WinsModel
+                        {
+                            Name = "SecondDriver",
+                            WinCount = 1
+                        }
+                    }
+                }
+            };
+
+            return circuitWinners;
         }
 
         [TestMethod]
@@ -181,6 +245,47 @@ namespace F1Statistics.Tests.Controllers
 
             // Act
             var actual = _controller.GetConstructorsAverageWins(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetCircuitWinners_ReturnAggregatedCircuitWinnersListWithAverageWins_IfThereAreAnyCircuits()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedCircuitWinners = GenerateCircuitWinners();
+            _service.Setup((service) => service.AggregateCircuitsWinners(It.IsAny<OptionsModel>())).Returns(expectedCircuitWinners);
+
+            // Act
+            var actual = _controller.GetCircuitWinners(options);
+
+            // Assert
+            Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedCircuitWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedCircuitWinners[i].Name, actual[i].Name);
+
+                for (int j = 0; j < expectedCircuitWinners[i].Winners.Count; j++)
+                {
+                    Assert.AreEqual(expectedCircuitWinners[i].Winners[j].Name, actual[i].Winners[j].Name);
+                    Assert.AreEqual(expectedCircuitWinners[i].Winners[j].WinCount, actual[i].Winners[j].WinCount);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetCircuitWinners_ReturnEmptyList_IfThereAreNoCircuits()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinners = new List<CircuitWinsModel>();
+            _service.Setup((service) => service.AggregateCircuitsWinners(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+
+            // Act
+            var actual = _controller.GetCircuitWinners(options);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
