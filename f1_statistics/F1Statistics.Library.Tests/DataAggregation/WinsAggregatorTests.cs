@@ -413,7 +413,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel> { new UniqueSeasonWinnersModel(), new UniqueSeasonWinnersModel() };
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel> { new UniqueSeasonWinnersModel { Winners = new List<string>() }, new UniqueSeasonWinnersModel { Winners = new List<string>() } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -422,6 +422,70 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
             // Assert
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+            Assert.AreEqual(expectedUniqueWinners[0].Winners.Count, actual[0].Winners.Count);
+            Assert.AreEqual(expectedUniqueWinners[1].Winners.Count, actual[1].Winners.Count);
+        }
+
+        [TestMethod]
+        public void GetUniqueSeasonConstructorWinners_ReturnAggregatedUniqueSeasonWinners_IfThereAreAnyWinners()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel>
+            {
+                new UniqueSeasonWinnersModel
+                {
+                    Season = 1,
+                    Winners = new List<string>
+                    {
+                        "FirstConstructor"
+                    }
+                },
+                new UniqueSeasonWinnersModel
+                {
+                    Season = 2,
+                    Winners = new List<string>
+                    {
+                        "FirstConstructor",
+                        "SecondConstructor"
+                    }
+                }
+            };
+
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
+
+            // Act
+            var actual = _aggregator.GetUniqueSeasonConstructorWinners(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
+            }
+        }
+
+        [TestMethod]
+        public void GetUniqueSeasonConstructorWinners_ReturnEmptyList_IfThereAreNoWinners()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel> { new UniqueSeasonWinnersModel { Winners = new List<string>() }, new UniqueSeasonWinnersModel { Winners = new List<string>() } };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
+
+            // Act
+            var actual = _aggregator.GetUniqueSeasonConstructorWinners(from, to);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+            Assert.AreEqual(expectedUniqueWinners[0].Winners.Count, actual[0].Winners.Count);
+            Assert.AreEqual(expectedUniqueWinners[1].Winners.Count, actual[1].Winners.Count);
         }
     }
 }

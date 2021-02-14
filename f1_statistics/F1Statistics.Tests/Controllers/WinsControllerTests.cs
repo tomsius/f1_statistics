@@ -354,5 +354,41 @@ namespace F1Statistics.Tests.Controllers
             // Assert
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
         }
+
+        [TestMethod]
+        public void GetUniqueSeasonConstructorWinners_ReturnAggregatedUniqueSeasonWinnersList_IfThereAreAnyWinners()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedUniqueWinners = GenerateUniqueSeasonWinners();
+            _service.Setup((service) => service.AggregateUniqueSeasonConstructorWinners(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+
+            // Act
+            var actual = _controller.GetUniqueSeasonConstructorWinners(options);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
+            }
+        }
+
+        [TestMethod]
+        public void GetUniqueSeasonConstructorWinners_ReturnEmptyList_IfThereAreNoCircuits()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel>();
+            _service.Setup((service) => service.AggregateUniqueSeasonConstructorWinners(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+
+            // Act
+            var actual = _controller.GetUniqueSeasonConstructorWinners(options);
+
+            // Assert
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+        }
     }
 }

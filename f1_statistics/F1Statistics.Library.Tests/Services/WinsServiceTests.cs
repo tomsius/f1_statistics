@@ -379,5 +379,43 @@ namespace F1Statistics.Library.Tests.Services
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
         }
+
+        [TestMethod]
+        public void AggregateUniqueSeasonConstructorWinners_ReturnAggregatedUniqueSeasonWinnersList_IfThereAreAnyWinners()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedUniqueWinners = GenerateUniqueSeasonWinners();
+            _aggregator.Setup((aggregator) => aggregator.GetUniqueSeasonConstructorWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueWinners);
+
+            // Act
+            var actual = _service.AggregateUniqueSeasonConstructorWinners(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
+            }
+        }
+
+        [TestMethod]
+        public void AggregateUniqueSeasonConstructorWinners_ReturnEmptyList_IfThereAreNoWinners()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedUniqueWinners = new List<UniqueSeasonWinnersModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetUniqueSeasonConstructorWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueWinners);
+
+            // Act
+            var actual = _service.AggregateUniqueSeasonConstructorWinners(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+        }
     }
 }
