@@ -9,5 +9,6 @@ namespace F1Statistics.Library.Services.Interfaces
         List<WinsModel> AggregateConstructorsWins(OptionsModel options);
         List<AverageWinsModel> AggregateDriversAverageWins(OptionsModel options);
         List<AverageWinsModel> AggregateConstructorsAverageWins(OptionsModel options);
+        List<CircuitWinsModel> AggregateCircuitsWinners(OptionsModel options);
     }
 }

@@ -98,5 +98,25 @@ namespace F1Statistics.Library.Services
 
             return constructorsAverageWins;
         }
+
+        public List<CircuitWinsModel> AggregateCircuitsWinners(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<CircuitWinsModel> circuitsWinners;
+
+            if (options.YearFrom != 0)
+            {
+                circuitsWinners = _aggregator.GetCircuitWinners(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                circuitsWinners = _aggregator.GetCircuitWinners(options.Season, options.Season);
+            }
+
+            circuitsWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
+
+            return circuitsWinners;
+        }
     }
 }

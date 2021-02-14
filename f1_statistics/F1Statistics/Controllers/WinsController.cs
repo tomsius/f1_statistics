@@ -58,5 +58,15 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        // GET: api/wins/drivers/tracks
+        [HttpPost]
+        [Route("api/[controller]/drivers/tracks")]
+        public List<CircuitWinsModel> GetCircuitWinners(OptionsModel options)
+        {
+            var data = _service.AggregateCircuitsWinners(options);
+
+            return data;
+        }
     }
 }

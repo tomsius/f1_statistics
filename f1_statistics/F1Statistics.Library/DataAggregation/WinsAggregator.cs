@@ -169,5 +169,41 @@ namespace F1Statistics.Library.DataAggregation
 
             return carCount;
         }
+
+        public List<CircuitWinsModel> GetCircuitWinners(int from, int to)
+        {
+            var circuitWinners = new List<CircuitWinsModel>();
+
+            for (int year = from; year <= to; year++)
+            {
+                var races = _resultsDataAccess.GetRacesFrom(year);
+
+                foreach (var race in races)
+                {
+                    string circuitName = race.Circuit.circuitName;
+                    string winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    var newWinnerModel = new WinsModel { Name = winnerName, WinCount = 1 };
+
+                    if (!circuitWinners.Where(circuit => circuit.Name == circuitName).Any())
+                    {
+                        var circuitWinnersModel = new CircuitWinsModel { Name = circuitName, Winners = new List<WinsModel> { newWinnerModel } };
+                        circuitWinners.Add(circuitWinnersModel);
+                    }
+                    else
+                    {
+                        if (!circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).Any())
+                        {
+                            circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Add(newWinnerModel);
+                        }
+                        else
+                        {
+                            circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).First().WinCount++; 
+                        }
+                    }
+                }
+            }
+
+            return circuitWinners;
+        }
     }
 }
