@@ -118,5 +118,23 @@ namespace F1Statistics.Library.Services
 
             return circuitsWinners;
         }
+
+        public List<UniqueSeasonWinnersModel> AggregateUniqueSeasonDriverWinners(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<UniqueSeasonWinnersModel> uniqueSeasonWinners;
+
+            if (options.YearFrom != 0)
+            {
+                uniqueSeasonWinners = _aggregator.GetUniqueSeasonDriverWinners(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                uniqueSeasonWinners = _aggregator.GetUniqueSeasonDriverWinners(options.Season, options.Season);
+            }
+
+            return uniqueSeasonWinners;
+        }
     }
 }

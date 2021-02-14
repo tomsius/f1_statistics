@@ -205,5 +205,29 @@ namespace F1Statistics.Library.DataAggregation
 
             return circuitWinners;
         }
+
+        public List<UniqueSeasonWinnersModel> GetUniqueSeasonDriverWinners(int from, int to)
+        {
+            var uniqueWinners = new List<UniqueSeasonWinnersModel>();
+
+            for (int year = from; year <= to; year++)
+            {
+                var races = _resultsDataAccess.GetRacesFrom(year);
+
+                uniqueWinners.Add(new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>() });
+
+                foreach (var race in races)
+                {
+                    string winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+
+                    if (!uniqueWinners[year - from].Winners.Where(winner => winner == winnerName).Any())
+                    {
+                        uniqueWinners[year - from].Winners.Add(winnerName);
+                    }
+                }
+            }
+
+            return uniqueWinners;
+        }
     }
 }

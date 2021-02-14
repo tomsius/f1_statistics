@@ -68,5 +68,15 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        // GET: api/wins/drivers/uniqueperseason
+        [HttpPost]
+        [Route("api/[controller]/drivers/uniqueperseason")]
+        public List<UniqueSeasonWinnersModel> GetUniqueSeasonDriverWinners(OptionsModel options)
+        {
+            var data = _service.AggregateUniqueSeasonDriverWinners(options);
+
+            return data;
+        }
     }
 }
