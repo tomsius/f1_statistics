@@ -30,7 +30,7 @@ namespace F1Statistics.Library.Tests.Services
 
         private List<WinsModel> GenerateWinners()
         {
-            var winners = new List<WinsModel> { new WinsModel { Name = "second", WinCount = 1 }, new WinsModel { Name = "First", WinCount = 2 } };
+            var winners = new List<WinsModel> { new WinsModel { Name = "Second", WinCount = 1 }, new WinsModel { Name = "First", WinCount = 2 } };
 
             return winners;
         }
@@ -69,6 +69,46 @@ namespace F1Statistics.Library.Tests.Services
 
             // Act
             var actual = _service.AggregateDriversWins(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsWins_ReturnSortedAggregatedWinnersList_IfThereAreAnyConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedWinners = GenerateWinners();
+            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsWins(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateWinners());
+
+            // Act
+            var actual = _service.AggregateConstructorsWins(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+            }
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsWins_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedWinners = new List<WinsModel>();
+            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
+
+            // Act
+            var actual = _service.AggregateConstructorsWins(options);
 
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());

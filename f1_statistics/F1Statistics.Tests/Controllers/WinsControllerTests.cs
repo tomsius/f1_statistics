@@ -66,5 +66,41 @@ namespace F1Statistics.Tests.Controllers
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
         }
+
+        [TestMethod]
+        public void GetConstructorsWins_ReturnAggregatedWinnersList_IfThereAreAnyConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinners = GenerateWinners();
+            _service.Setup((service) => service.AggregateConstructorsWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+
+            // Act
+            var actual = _controller.GetConstructorsWins(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinners.Count; i++)
+            {
+                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+            }
+        }
+
+        [TestMethod]
+        public void GetConstructorsWins_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinners = new List<WinsModel>();
+            _service.Setup((service) => service.AggregateConstructorsWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+
+            // Act
+            var actual = _controller.GetConstructorsWins(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinners.Count, actual.Count);
+        }
     }
 }
