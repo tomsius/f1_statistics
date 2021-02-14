@@ -78,5 +78,15 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        // GET: api/wins/constructors/uniqueperseason
+        [HttpPost]
+        [Route("api/[controller]/constructors/uniqueperseason")]
+        public List<UniqueSeasonWinnersModel> GetUniqueSeasonConstructorWinners(OptionsModel options)
+        {
+            var data = _service.AggregateUniqueSeasonConstructorWinners(options);
+
+            return data;
+        }
     }
 }

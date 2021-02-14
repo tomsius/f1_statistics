@@ -136,5 +136,23 @@ namespace F1Statistics.Library.Services
 
             return uniqueSeasonWinners;
         }
+
+        public List<UniqueSeasonWinnersModel> AggregateUniqueSeasonConstructorWinners(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<UniqueSeasonWinnersModel> uniqueSeasonWinners;
+
+            if (options.YearFrom != 0)
+            {
+                uniqueSeasonWinners = _aggregator.GetUniqueSeasonConstructorWinners(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                uniqueSeasonWinners = _aggregator.GetUniqueSeasonConstructorWinners(options.Season, options.Season);
+            }
+
+            return uniqueSeasonWinners;
+        }
     }
 }
