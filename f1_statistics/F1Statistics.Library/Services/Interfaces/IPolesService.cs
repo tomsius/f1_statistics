@@ -7,8 +7,8 @@ namespace F1Statistics.Library.Services.Interfaces
     {
         List<PolesModel> AggregatePoleSittersDrivers(OptionsModel options);
         List<PolesModel> AggregatePoleSittersConstructors(OptionsModel options);
-        List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonDriverPoleSitters(OptionsModel options);
-        List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonConstructorPoleSitters(OptionsModel options);
+        List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonPoleSittersDrivers(OptionsModel options);
+        List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonPoleSittersConstructors(OptionsModel options);
         List<WinsFromPoleModel> AggregateWinnersFromPole(OptionsModel options);
     }
 }

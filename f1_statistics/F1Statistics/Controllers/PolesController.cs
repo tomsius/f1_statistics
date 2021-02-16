@@ -45,7 +45,7 @@ namespace F1Statistics.Controllers
         [Route("api/[controller]/uniquedriversperseason")]
         public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonDriverPoleSitters(OptionsModel options)
         {
-            var data = _service.AggregateUniqueSeasonDriverPoleSitters(options);
+            var data = _service.AggregateUniqueSeasonPoleSittersDrivers(options);
 
             return data;
         }
@@ -55,7 +55,7 @@ namespace F1Statistics.Controllers
         [Route("api/[controller]/uniqueconstructorsperseason")]
         public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonConstructorsPoleSitters(OptionsModel options)
         {
-            var data = _service.AggregateUniqueSeasonConstructorPoleSitters(options);
+            var data = _service.AggregateUniqueSeasonPoleSittersConstructors(options);
 
             return data;
         }

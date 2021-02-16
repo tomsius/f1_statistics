@@ -59,7 +59,7 @@ namespace F1Statistics.Library.Services
             return constructorPoles;
         }
 
-        public List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonDriverPoleSitters(OptionsModel options)
+        public List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonPoleSittersDrivers(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -77,7 +77,7 @@ namespace F1Statistics.Library.Services
             return uniqueSeasonPoleSitters;
         }
 
-        public List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonConstructorPoleSitters(OptionsModel options)
+        public List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonPoleSittersConstructors(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 

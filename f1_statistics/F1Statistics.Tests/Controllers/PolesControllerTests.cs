@@ -161,7 +161,7 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedUniquePoleSittersDrivers = GenerateUniqueSeasonPoleSitters();
-            _service.Setup((service) => service.AggregateUniqueSeasonDriverPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
+            _service.Setup((service) => service.AggregateUniqueSeasonPoleSittersDrivers(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
 
             // Act
             var actual = _controller.GetUniqueSeasonDriverPoleSitters(options);
@@ -182,7 +182,7 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedUniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel>();
-            _service.Setup((service) => service.AggregateUniqueSeasonDriverPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
+            _service.Setup((service) => service.AggregateUniqueSeasonPoleSittersDrivers(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
 
             // Act
             var actual = _controller.GetUniqueSeasonDriverPoleSitters(options);
@@ -197,7 +197,7 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedUniquePoleSittersConstructors = GenerateUniqueSeasonPoleSitters();
-            _service.Setup((service) => service.AggregateUniqueSeasonConstructorPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersConstructors);
+            _service.Setup((service) => service.AggregateUniqueSeasonPoleSittersConstructors(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersConstructors);
 
             // Act
             var actual = _controller.GetUniqueSeasonConstructorsPoleSitters(options);
@@ -218,7 +218,7 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedUniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel>();
-            _service.Setup((service) => service.AggregateUniqueSeasonConstructorPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersConstructors);
+            _service.Setup((service) => service.AggregateUniqueSeasonPoleSittersConstructors(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersConstructors);
 
             // Act
             var actual = _controller.GetUniqueSeasonConstructorsPoleSitters(options);
