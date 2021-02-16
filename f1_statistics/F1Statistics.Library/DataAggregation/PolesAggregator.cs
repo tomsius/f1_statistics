@@ -128,7 +128,7 @@ namespace F1Statistics.Library.DataAggregation
                 var races = _resultsDataAccess.GetRacesFrom(year);
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
-                winsFromPole.Add(new WinsFromPoleModel { Season = year, WinsFromPoleCount = 0 });
+                winsFromPole.Add(new WinsFromPoleModel { Season = year, WinnersFromPole = new List<string>() });
 
                 for (int i = 0; i < races.Count; i++)
                 {
@@ -137,7 +137,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     if (winnerName == poleSitter)
                     {
-                        winsFromPole.Where(x => x.Season == year).First().WinsFromPoleCount++;
+                        winsFromPole.Where(x => x.Season == year).First().WinnersFromPole.Add(winnerName);
                     }
                 }
             }
