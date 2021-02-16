@@ -19,7 +19,7 @@ namespace F1Statistics.Library.Services
             _aggregator = aggregator;
         }
 
-        public List<PolesModel> AggregateDriversPoles(OptionsModel options)
+        public List<PolesModel> AggregatePoleSittersDrivers(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -39,7 +39,7 @@ namespace F1Statistics.Library.Services
             return driversPoles;
         }
 
-        public List<PolesModel> AggregateConstructorsPoles(OptionsModel options)
+        public List<PolesModel> AggregatePoleSittersConstructors(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
