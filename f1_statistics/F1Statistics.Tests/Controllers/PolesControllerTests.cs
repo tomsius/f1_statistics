@@ -71,12 +71,12 @@ namespace F1Statistics.Tests.Controllers
                 new WinsFromPoleModel
                 {
                     Season = 1,
-                    WinsFromPoleCount = 2
+                    WinnersFromPole = new List<string> { "First", "Second" }
                 },
                 new WinsFromPoleModel
                 {
                     Season = 2,
-                    WinsFromPoleCount = 1
+                    WinnersFromPole = new List<string> { "First" }
                 }
             };
 
