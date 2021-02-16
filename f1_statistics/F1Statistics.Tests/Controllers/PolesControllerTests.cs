@@ -196,19 +196,19 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniquePoleSittersDrivers = GenerateUniqueSeasonPoleSitters();
-            _service.Setup((service) => service.AggregateUniqueSeasonConstructorPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
+            var expectedUniquePoleSittersConstructors = GenerateUniqueSeasonPoleSitters();
+            _service.Setup((service) => service.AggregateUniqueSeasonConstructorPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersConstructors);
 
             // Act
             var actual = _controller.GetUniqueSeasonConstructorsPoleSitters(options);
 
             // Assert
-            Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
+            Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
 
-            for (int i = 0; i < expectedUniquePoleSittersDrivers.Count; i++)
+            for (int i = 0; i < expectedUniquePoleSittersConstructors.Count; i++)
             {
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
             }
         }
 
@@ -217,14 +217,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel>();
-            _service.Setup((service) => service.AggregateUniqueSeasonConstructorPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
+            var expectedUniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel>();
+            _service.Setup((service) => service.AggregateUniqueSeasonConstructorPoleSitters(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersConstructors);
 
             // Act
             var actual = _controller.GetUniqueSeasonConstructorsPoleSitters(options);
 
             // Assert
-            Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
+            Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
         }
 
         [TestMethod]
@@ -232,19 +232,19 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniquePoleSittersDrivers = GenerateWinnersFromPole();
-            _service.Setup((service) => service.AggregateWinnersFromPole(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
+            var expectedWinnersFromPole = GenerateWinnersFromPole();
+            _service.Setup((service) => service.AggregateWinnersFromPole(It.IsAny<OptionsModel>())).Returns(expectedWinnersFromPole);
 
             // Act
             var actual = _controller.GetWinnersFromPole(options);
 
             // Assert
-            Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
+            Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
 
-            for (int i = 0; i < expectedUniquePoleSittersDrivers.Count; i++)
+            for (int i = 0; i < expectedWinnersFromPole.Count; i++)
             {
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
+                Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
             }
         }
 
@@ -253,14 +253,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniquePoleSittersDrivers = new List<WinsFromPoleModel>();
-            _service.Setup((service) => service.AggregateWinnersFromPole(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
+            var expectedWinnersFromPole = new List<WinsFromPoleModel>();
+            _service.Setup((service) => service.AggregateWinnersFromPole(It.IsAny<OptionsModel>())).Returns(expectedWinnersFromPole);
 
             // Act
             var actual = _controller.GetWinnersFromPole(options);
 
             // Assert
-            Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
+            Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
         }
     }
 }
