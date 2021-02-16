@@ -67,11 +67,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                uniqueSeasonPoleSitters = _aggregator.GetUniqueDriverPoleSitters(options.YearFrom, options.YearTo);
+                uniqueSeasonPoleSitters = _aggregator.GetUniquePoleSittersDrivers(options.YearFrom, options.YearTo);
             }
             else
             {
-                uniqueSeasonPoleSitters = _aggregator.GetUniqueDriverPoleSitters(options.Season, options.Season);
+                uniqueSeasonPoleSitters = _aggregator.GetUniquePoleSittersDrivers(options.Season, options.Season);
             }
 
             return uniqueSeasonPoleSitters;
@@ -85,11 +85,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                uniqueSeasonPoleSitters = _aggregator.GetUniqueConstructorPoleSitters(options.YearFrom, options.YearTo);
+                uniqueSeasonPoleSitters = _aggregator.GetUniquePoleSittersConstructors(options.YearFrom, options.YearTo);
             }
             else
             {
-                uniqueSeasonPoleSitters = _aggregator.GetUniqueConstructorPoleSitters(options.Season, options.Season);
+                uniqueSeasonPoleSitters = _aggregator.GetUniquePoleSittersConstructors(options.Season, options.Season);
             }
 
             return uniqueSeasonPoleSitters;

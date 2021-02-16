@@ -7,8 +7,8 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
     {
         List<PolesModel> GetPoleSittersDrivers(int from, int to);
         List<PolesModel> GetPoleSittersConstructors(int from, int to);
-        List<UniqueSeasonPoleSittersModel> GetUniqueDriverPoleSitters(int from, int to);
-        List<UniqueSeasonPoleSittersModel> GetUniqueConstructorPoleSitters(int from, int to);
+        List<UniqueSeasonPoleSittersModel> GetUniquePoleSittersDrivers(int from, int to);
+        List<UniqueSeasonPoleSittersModel> GetUniquePoleSittersConstructors(int from, int to);
         List<WinsFromPoleModel> GetWinCountFromPole(int from, int to);
     }
 }

@@ -71,7 +71,7 @@ namespace F1Statistics.Library.DataAggregation
             return constructorsPoles;
         }
 
-        public List<UniqueSeasonPoleSittersModel> GetUniqueDriverPoleSitters(int from, int to)
+        public List<UniqueSeasonPoleSittersModel> GetUniquePoleSittersDrivers(int from, int to)
         {
             var uniquePoleSitters = new List<UniqueSeasonPoleSittersModel>();
 
@@ -95,7 +95,7 @@ namespace F1Statistics.Library.DataAggregation
             return uniquePoleSitters;
         }
 
-        public List<UniqueSeasonPoleSittersModel> GetUniqueConstructorPoleSitters(int from, int to)
+        public List<UniqueSeasonPoleSittersModel> GetUniquePoleSittersConstructors(int from, int to)
         {
             var uniquePoleSitters = new List<UniqueSeasonPoleSittersModel>();
 
