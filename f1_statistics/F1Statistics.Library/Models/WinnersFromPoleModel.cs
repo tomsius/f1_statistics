@@ -4,7 +4,7 @@ using System.Text;
 
 namespace F1Statistics.Library.Models
 {
-    public class WinsFromPoleModel
+    public class WinnersFromPoleModel
     {
         public int Season { get; set; }
         public List<string> WinnersFromPole { get; set; }

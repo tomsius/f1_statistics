@@ -119,16 +119,16 @@ namespace F1Statistics.Library.DataAggregation
             return uniquePoleSitters;
         }
 
-        public List<WinsFromPoleModel> GetWinCountFromPole(int from, int to)
+        public List<WinnersFromPoleModel> GetWinnersFromPole(int from, int to)
         {
-            var winsFromPole = new List<WinsFromPoleModel>();
+            var winsFromPole = new List<WinnersFromPoleModel>();
 
             for (int year = from; year <= to; year++)
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
-                winsFromPole.Add(new WinsFromPoleModel { Season = year, WinnersFromPole = new List<string>() });
+                winsFromPole.Add(new WinnersFromPoleModel { Season = year, WinnersFromPole = new List<string>() });
 
                 for (int i = 0; i < races.Count; i++)
                 {

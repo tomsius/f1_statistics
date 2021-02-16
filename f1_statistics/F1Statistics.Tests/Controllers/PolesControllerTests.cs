@@ -64,16 +64,16 @@ namespace F1Statistics.Tests.Controllers
             return winners;
         }
 
-        private List<WinsFromPoleModel> GenerateWinnersFromPole()
+        private List<WinnersFromPoleModel> GenerateWinnersFromPole()
         {
-            var winners = new List<WinsFromPoleModel>
+            var winners = new List<WinnersFromPoleModel>
             {
-                new WinsFromPoleModel
+                new WinnersFromPoleModel
                 {
                     Season = 1,
                     WinnersFromPole = new List<string> { "First", "Second" }
                 },
-                new WinsFromPoleModel
+                new WinnersFromPoleModel
                 {
                     Season = 2,
                     WinnersFromPole = new List<string> { "First" }
@@ -253,7 +253,7 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinnersFromPole = new List<WinsFromPoleModel>();
+            var expectedWinnersFromPole = new List<WinnersFromPoleModel>();
             _service.Setup((service) => service.AggregateWinnersFromPole(It.IsAny<OptionsModel>())).Returns(expectedWinnersFromPole);
 
             // Act

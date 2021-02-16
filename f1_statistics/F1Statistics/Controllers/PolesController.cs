@@ -63,7 +63,7 @@ namespace F1Statistics.Controllers
         // GET: api/poles/winners
         [HttpPost]
         [Route("api/[controller]/winners")]
-        public List<WinsFromPoleModel> GetWinnersFromPole(OptionsModel options)
+        public List<WinnersFromPoleModel> GetWinnersFromPole(OptionsModel options)
         {
             var data = _service.AggregateWinnersFromPole(options);
 

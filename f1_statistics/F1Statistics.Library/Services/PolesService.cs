@@ -95,19 +95,19 @@ namespace F1Statistics.Library.Services
             return uniqueSeasonPoleSitters;
         }
 
-        public List<WinsFromPoleModel> AggregateWinnersFromPole(OptionsModel options)
+        public List<WinnersFromPoleModel> AggregateWinnersFromPole(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
-            List<WinsFromPoleModel> winsFromPole;
+            List<WinnersFromPoleModel> winsFromPole;
 
             if (options.YearFrom != 0)
             {
-                winsFromPole = _aggregator.GetWinCountFromPole(options.YearFrom, options.YearTo);
+                winsFromPole = _aggregator.GetWinnersFromPole(options.YearFrom, options.YearTo);
             }
             else
             {
-                winsFromPole = _aggregator.GetWinCountFromPole(options.Season, options.Season);
+                winsFromPole = _aggregator.GetWinnersFromPole(options.Season, options.Season);
             }
 
             return winsFromPole;
