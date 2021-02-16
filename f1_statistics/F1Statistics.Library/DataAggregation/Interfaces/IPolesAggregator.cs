@@ -5,8 +5,8 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
 {
     public interface IPolesAggregator
     {
-        List<PolesModel> GetDriversPoles(int from, int to);
-        List<PolesModel> GetConstructorsPoles(int from, int to);
+        List<PolesModel> GetPoleSittersDrivers(int from, int to);
+        List<PolesModel> GetPoleSittersConstructors(int from, int to);
         List<UniqueSeasonPoleSittersModel> GetUniqueDriverPoleSitters(int from, int to);
         List<UniqueSeasonPoleSittersModel> GetUniqueConstructorPoleSitters(int from, int to);
         List<WinsFromPoleModel> GetWinCountFromPole(int from, int to);

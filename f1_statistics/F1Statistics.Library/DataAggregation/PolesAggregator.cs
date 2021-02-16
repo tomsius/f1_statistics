@@ -19,7 +19,7 @@ namespace F1Statistics.Library.DataAggregation
             _resultsDataAccess = resultsDataAccess;
         }
 
-        public List<PolesModel> GetDriversPoles(int from, int to)
+        public List<PolesModel> GetPoleSittersDrivers(int from, int to)
         {
             var driversPoles = new List<PolesModel>();
 
@@ -45,7 +45,7 @@ namespace F1Statistics.Library.DataAggregation
             return driversPoles;
         }
 
-        public List<PolesModel> GetConstructorsPoles(int from, int to)
+        public List<PolesModel> GetPoleSittersConstructors(int from, int to)
         {
             var constructorsPoles = new List<PolesModel>();
 

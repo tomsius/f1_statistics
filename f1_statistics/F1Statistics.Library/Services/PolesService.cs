@@ -27,11 +27,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                driversPoles = _aggregator.GetDriversPoles(options.YearFrom, options.YearTo);
+                driversPoles = _aggregator.GetPoleSittersDrivers(options.YearFrom, options.YearTo);
             }
             else
             {
-                driversPoles = _aggregator.GetDriversPoles(options.Season, options.Season);
+                driversPoles = _aggregator.GetPoleSittersDrivers(options.Season, options.Season);
             }
 
             driversPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
@@ -47,11 +47,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                constructorPoles = _aggregator.GetConstructorsPoles(options.YearFrom, options.YearTo);
+                constructorPoles = _aggregator.GetPoleSittersConstructors(options.YearFrom, options.YearTo);
             }
             else
             {
-                constructorPoles = _aggregator.GetConstructorsPoles(options.Season, options.Season);
+                constructorPoles = _aggregator.GetPoleSittersConstructors(options.Season, options.Season);
             }
 
             constructorPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
