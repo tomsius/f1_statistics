@@ -160,7 +160,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateDriversWins_ReturnEmptyList_IfThereAreNoDrivers()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<WinsModel>();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetDriversWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
@@ -200,7 +200,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateConstructorsWins_ReturnEmptyList_IfThereAreNoConstructors()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<WinsModel>();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
@@ -242,7 +242,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateDriversAverageWins_ReturnEmptyList_IfThereAreNoDrivers()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<AverageWinsModel>();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetDriversAverageWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
@@ -284,7 +284,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateConstructorsAverageWins_ReturnEmptyList_IfThereAreNoConstructors()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<AverageWinsModel>();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsAverageWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
@@ -329,7 +329,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateCircuitsWinners_ReturnEmptyList_IfThereAreNoCircuits()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { Season = 2000 };
             var expectedCircuitWinners = new List<CircuitWinsModel>();
             expectedCircuitWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
             _aggregator.Setup((aggregator) => aggregator.GetCircuitWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedCircuitWinners);
@@ -368,7 +368,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateUniqueSeasonDriverWinners_ReturnEmptyList_IfThereAreNoWinners()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { Season = 2000 };
             var expectedUniqueWinners = new List<UniqueSeasonWinnersModel>();
             _aggregator.Setup((aggregator) => aggregator.GetUniqueSeasonDriverWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueWinners);
 
@@ -406,7 +406,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateUniqueSeasonConstructorWinners_ReturnEmptyList_IfThereAreNoWinners()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { Season = 2000 };
             var expectedUniqueWinners = new List<UniqueSeasonWinnersModel>();
             _aggregator.Setup((aggregator) => aggregator.GetUniqueSeasonConstructorWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueWinners);
 
