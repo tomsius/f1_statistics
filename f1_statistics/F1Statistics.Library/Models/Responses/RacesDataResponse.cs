@@ -14,5 +14,6 @@ namespace F1Statistics.Library.Models.Responses
         public string date { get; set; }
         public string time { get; set; }
         public List<ResultsDataResponse> Results { get; set; }
+        public List<QualifyingResultsDataResponse> QualifyingResults { get; set; }
     }
 }

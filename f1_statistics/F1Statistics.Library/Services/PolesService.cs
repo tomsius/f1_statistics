@@ -1,0 +1,116 @@
+﻿using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Models;
+using F1Statistics.Library.Services.Interfaces;
+using F1Statistics.Library.Validators.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace F1Statistics.Library.Services
+{
+    public class PolesService : IPolesService
+    {
+        private IOptionsValidator _validator;
+        private IPolesAggregator _aggregator;
+
+        public PolesService(IOptionsValidator validator, IPolesAggregator aggregator)
+        {
+            _validator = validator;
+            _aggregator = aggregator;
+        }
+
+        public List<PolesModel> AggregateDriversPoles(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<PolesModel> driversPoles;
+
+            if (options.YearFrom != 0)
+            {
+                driversPoles = _aggregator.GetDriversPoles(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                driversPoles = _aggregator.GetDriversPoles(options.Season, options.Season);
+            }
+
+            driversPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+
+            return driversPoles;
+        }
+
+        public List<PolesModel> AggregateConstructorsPoles(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<PolesModel> constructorPoles;
+
+            if (options.YearFrom != 0)
+            {
+                constructorPoles = _aggregator.GetConstructorsPoles(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                constructorPoles = _aggregator.GetConstructorsPoles(options.Season, options.Season);
+            }
+
+            constructorPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+
+            return constructorPoles;
+        }
+
+        public List<UniqueSeasonPoleCountModel> AggregateUniqueSeasonDriverPoleSitters(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<UniqueSeasonPoleCountModel> uniqueSeasonPoleSitters;
+
+            if (options.YearFrom != 0)
+            {
+                uniqueSeasonPoleSitters = _aggregator.GetUniqueDriverPoleSitters(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                uniqueSeasonPoleSitters = _aggregator.GetUniqueDriverPoleSitters(options.Season, options.Season);
+            }
+
+            return uniqueSeasonPoleSitters;
+        }
+
+        public List<UniqueSeasonPoleCountModel> AggregateUniqueSeasonConstructorPoleSitters(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<UniqueSeasonPoleCountModel> uniqueSeasonPoleSitters;
+
+            if (options.YearFrom != 0)
+            {
+                uniqueSeasonPoleSitters = _aggregator.GetUniqueConstructorPoleSitters(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                uniqueSeasonPoleSitters = _aggregator.GetUniqueConstructorPoleSitters(options.Season, options.Season);
+            }
+
+            return uniqueSeasonPoleSitters;
+        }
+
+        public List<WinsFromPoleModel> AggregateWinnersFromPole(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<WinsFromPoleModel> winsFromPole;
+
+            if (options.YearFrom != 0)
+            {
+                winsFromPole = _aggregator.GetWinCountFromPole(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                winsFromPole = _aggregator.GetWinCountFromPole(options.Season, options.Season);
+            }
+
+            return winsFromPole;
+        }
+    }
+}
