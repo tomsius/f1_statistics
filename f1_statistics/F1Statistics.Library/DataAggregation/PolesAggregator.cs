@@ -71,15 +71,15 @@ namespace F1Statistics.Library.DataAggregation
             return constructorsPoles;
         }
 
-        public List<UniqueSeasonPoleCountModel> GetUniqueDriverPoleSitters(int from, int to)
+        public List<UniqueSeasonPoleSittersModel> GetUniqueDriverPoleSitters(int from, int to)
         {
-            var uniquePoleSitters = new List<UniqueSeasonPoleCountModel>();
+            var uniquePoleSitters = new List<UniqueSeasonPoleSittersModel>();
 
             for (int year = from; year <= to; year++)
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
-                uniquePoleSitters.Add(new UniqueSeasonPoleCountModel { Season = year, PoleSitters = new List<string>() });
+                uniquePoleSitters.Add(new UniqueSeasonPoleSittersModel { Season = year, PoleSitters = new List<string>() });
 
                 foreach (var qualifying in qualifyings)
                 {
@@ -95,15 +95,15 @@ namespace F1Statistics.Library.DataAggregation
             return uniquePoleSitters;
         }
 
-        public List<UniqueSeasonPoleCountModel> GetUniqueConstructorPoleSitters(int from, int to)
+        public List<UniqueSeasonPoleSittersModel> GetUniqueConstructorPoleSitters(int from, int to)
         {
-            var uniquePoleSitters = new List<UniqueSeasonPoleCountModel>();
+            var uniquePoleSitters = new List<UniqueSeasonPoleSittersModel>();
 
             for (int year = from; year <= to; year++)
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
-                uniquePoleSitters.Add(new UniqueSeasonPoleCountModel { Season = year, PoleSitters = new List<string>() });
+                uniquePoleSitters.Add(new UniqueSeasonPoleSittersModel { Season = year, PoleSitters = new List<string>() });
 
                 foreach (var qualifying in qualifyings)
                 {

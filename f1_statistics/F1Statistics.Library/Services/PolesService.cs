@@ -59,11 +59,11 @@ namespace F1Statistics.Library.Services
             return constructorPoles;
         }
 
-        public List<UniqueSeasonPoleCountModel> AggregateUniqueSeasonDriverPoleSitters(OptionsModel options)
+        public List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonDriverPoleSitters(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
-            List<UniqueSeasonPoleCountModel> uniqueSeasonPoleSitters;
+            List<UniqueSeasonPoleSittersModel> uniqueSeasonPoleSitters;
 
             if (options.YearFrom != 0)
             {
@@ -77,11 +77,11 @@ namespace F1Statistics.Library.Services
             return uniqueSeasonPoleSitters;
         }
 
-        public List<UniqueSeasonPoleCountModel> AggregateUniqueSeasonConstructorPoleSitters(OptionsModel options)
+        public List<UniqueSeasonPoleSittersModel> AggregateUniqueSeasonConstructorPoleSitters(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
-            List<UniqueSeasonPoleCountModel> uniqueSeasonPoleSitters;
+            List<UniqueSeasonPoleSittersModel> uniqueSeasonPoleSitters;
 
             if (options.YearFrom != 0)
             {

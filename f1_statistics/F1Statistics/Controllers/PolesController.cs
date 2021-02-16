@@ -43,7 +43,7 @@ namespace F1Statistics.Controllers
         // GET: api/poles/uniquedriversperseason
         [HttpPost]
         [Route("api/[controller]/uniquedriversperseason")]
-        public List<UniqueSeasonPoleCountModel> GetUniqueSeasonDriverPolesitters(OptionsModel options)
+        public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonDriverPolesitters(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonDriverPoleSitters(options);
 
@@ -53,7 +53,7 @@ namespace F1Statistics.Controllers
         // GET: api/poles/uniquecountperseason
         [HttpPost]
         [Route("api/[controller]/uniqueconstructorsperseason")]
-        public List<UniqueSeasonPoleCountModel> GetUniqueSeasonConstructorsPolesitters(OptionsModel options)
+        public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonConstructorsPolesitters(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonConstructorPoleSitters(options);
 
