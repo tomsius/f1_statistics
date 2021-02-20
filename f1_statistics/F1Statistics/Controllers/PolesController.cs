@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace F1Statistics.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class PolesController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/poles/drivers
         [HttpPost]
-        [Route("api/[controller]/drivers")]
+        [Route("drivers")]
         public List<PolesModel> GetPoleSittersDrivers(OptionsModel options)
         {
             var data = _service.AggregatePoleSittersDrivers(options);
@@ -32,7 +32,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/poles/constructors
         [HttpPost]
-        [Route("api/[controller]/constructors")]
+        [Route("constructors")]
         public List<PolesModel> GetPoleSittersConstructors(OptionsModel options)
         {
             var data = _service.AggregatePoleSittersConstructors(options);
@@ -42,7 +42,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/poles/uniquedriversperseason
         [HttpPost]
-        [Route("api/[controller]/uniquedriversperseason")]
+        [Route("uniquedriversperseason")]
         public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonDriverPoleSitters(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonPoleSittersDrivers(options);
@@ -52,7 +52,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/poles/uniquecountperseason
         [HttpPost]
-        [Route("api/[controller]/uniqueconstructorsperseason")]
+        [Route("uniqueconstructorsperseason")]
         public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonConstructorsPoleSitters(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonPoleSittersConstructors(options);
@@ -62,7 +62,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/poles/winners
         [HttpPost]
-        [Route("api/[controller]/winners")]
+        [Route("winners")]
         public List<WinnersFromPoleModel> GetWinnersFromPole(OptionsModel options)
         {
             var data = _service.AggregateWinnersFromPole(options);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace F1Statistics.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class FastestLapsController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/fastestlaps/drivers
         [HttpPost]
-        [Route("api/[controller]/drivers")]
+        [Route("drivers")]
         public List<FastestLapModel> GetDriversFastestLaps(OptionsModel options)
         {
             var data = _service.AggregateDriversFastestLaps(options);
@@ -32,7 +32,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/fastestlaps/constructors
         [HttpPost]
-        [Route("api/[controller]/constructors")]
+        [Route("constructors")]
         public List<FastestLapModel> GetConstructorsFastestLaps(OptionsModel options)
         {
             var data = _service.AggregateConstructorsFastestLaps(options);
@@ -42,7 +42,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/fastestlaps/uniquedriversperseason
         [HttpPost]
-        [Route("api/[controller]/uniquedriversperseason")]
+        [Route("uniquedriversperseason")]
         public List<UniqueSeasonFastestLapModel> GetUniqueDriversFastestLapsPerSeason(OptionsModel options)
         {
             var data = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
@@ -52,7 +52,7 @@ namespace F1Statistics.Controllers
 
         // GET: api/fastestlaps/uniqueconstructorsperseason
         [HttpPost]
-        [Route("api/[controller]/uniqueconstructorsperseason")]
+        [Route("uniqueconstructorsperseason")]
         public List<UniqueSeasonFastestLapModel> GetUniqueConstructorsFastestLapsPerseason(OptionsModel options)
         {
             var data = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
