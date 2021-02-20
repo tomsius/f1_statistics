@@ -37,6 +37,14 @@ namespace F1Statistics
 
             services.AddControllers();
 
+            services.AddCors(options => 
+            {
+                options.AddDefaultPolicy(builder => 
+                {
+                    builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.AddTransient<IOptionsValidator, OptionsValidator>();
 
             services.AddTransient<IResultsDataAccess, ResultsDataAccess>();
@@ -69,6 +77,8 @@ namespace F1Statistics
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
