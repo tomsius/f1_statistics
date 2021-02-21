@@ -40,9 +40,9 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/fastestlaps/uniquedriversperseason
+        // GET: api/fastestlaps/drivers/uniqueperseason
         [HttpPost]
-        [Route("uniquedriversperseason")]
+        [Route("drivers/uniqueperseason")]
         public List<UniqueSeasonFastestLapModel> GetUniqueDriversFastestLapsPerSeason(OptionsModel options)
         {
             var data = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
@@ -50,9 +50,9 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/fastestlaps/uniqueconstructorsperseason
+        // GET: api/fastestlaps/constructors/uniqueperseason
         [HttpPost]
-        [Route("uniqueconstructorsperseason")]
+        [Route("constructors/uniqueperseason")]
         public List<UniqueSeasonFastestLapModel> GetUniqueConstructorsFastestLapsPerseason(OptionsModel options)
         {
             var data = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
