@@ -59,7 +59,7 @@ namespace F1Statistics.Library.Services
             return constructorsWins;
         }
 
-        public List<AverageWinsModel> AggregateDriversAverageWins(OptionsModel options)
+        public List<AverageWinsModel> AggregateDriversWinPercent(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -67,11 +67,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                driversAverageWins = _aggregator.GetDriversAverageWins(options.YearFrom, options.YearTo);
+                driversAverageWins = _aggregator.GetDriversWinPercent(options.YearFrom, options.YearTo);
             }
             else
             {
-                driversAverageWins = _aggregator.GetDriversAverageWins(options.Season, options.Season);
+                driversAverageWins = _aggregator.GetDriversWinPercent(options.Season, options.Season);
             }
 
             driversAverageWins.Sort((x, y) => y.AverageWins.CompareTo(x.AverageWins));
@@ -79,7 +79,7 @@ namespace F1Statistics.Library.Services
             return driversAverageWins;
         }
 
-        public List<AverageWinsModel> AggregateConstructorsAverageWins(OptionsModel options)
+        public List<AverageWinsModel> AggregateConstructorsWinPercent(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -87,11 +87,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                constructorsAverageWins = _aggregator.GetConstructorsAverageWins(options.YearFrom, options.YearTo);
+                constructorsAverageWins = _aggregator.GetConstructorsWinPercent(options.YearFrom, options.YearTo);
             }
             else
             {
-                constructorsAverageWins = _aggregator.GetConstructorsAverageWins(options.Season, options.Season);
+                constructorsAverageWins = _aggregator.GetConstructorsWinPercent(options.Season, options.Season);
             }
 
             constructorsAverageWins.Sort((x, y) => y.AverageWins.CompareTo(x.AverageWins));

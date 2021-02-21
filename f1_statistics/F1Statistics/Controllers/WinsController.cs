@@ -42,20 +42,20 @@ namespace F1Statistics.Controllers
 
         // GET: api/wins/drivers/average
         [HttpPost]
-        [Route("drivers/average")]
-        public List<AverageWinsModel> GetDriversAverageWins(OptionsModel options)
+        [Route("drivers/percent")]
+        public List<AverageWinsModel> GetDriversWinPercent(OptionsModel options)
         {
-            var data = _service.AggregateDriversAverageWins(options);
+            var data = _service.AggregateDriversWinPercent(options);
 
             return data;
         }
 
         // GET: api/wins/constructors/average
         [HttpPost]
-        [Route("constructors/average")]
-        public List<AverageWinsModel> GetConstructorsAverageWins(OptionsModel options)
+        [Route("constructors/percent")]
+        public List<AverageWinsModel> GetConstructorsWinPercent(OptionsModel options)
         {
-            var data = _service.AggregateConstructorsAverageWins(options);
+            var data = _service.AggregateConstructorsWinPercent(options);
 
             return data;
         }

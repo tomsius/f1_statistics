@@ -208,10 +208,10 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedWinnersWithAverageWins = GenerateWinnersWithAverageWins();
-            _service.Setup((service) => service.AggregateDriversAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
+            _service.Setup((service) => service.AggregateDriversWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
 
             // Act
-            var actual = _controller.GetDriversAverageWins(options);
+            var actual = _controller.GetDriversWinPercent(options);
 
             // Assert
             Assert.AreEqual(expectedWinnersWithAverageWins.Count, actual.Count);
@@ -231,10 +231,10 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedWinners = new List<AverageWinsModel>();
-            _service.Setup((service) => service.AggregateDriversAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            _service.Setup((service) => service.AggregateDriversWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinners);
 
             // Act
-            var actual = _controller.GetDriversAverageWins(options);
+            var actual = _controller.GetDriversWinPercent(options);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
@@ -246,10 +246,10 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedWinnersWithAverageWins = GenerateWinnersWithAverageWins();
-            _service.Setup((service) => service.AggregateConstructorsAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
+            _service.Setup((service) => service.AggregateConstructorsWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
 
             // Act
-            var actual = _controller.GetConstructorsAverageWins(options);
+            var actual = _controller.GetConstructorsWinPercent(options);
 
             // Assert
             Assert.AreEqual(expectedWinnersWithAverageWins.Count, actual.Count);
@@ -269,10 +269,10 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var options = new OptionsModel();
             var expectedWinners = new List<AverageWinsModel>();
-            _service.Setup((service) => service.AggregateConstructorsAverageWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            _service.Setup((service) => service.AggregateConstructorsWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinners);
 
             // Act
-            var actual = _controller.GetConstructorsAverageWins(options);
+            var actual = _controller.GetConstructorsWinPercent(options);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);

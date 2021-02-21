@@ -207,7 +207,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
             // Act
-            var actual = _aggregator.GetDriversAverageWins(from, to);
+            var actual = _aggregator.GetDriversWinPercent(from, to);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
@@ -232,7 +232,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
             // Act
-            var actual = _aggregator.GetDriversAverageWins(from, to);
+            var actual = _aggregator.GetDriversWinPercent(from, to);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
@@ -249,7 +249,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
             // Act
-            var actual = _aggregator.GetConstructorsAverageWins(from, to);
+            var actual = _aggregator.GetConstructorsWinPercent(from, to);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
@@ -274,7 +274,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
             // Act
-            var actual = _aggregator.GetConstructorsAverageWins(from, to);
+            var actual = _aggregator.GetConstructorsWinPercent(from, to);
 
             // Assert
             Assert.AreEqual(expectedWinners.Count, actual.Count);
