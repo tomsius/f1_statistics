@@ -36,6 +36,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        round = "1",
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -94,6 +95,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        round = "1",
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -127,6 +129,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     },
                     new RacesDataResponse
                     {
+                        round = "2",
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse

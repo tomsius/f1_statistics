@@ -135,10 +135,11 @@ namespace F1Statistics.Library.DataAggregation
                 var newWinnersFromPoleModel = new WinnersFromPoleModel { Season = year, WinnersFromPole = new List<string>() };
                 winsFromPole.Add(newWinnersFromPoleModel);
 
-                for (int i = 0; i < races.Count; i++)
+                for (int i = 0; i < qualifyings.Count; i++)
                 {
-                    string winnerName = $"{races[i].Results[0].Driver.givenName} {races[i].Results[0].Driver.familyName}";
                     string poleSitter = $"{qualifyings[i].QualifyingResults[0].Driver.givenName} {qualifyings[i].QualifyingResults[0].Driver.familyName}";
+                    var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
+                    string winnerName = $"{winner.givenName} {winner.familyName}";
 
                     if (winnerName == poleSitter)
                     {
