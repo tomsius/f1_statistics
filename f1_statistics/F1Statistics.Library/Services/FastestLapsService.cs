@@ -23,6 +23,20 @@ namespace F1Statistics.Library.Services
         {
             _validator.ValidateOptionsModel(options);
 
+            if (options.Season < 2004 && options.Season != 0)
+            {
+                options.Season = 2004;
+            }
+            else if (options.YearFrom < 2004 && options.YearFrom != 0)
+            {
+                options.YearFrom = 2004;
+
+                if (options.YearTo < 2004)
+                {
+                    options.YearTo = 2004;
+                }
+            }
+
             List<FastestLapModel> driversFastestLaps;
 
             if (options.YearFrom != 0)
@@ -42,6 +56,20 @@ namespace F1Statistics.Library.Services
         public List<FastestLapModel> AggregateConstructorsFastestLaps(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
+
+            if (options.Season < 2004 && options.Season != 0)
+            {
+                options.Season = 2004;
+            }
+            else if (options.YearFrom < 2004 && options.YearFrom != 0)
+            {
+                options.YearFrom = 2004;
+
+                if (options.YearTo < 2004)
+                {
+                    options.YearTo = 2004;
+                }
+            }
 
             List<FastestLapModel> constructorsFastestLaps;
 
@@ -63,6 +91,20 @@ namespace F1Statistics.Library.Services
         {
             _validator.ValidateOptionsModel(options);
 
+            if (options.Season < 2004 && options.Season != 0)
+            {
+                options.Season = 2004;
+            }
+            else if (options.YearFrom < 2004 && options.YearFrom != 0)
+            {
+                options.YearFrom = 2004;
+
+                if (options.YearTo < 2004)
+                {
+                    options.YearTo = 2004;
+                }
+            }
+
             List<UniqueSeasonFastestLapModel> uniqueDriversFastestLaps;
 
             if (options.YearFrom != 0)
@@ -74,14 +116,26 @@ namespace F1Statistics.Library.Services
                 uniqueDriversFastestLaps = _aggregator.GetUniqueDriversFastestLaps(options.Season, options.Season);
             }
 
-            uniqueDriversFastestLaps.Sort((x, y) => y.UniqueFastestLapsCount.CompareTo(x.UniqueFastestLapsCount));
-
             return uniqueDriversFastestLaps;
         }
 
         public List<UniqueSeasonFastestLapModel> AggregateUniqueConstructorsFastestLapsPerseason(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
+
+            if (options.Season < 2004 && options.Season != 0)
+            {
+                options.Season = 2004;
+            }
+            else if (options.YearFrom < 2004 && options.YearFrom != 0)
+            {
+                options.YearFrom = 2004;
+
+                if (options.YearTo < 2004)
+                {
+                    options.YearTo = 2004;
+                }
+            }
 
             List<UniqueSeasonFastestLapModel> uniqueConstructorsFastestLaps;
 
@@ -93,8 +147,6 @@ namespace F1Statistics.Library.Services
             {
                 uniqueConstructorsFastestLaps = _aggregator.GetUniqueConstructorsFastestLaps(options.Season, options.Season);
             }
-
-            uniqueConstructorsFastestLaps.Sort((x, y) => y.UniqueFastestLapsCount.CompareTo(x.UniqueFastestLapsCount));
 
             return uniqueConstructorsFastestLaps;
         }
