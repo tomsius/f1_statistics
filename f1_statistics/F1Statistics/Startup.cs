@@ -49,14 +49,17 @@ namespace F1Statistics
 
             services.AddTransient<IResultsDataAccess, ResultsDataAccess>();
             services.AddTransient<IQualifyingDataAccess, QualifyingDataAccess>();
+            services.AddTransient<IStandingsDataAccess, StandingsDataAccess>();
 
             services.AddTransient<IWinsService, WinsService>();
             services.AddTransient<IPolesService, PolesService>();
             services.AddTransient<IFastestLapsService, FastestLapsService>();
+            services.AddTransient<IPointsService, PointsService>();
 
             services.AddTransient<IWinsAggregator, WinsAggregator>();
             services.AddTransient<IPolesAggregator, PolesAggregator>();
             services.AddTransient<IFastestLapsAggregator, FastestLapsAggregator>();
+            services.AddTransient<IPointsAggregator, PointsAggregator>();
 
             services.AddSwaggerGen(c =>
             {
