@@ -36,6 +36,8 @@ namespace F1Statistics.Library.Services
 
             driversPoints.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
 
+            driversPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
+
             return driversPoints;
         }
 
@@ -55,6 +57,8 @@ namespace F1Statistics.Library.Services
             }
 
             constructorsPoints.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
+
+            constructorsPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
 
             return constructorsPoints;
         }

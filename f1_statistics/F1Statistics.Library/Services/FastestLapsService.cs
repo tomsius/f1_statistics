@@ -116,6 +116,8 @@ namespace F1Statistics.Library.Services
                 uniqueDriversFastestLaps = _aggregator.GetUniqueDriversFastestLaps(options.Season, options.Season);
             }
 
+            uniqueDriversFastestLaps.Sort((x, y) => x.Season.CompareTo(y.Season));
+
             return uniqueDriversFastestLaps;
         }
 
@@ -147,6 +149,8 @@ namespace F1Statistics.Library.Services
             {
                 uniqueConstructorsFastestLaps = _aggregator.GetUniqueConstructorsFastestLaps(options.Season, options.Season);
             }
+
+            uniqueConstructorsFastestLaps.Sort((x, y) => x.Season.CompareTo(y.Season));
 
             return uniqueConstructorsFastestLaps;
         }

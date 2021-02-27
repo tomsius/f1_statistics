@@ -74,6 +74,8 @@ namespace F1Statistics.Library.Services
                 uniqueSeasonPoleSitters = _aggregator.GetUniquePoleSittersDrivers(options.Season, options.Season);
             }
 
+            uniqueSeasonPoleSitters.Sort((x, y) => x.Season.CompareTo(y.Season));
+
             return uniqueSeasonPoleSitters;
         }
 
@@ -92,6 +94,8 @@ namespace F1Statistics.Library.Services
                 uniqueSeasonPoleSitters = _aggregator.GetUniquePoleSittersConstructors(options.Season, options.Season);
             }
 
+            uniqueSeasonPoleSitters.Sort((x, y) => x.Season.CompareTo(y.Season));
+
             return uniqueSeasonPoleSitters;
         }
 
@@ -109,6 +113,8 @@ namespace F1Statistics.Library.Services
             {
                 winsFromPole = _aggregator.GetWinnersFromPole(options.Season, options.Season);
             }
+
+            winsFromPole.Sort((x, y) => x.Season.CompareTo(y.Season));
 
             return winsFromPole;
         }
