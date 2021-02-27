@@ -76,6 +76,11 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var standings = _standingsDataAccess.GetDriverStandingsFrom(year);
 
+                if (standings.Count == 0)
+                {
+                    return;
+                }
+
                 var winner = $"{standings[0].Driver.givenName} {standings[0].Driver.familyName}";
                 var points = int.Parse(standings[0].points);
 
@@ -94,6 +99,11 @@ namespace F1Statistics.Library.DataAggregation
             Parallel.For(from, to + 1, year =>
             {
                 var standings = _standingsDataAccess.GetConstructorStandingsFrom(year);
+
+                if (standings.Count == 0)
+                {
+                    return;
+                }
 
                 var winner = $"{standings[0].Constructor.name}";
                 var points = int.Parse(standings[0].points);
