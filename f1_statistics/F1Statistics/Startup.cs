@@ -55,11 +55,13 @@ namespace F1Statistics
             services.AddTransient<IPolesService, PolesService>();
             services.AddTransient<IFastestLapsService, FastestLapsService>();
             services.AddTransient<IPointsService, PointsService>();
+            services.AddTransient<IPodiumsService, PodiumsService>();
 
             services.AddTransient<IWinsAggregator, WinsAggregator>();
             services.AddTransient<IPolesAggregator, PolesAggregator>();
             services.AddTransient<IFastestLapsAggregator, FastestLapsAggregator>();
             services.AddTransient<IPointsAggregator, PointsAggregator>();
+            services.AddTransient<IPodiumsAggregator, PodiumsAggregator>();
 
             services.AddSwaggerGen(c =>
             {
