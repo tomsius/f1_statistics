@@ -7,8 +7,8 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
     {
         List<WinsModel> GetDriversWins(int from, int to);
         List<WinsModel> GetConstructorsWins(int from, int to);
-        List<AverageWinsModel> GetDriversWinPercent(int from, int to);
-        List<AverageWinsModel> GetConstructorsWinPercent(int from, int to);
+        List<AverageWinsModel> GetDriversWinAverage(int from, int to);
+        List<AverageWinsModel> GetConstructorsWinAverage(int from, int to);
         List<CircuitWinsModel> GetCircuitWinners(int from, int to);
         List<UniqueSeasonWinnersModel> GetUniqueSeasonDriverWinners(int from, int to);
         List<UniqueSeasonWinnersModel> GetUniqueSeasonConstructorWinners(int from, int to);

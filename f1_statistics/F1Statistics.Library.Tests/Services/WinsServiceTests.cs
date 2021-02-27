@@ -220,10 +220,10 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedWinners = GenerateWinnersWithAverageWins();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
-            _aggregator.Setup((aggregator) => aggregator.GetDriversWinPercent(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateWinnersWithAverageWins());
+            _aggregator.Setup((aggregator) => aggregator.GetDriversWinAverage(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateWinnersWithAverageWins());
 
             // Act
-            var actual = _service.AggregateDriversWinPercent(options);
+            var actual = _service.AggregateDriversWinAverage(options);
 
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
@@ -245,10 +245,10 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<AverageWinsModel>();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
-            _aggregator.Setup((aggregator) => aggregator.GetDriversWinPercent(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
+            _aggregator.Setup((aggregator) => aggregator.GetDriversWinAverage(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
 
             // Act
-            var actual = _service.AggregateDriversWinPercent(options);
+            var actual = _service.AggregateDriversWinAverage(options);
 
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
@@ -262,10 +262,10 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedWinners = GenerateWinnersWithAverageWins();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
-            _aggregator.Setup((aggregator) => aggregator.GetConstructorsWinPercent(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateWinnersWithAverageWins());
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsWinAverage(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateWinnersWithAverageWins());
 
             // Act
-            var actual = _service.AggregateConstructorsWinPercent(options);
+            var actual = _service.AggregateConstructorsWinAverage(options);
 
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
@@ -287,10 +287,10 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<AverageWinsModel>();
             expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
-            _aggregator.Setup((aggregator) => aggregator.GetConstructorsWinPercent(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsWinAverage(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
 
             // Act
-            var actual = _service.AggregateConstructorsWinPercent(options);
+            var actual = _service.AggregateConstructorsWinAverage(options);
 
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
