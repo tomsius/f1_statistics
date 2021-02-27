@@ -20,9 +20,7 @@ namespace F1Statistics.Controllers
             _service = service;
         }
 
-        // GET: api/poles/drivers
-        [HttpPost]
-        [Route("drivers")]
+        [HttpPost("drivers")]
         public List<PolesModel> GetPoleSittersDrivers(OptionsModel options)
         {
             var data = _service.AggregatePoleSittersDrivers(options);
@@ -30,9 +28,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/poles/constructors
-        [HttpPost]
-        [Route("constructors")]
+        [HttpPost("constructors")]
         public List<PolesModel> GetPoleSittersConstructors(OptionsModel options)
         {
             var data = _service.AggregatePoleSittersConstructors(options);
@@ -40,9 +36,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/poles/drivers/uniqueperseason
-        [HttpPost]
-        [Route("drivers/uniqueperseason")]
+        [HttpPost("drivers/uniqueperseason")]
         public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonDriverPoleSitters(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonPoleSittersDrivers(options);
@@ -50,9 +44,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/poles/constructors/uniqueperseason
-        [HttpPost]
-        [Route("constructors/uniqueperseason")]
+        [HttpPost("constructors/uniqueperseason")]
         public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonConstructorsPoleSitters(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonPoleSittersConstructors(options);
@@ -60,9 +52,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/poles/winners
-        [HttpPost]
-        [Route("winners")]
+        [HttpPost("winners")]
         public List<WinnersFromPoleModel> GetWinnersFromPole(OptionsModel options)
         {
             var data = _service.AggregateWinnersFromPole(options);

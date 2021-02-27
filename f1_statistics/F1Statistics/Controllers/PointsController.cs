@@ -20,9 +20,7 @@ namespace F1Statistics.Controllers
             _service = service;
         }
 
-        // GET: api/points/drivers
-        [HttpPost]
-        [Route("drivers")]
+        [HttpPost("drivers")]
         public List<SeasonPointsModel> GetDriversPointsPerSeason(OptionsModel options)
         {
             var data = _service.AggregateDriversPointsPerSeason(options);
@@ -30,9 +28,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/points/constructors
-        [HttpPost]
-        [Route("constructors")]
+        [HttpPost("constructors")]
         public List<SeasonPointsModel> GetConstructorsPointsPerSeason(OptionsModel options)
         {
             var data = _service.AggregateConstructorsPointsPerSeason(options);

@@ -81,7 +81,7 @@ namespace F1Statistics.Library.DataAggregation
             return constructorsWins;
         }
 
-        public List<AverageWinsModel> GetDriversWinAverage(int from, int to)
+        public List<AverageWinsModel> GetDriversWinPercent(int from, int to)
         {
             var driversAverageWins = new List<AverageWinsModel>(to - from + 1);
             var lockObject = new object();
@@ -121,7 +121,7 @@ namespace F1Statistics.Library.DataAggregation
             return driversAverageWins;
         }
 
-        public List<AverageWinsModel> GetConstructorsWinAverage(int from, int to)
+        public List<AverageWinsModel> GetConstructorsWinPercent(int from, int to)
         {
             var constructorsAverageWins = new List<AverageWinsModel>(to - from + 1);
             var lockObject = new object();

@@ -20,9 +20,7 @@ namespace F1Statistics.Controllers
             _service = service;
         }
 
-        // GET: api/wins/drivers
-        [HttpPost]
-        [Route("drivers")]
+        [HttpPost("drivers")]
         public List<WinsModel> GetDriversWins(OptionsModel options)
         {
             var data = _service.AggregateDriversWins(options);
@@ -30,9 +28,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/wins/constructors
-        [HttpPost]
-        [Route("constructors")]
+        [HttpPost("constructors")]
         public List<WinsModel> GetConstructorsWins(OptionsModel options)
         {
             var data = _service.AggregateConstructorsWins(options);
@@ -40,9 +36,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/wins/drivers/average
-        [HttpPost]
-        [Route("drivers/percent")]
+        [HttpPost("drivers/percent")]
         public List<AverageWinsModel> GetDriversWinPercent(OptionsModel options)
         {
             var data = _service.AggregateDriversWinPercent(options);
@@ -50,9 +44,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/wins/constructors/average
-        [HttpPost]
-        [Route("constructors/percent")]
+        [HttpPost("constructors/percent")]
         public List<AverageWinsModel> GetConstructorsWinPercent(OptionsModel options)
         {
             var data = _service.AggregateConstructorsWinPercent(options);
@@ -60,9 +52,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/wins/drivers/tracks
-        [HttpPost]
-        [Route("drivers/tracks")]
+        [HttpPost("drivers/tracks")]
         public List<CircuitWinsModel> GetCircuitWinners(OptionsModel options)
         {
             var data = _service.AggregateCircuitsWinners(options);
@@ -70,9 +60,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/wins/drivers/uniqueperseason
-        [HttpPost]
-        [Route("drivers/uniqueperseason")]
+        [HttpPost("drivers/uniqueperseason")]
         public List<UniqueSeasonWinnersModel> GetUniqueSeasonDriverWinners(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonDriverWinners(options);
@@ -80,9 +68,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        // GET: api/wins/constructors/uniqueperseason
-        [HttpPost]
-        [Route("constructors/uniqueperseason")]
+        [HttpPost("constructors/uniqueperseason")]
         public List<UniqueSeasonWinnersModel> GetUniqueSeasonConstructorWinners(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonConstructorWinners(options);
