@@ -132,13 +132,13 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    // Fill participations
-                    foreach (var result in race.Results)
+                    lock (lockObject)
                     {
-                        string constructorName = $"{result.Constructor.name}";
-
-                        lock (lockObject)
+                        // Fill participations
+                        foreach (var result in race.Results)
                         {
+                            string constructorName = $"{result.Constructor.name}";
+
                             if (!constructorsAverageWins.Where(constructor => constructor.Name == constructorName).Any())
                             {
                                 var newAverageWinsModel = new AverageWinsModel { Name = constructorName, ParticipationCount = 1 };
@@ -147,11 +147,11 @@ namespace F1Statistics.Library.DataAggregation
                             else
                             {
                                 constructorsAverageWins.Where(constructor => constructor.Name == constructorName).First().ParticipationCount++;
-                            } 
+                            }
                         }
-                    }
 
-                    RemoveDoubleCarCountingInARace(constructorsAverageWins, race);
+                        RemoveDoubleCarCountingInARace(constructorsAverageWins, race);  
+                    }
 
                     // Fill winner
                     string winner = $"{race.Results[0].Constructor.name}";
@@ -241,7 +241,6 @@ namespace F1Statistics.Library.DataAggregation
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
                 var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>() };
-                uniqueDriverWinners.Add(newUniqueSeasonWinnersModel);
 
                 foreach (var race in races)
                 {
@@ -249,12 +248,14 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        if (!uniqueDriverWinners.Where(model => model.Season == year).First().Winners.Where(winner => winner == winnerName).Any())
+                        if (!newUniqueSeasonWinnersModel.Winners.Where(winner => winner == winnerName).Any())
                         {
-                            uniqueDriverWinners.Where(model => model.Season == year).First().Winners.Add(winnerName);
+                            newUniqueSeasonWinnersModel.Winners.Add(winnerName);
                         } 
                     }
                 }
+
+                uniqueDriverWinners.Add(newUniqueSeasonWinnersModel);
             });
 
             return uniqueDriverWinners;
@@ -269,17 +270,18 @@ namespace F1Statistics.Library.DataAggregation
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
                 var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>() };
-                uniqueConstructorWinners.Add(newUniqueSeasonWinnersModel);
 
                 foreach (var race in races)
                 {
                     string winnerName = $"{race.Results[0].Constructor.name}";
 
-                    if (!uniqueConstructorWinners.Where(model => model.Season == year).First().Winners.Where(winner => winner == winnerName).Any())
+                    if (!newUniqueSeasonWinnersModel.Winners.Where(winner => winner == winnerName).Any())
                     {
-                        uniqueConstructorWinners.Where(model => model.Season == year).First().Winners.Add(winnerName);
+                        newUniqueSeasonWinnersModel.Winners.Add(winnerName);
                     }
                 }
+
+                uniqueConstructorWinners.Add(newUniqueSeasonWinnersModel);
             });
 
             return uniqueConstructorWinners;
