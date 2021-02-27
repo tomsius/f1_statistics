@@ -12,7 +12,7 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class WinsAggregator : IWinsAggregator
     {
-        private IResultsDataAccess _resultsDataAccess;
+        private readonly IResultsDataAccess _resultsDataAccess;
 
         public WinsAggregator(IResultsDataAccess resultsDataAccess)
         {

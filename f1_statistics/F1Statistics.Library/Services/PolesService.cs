@@ -10,8 +10,8 @@ namespace F1Statistics.Library.Services
 {
     public class PolesService : IPolesService
     {
-        private IOptionsValidator _validator;
-        private IPolesAggregator _aggregator;
+        private readonly IOptionsValidator _validator;
+        private readonly IPolesAggregator _aggregator;
 
         public PolesService(IOptionsValidator validator, IPolesAggregator aggregator)
         {

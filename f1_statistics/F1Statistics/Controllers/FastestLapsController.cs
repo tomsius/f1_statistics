@@ -13,7 +13,7 @@ namespace F1Statistics.Controllers
     [ApiController]
     public class FastestLapsController : ControllerBase
     {
-        private IFastestLapsService _service;
+        private readonly IFastestLapsService _service;
 
         public FastestLapsController(IFastestLapsService service)
         {

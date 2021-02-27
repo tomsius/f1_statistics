@@ -13,7 +13,7 @@ namespace F1Statistics.Controllers
     [ApiController]
     public class PointsController : ControllerBase
     {
-        private IPointsService _service;
+        private readonly IPointsService _service;
 
         public PointsController(IPointsService service)
         {

@@ -11,8 +11,8 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class PolesAggregator : IPolesAggregator
     {
-        private IQualifyingDataAccess _qualifyingDataAccess;
-        private IResultsDataAccess _resultsDataAccess;
+        private readonly IQualifyingDataAccess _qualifyingDataAccess;
+        private readonly IResultsDataAccess _resultsDataAccess;
 
         public PolesAggregator(IQualifyingDataAccess qualifyingDataAccess, IResultsDataAccess resultsDataAccess)
         {

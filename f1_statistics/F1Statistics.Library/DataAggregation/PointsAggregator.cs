@@ -11,7 +11,7 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class PointsAggregator : IPointsAggregator
     {
-        private IStandingsDataAccess _standingsDataAccess;
+        private readonly IStandingsDataAccess _standingsDataAccess;
 
         public PointsAggregator(IStandingsDataAccess resultsDataAccess)
         {

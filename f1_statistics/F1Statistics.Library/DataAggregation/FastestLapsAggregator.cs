@@ -11,7 +11,7 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class FastestLapsAggregator : IFastestLapsAggregator
     {
-        private IResultsDataAccess _resultsDataAccess;
+        private readonly IResultsDataAccess _resultsDataAccess;
 
         public FastestLapsAggregator(IResultsDataAccess resultsDataAccess)
         {

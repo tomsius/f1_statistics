@@ -13,7 +13,7 @@ namespace F1Statistics.Controllers
     [ApiController]
     public class WinsController : ControllerBase
     {
-        private IWinsService _service;
+        private readonly IWinsService _service;
 
         public WinsController(IWinsService service)
         {

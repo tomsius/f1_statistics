@@ -10,8 +10,8 @@ namespace F1Statistics.Library.Services
 {
     public class FastestLapsService : IFastestLapsService
     {
-        private IOptionsValidator _validator;
-        private IFastestLapsAggregator _aggregator;
+        private readonly IOptionsValidator _validator;
+        private readonly IFastestLapsAggregator _aggregator;
 
         public FastestLapsService(IOptionsValidator validator, IFastestLapsAggregator aggregator)
         {

@@ -10,8 +10,8 @@ namespace F1Statistics.Library.Services
 {
     public class WinsService : IWinsService
     {
-        private IOptionsValidator _validator;
-        private IWinsAggregator _aggregator;
+        private readonly IOptionsValidator _validator;
+        private readonly IWinsAggregator _aggregator;
 
         public WinsService(IOptionsValidator validator, IWinsAggregator aggregator)
         {

@@ -10,8 +10,8 @@ namespace F1Statistics.Library.Services
 {
     public class PointsService : IPointsService
     {
-        private IOptionsValidator _validator;
-        private IPointsAggregator _aggregator;
+        private readonly IOptionsValidator _validator;
+        private readonly IPointsAggregator _aggregator;
 
         public PointsService(IOptionsValidator validator, IPointsAggregator aggregator)
         {

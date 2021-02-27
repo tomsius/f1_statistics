@@ -13,7 +13,7 @@ namespace F1Statistics.Controllers
     [ApiController]
     public class PolesController : ControllerBase
     {
-        private IPolesService _service;
+        private readonly IPolesService _service;
 
         public PolesController(IPolesService service)
         {
