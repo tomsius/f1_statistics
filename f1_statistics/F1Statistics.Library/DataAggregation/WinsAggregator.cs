@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace F1Statistics.Library.DataAggregation
 {
@@ -20,9 +21,10 @@ namespace F1Statistics.Library.DataAggregation
 
         public List<WinsModel> GetDriversWins(int from, int to)
         {
-            var driversWins = new List<WinsModel>();
+            var driversWins = new List<WinsModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -30,26 +32,30 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     string winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
 
-                    if (!driversWins.Where(driver => driver.Name == winner).Any())
+                    lock (lockObject) 
                     {
-                        var newWinsModel = new WinsModel { Name = winner, WinCount = 1 };
-                        driversWins.Add(newWinsModel);
-                    }
-                    else
-                    {
-                        driversWins.Where(driver => driver.Name == winner).First().WinCount++;
+                        if (!driversWins.Where(driver => driver.Name == winner).Any())
+                        {
+                            var newWinsModel = new WinsModel { Name = winner, WinCount = 1 };
+                            driversWins.Add(newWinsModel);
+                        }
+                        else
+                        {
+                            driversWins.Where(driver => driver.Name == winner).First().WinCount++;
+                        }
                     }
                 }
-            }
+            });
 
             return driversWins;
         }
 
         public List<WinsModel> GetConstructorsWins(int from, int to)
         {
-            var constructorsWins = new List<WinsModel>();
+            var constructorsWins = new List<WinsModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -57,26 +63,30 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     string winner = $"{race.Results[0].Constructor.name}";
 
-                    if (!constructorsWins.Where(constructor => constructor.Name == winner).Any())
+                    lock (lockObject)
                     {
-                        var newWinsModel = new WinsModel { Name = winner, WinCount = 1 };
-                        constructorsWins.Add(newWinsModel);
-                    }
-                    else
-                    {
-                        constructorsWins.Where(constructor => constructor.Name == winner).First().WinCount++;
+                        if (!constructorsWins.Where(constructor => constructor.Name == winner).Any())
+                        {
+                            var newWinsModel = new WinsModel { Name = winner, WinCount = 1 };
+                            constructorsWins.Add(newWinsModel);
+                        }
+                        else
+                        {
+                            constructorsWins.Where(constructor => constructor.Name == winner).First().WinCount++;
+                        } 
                     }
                 }
-            }
+            });
 
             return constructorsWins;
         }
 
-        public List<AverageWinsModel> GetDriversWinPercent(int from, int to)
+        public List<AverageWinsModel> GetDriversWinAverage(int from, int to)
         {
-            var driversAverageWins = new List<AverageWinsModel>();
+            var driversAverageWins = new List<AverageWinsModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -87,14 +97,17 @@ namespace F1Statistics.Library.DataAggregation
                     {
                         string driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
 
-                        if (!driversAverageWins.Where(driver => driver.Name == driverName).Any())
+                        lock (lockObject)
                         {
-                            var newAverageWinsModel = new AverageWinsModel { Name = driverName, ParticipationCount = 1 };
-                            driversAverageWins.Add(newAverageWinsModel);
-                        }
-                        else
-                        {
-                            driversAverageWins.Where(driver => driver.Name == driverName).First().ParticipationCount++;
+                            if (!driversAverageWins.Where(driver => driver.Name == driverName).Any())
+                            {
+                                var newAverageWinsModel = new AverageWinsModel { Name = driverName, ParticipationCount = 1 };
+                                driversAverageWins.Add(newAverageWinsModel);
+                            }
+                            else
+                            {
+                                driversAverageWins.Where(driver => driver.Name == driverName).First().ParticipationCount++;
+                            } 
                         }
                     }
 
@@ -103,16 +116,17 @@ namespace F1Statistics.Library.DataAggregation
 
                     driversAverageWins.Where(driver => driver.Name == winner).First().WinCount++;
                 }
-            }
+            });
 
             return driversAverageWins;
         }
 
-        public List<AverageWinsModel> GetConstructorsWinPercent(int from, int to)
+        public List<AverageWinsModel> GetConstructorsWinAverage(int from, int to)
         {
-            var constructorsAverageWins = new List<AverageWinsModel>();
+            var constructorsAverageWins = new List<AverageWinsModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -123,14 +137,17 @@ namespace F1Statistics.Library.DataAggregation
                     {
                         string constructorName = $"{result.Constructor.name}";
 
-                        if (!constructorsAverageWins.Where(constructor => constructor.Name == constructorName).Any())
+                        lock (lockObject)
                         {
-                            var newAverageWinsModel = new AverageWinsModel { Name = constructorName, ParticipationCount = 1 };
-                            constructorsAverageWins.Add(newAverageWinsModel);
-                        }
-                        else
-                        {
-                            constructorsAverageWins.Where(constructor => constructor.Name == constructorName).First().ParticipationCount++;
+                            if (!constructorsAverageWins.Where(constructor => constructor.Name == constructorName).Any())
+                            {
+                                var newAverageWinsModel = new AverageWinsModel { Name = constructorName, ParticipationCount = 1 };
+                                constructorsAverageWins.Add(newAverageWinsModel);
+                            }
+                            else
+                            {
+                                constructorsAverageWins.Where(constructor => constructor.Name == constructorName).First().ParticipationCount++;
+                            } 
                         }
                     }
 
@@ -141,7 +158,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     constructorsAverageWins.Where(driver => driver.Name == winner).First().WinCount++;
                 }
-            }
+            });
 
             return constructorsAverageWins;
         }
@@ -176,9 +193,10 @@ namespace F1Statistics.Library.DataAggregation
 
         public List<CircuitWinsModel> GetCircuitWinners(int from, int to)
         {
-            var circuitWinners = new List<CircuitWinsModel>();
+            var circuitWinners = new List<CircuitWinsModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -188,33 +206,37 @@ namespace F1Statistics.Library.DataAggregation
                     string winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
                     var newWinnerModel = new WinsModel { Name = winnerName, WinCount = 1 };
 
-                    if (!circuitWinners.Where(circuit => circuit.Name == circuitName).Any())
+                    lock (lockObject)
                     {
-                        var circuitWinnersModel = new CircuitWinsModel { Name = circuitName, Winners = new List<WinsModel> { newWinnerModel } };
-                        circuitWinners.Add(circuitWinnersModel);
-                    }
-                    else
-                    {
-                        if (!circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).Any())
+                        if (!circuitWinners.Where(circuit => circuit.Name == circuitName).Any())
                         {
-                            circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Add(newWinnerModel);
+                            var circuitWinnersModel = new CircuitWinsModel { Name = circuitName, Winners = new List<WinsModel> { newWinnerModel } };
+                            circuitWinners.Add(circuitWinnersModel);
                         }
                         else
                         {
-                            circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).First().WinCount++; 
-                        }
+                            if (!circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).Any())
+                            {
+                                circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Add(newWinnerModel);
+                            }
+                            else
+                            {
+                                circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).First().WinCount++;
+                            }
+                        } 
                     }
                 }
-            }
+            });
 
             return circuitWinners;
         }
 
         public List<UniqueSeasonWinnersModel> GetUniqueSeasonDriverWinners(int from, int to)
         {
-            var uniqueDriverWinners = new List<UniqueSeasonWinnersModel>();
+            var uniqueDriverWinners = new List<UniqueSeasonWinnersModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -225,21 +247,24 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     string winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
 
-                    if (!uniqueDriverWinners[year - from].Winners.Where(winner => winner == winnerName).Any())
+                    lock (lockObject)
                     {
-                        uniqueDriverWinners[year - from].Winners.Add(winnerName);
+                        if (!uniqueDriverWinners.Where(model => model.Season == year).First().Winners.Where(winner => winner == winnerName).Any())
+                        {
+                            uniqueDriverWinners.Where(model => model.Season == year).First().Winners.Add(winnerName);
+                        } 
                     }
                 }
-            }
+            });
 
             return uniqueDriverWinners;
         }
 
         public List<UniqueSeasonWinnersModel> GetUniqueSeasonConstructorWinners(int from, int to)
         {
-            var uniqueConstructorWinners = new List<UniqueSeasonWinnersModel>();
+            var uniqueConstructorWinners = new List<UniqueSeasonWinnersModel>(to - from + 1);
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -250,12 +275,12 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     string winnerName = $"{race.Results[0].Constructor.name}";
 
-                    if (!uniqueConstructorWinners[year - from].Winners.Where(winner => winner == winnerName).Any())
+                    if (!uniqueConstructorWinners.Where(model => model.Season == year).First().Winners.Where(winner => winner == winnerName).Any())
                     {
-                        uniqueConstructorWinners[year - from].Winners.Add(winnerName);
+                        uniqueConstructorWinners.Where(model => model.Season == year).First().Winners.Add(winnerName);
                     }
                 }
-            }
+            });
 
             return uniqueConstructorWinners;
         }

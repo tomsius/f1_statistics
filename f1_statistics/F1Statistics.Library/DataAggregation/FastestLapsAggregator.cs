@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace F1Statistics.Library.DataAggregation
 {
@@ -19,9 +20,10 @@ namespace F1Statistics.Library.DataAggregation
 
         public List<FastestLapModel> GetDriversFastestLaps(int from, int to)
         {
-            var driversFastestLaps = new List<FastestLapModel>();
+            var driversFastestLaps = new List<FastestLapModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -30,26 +32,30 @@ namespace F1Statistics.Library.DataAggregation
                     var fastestDriver = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Driver).First();
                     string fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
 
-                    if (!driversFastestLaps.Where(driver => driver.Name == fastestLapper).Any())
+                    lock (lockObject)
                     {
-                        var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsCount = 1 };
-                        driversFastestLaps.Add(newFastestLapModel);
-                    }
-                    else
-                    {
-                        driversFastestLaps.Where(driver => driver.Name == fastestLapper).First().FastestLapsCount++;
+                        if (!driversFastestLaps.Where(driver => driver.Name == fastestLapper).Any())
+                        {
+                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsCount = 1 };
+                            driversFastestLaps.Add(newFastestLapModel);
+                        }
+                        else
+                        {
+                            driversFastestLaps.Where(driver => driver.Name == fastestLapper).First().FastestLapsCount++;
+                        } 
                     }
                 }
-            }
+            });
 
             return driversFastestLaps;
         }
 
         public List<FastestLapModel> GetConstructorsFastestLaps(int from, int to)
         {
-            var constructorsFastestLaps = new List<FastestLapModel>();
+            var constructorsFastestLaps = new List<FastestLapModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
@@ -58,69 +64,79 @@ namespace F1Statistics.Library.DataAggregation
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
                     string fastestLapper = $"{fastestConstructor.name}";
 
-                    if (!constructorsFastestLaps.Where(constructor => constructor.Name == fastestLapper).Any())
+                    lock (lockObject)
                     {
-                        var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsCount = 1 };
-                        constructorsFastestLaps.Add(newFastestLapModel);
-                    }
-                    else
-                    {
-                        constructorsFastestLaps.Where(driver => driver.Name == fastestLapper).First().FastestLapsCount++;
+                        if (!constructorsFastestLaps.Where(constructor => constructor.Name == fastestLapper).Any())
+                        {
+                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsCount = 1 };
+                            constructorsFastestLaps.Add(newFastestLapModel);
+                        }
+                        else
+                        {
+                            constructorsFastestLaps.Where(driver => driver.Name == fastestLapper).First().FastestLapsCount++;
+                        } 
                     }
                 }
-            }
+            });
 
             return constructorsFastestLaps;
         }
 
         public List<UniqueSeasonFastestLapModel> GetUniqueDriversFastestLaps(int from, int to)
         {
-            var uniqueDriverFastestLaps = new List<UniqueSeasonFastestLapModel>();
+            var uniqueDriverFastestLaps = new List<UniqueSeasonFastestLapModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
                 var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, FastestLapAchievers = new List<string>() };
-                uniqueDriverFastestLaps.Add(newUniqueSeasonFastestLapModel);
 
                 foreach (var race in races)
                 {
                     var fastestDriver = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Driver).First();
                     string fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
 
-                    if (!uniqueDriverFastestLaps[year - from].FastestLapAchievers.Where(driver => driver == fastestLapper).Any())
+                    lock (lockObject)
                     {
-                        uniqueDriverFastestLaps[year - from].FastestLapAchievers.Add(fastestLapper);
+                        if (!newUniqueSeasonFastestLapModel.FastestLapAchievers.Where(driver => driver == fastestLapper).Any())
+                        {
+                            newUniqueSeasonFastestLapModel.FastestLapAchievers.Add(fastestLapper);
+                        } 
                     }
                 }
-            }
+
+                uniqueDriverFastestLaps.Add(newUniqueSeasonFastestLapModel);
+            });
 
             return uniqueDriverFastestLaps;
         }
 
         public List<UniqueSeasonFastestLapModel> GetUniqueConstructorsFastestLaps(int from, int to)
         {
-            var uniqueConstructorFastestLaps = new List<UniqueSeasonFastestLapModel>();
+            var uniqueConstructorFastestLaps = new List<UniqueSeasonFastestLapModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
 
                 var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, FastestLapAchievers = new List<string>() };
-                uniqueConstructorFastestLaps.Add(newUniqueSeasonFastestLapModel);
 
                 foreach (var race in races)
                 {
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
                     string fastestLapper = $"{fastestConstructor.name}";
 
-                    if (!uniqueConstructorFastestLaps[year - from].FastestLapAchievers.Where(driver => driver == fastestLapper).Any())
+                    if (!newUniqueSeasonFastestLapModel.FastestLapAchievers.Where(driver => driver == fastestLapper).Any())
                     {
-                        uniqueConstructorFastestLaps[year - from].FastestLapAchievers.Add(fastestLapper);
+                        newUniqueSeasonFastestLapModel.FastestLapAchievers.Add(fastestLapper);
                     }
                 }
-            }
+
+                uniqueConstructorFastestLaps.Add(newUniqueSeasonFastestLapModel);
+            });
 
             return uniqueConstructorFastestLaps;
         }

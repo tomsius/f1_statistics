@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace F1Statistics.Library.DataAggregation
 {
@@ -21,9 +22,10 @@ namespace F1Statistics.Library.DataAggregation
 
         public List<PolesModel> GetPoleSittersDrivers(int from, int to)
         {
-            var driversPoles = new List<PolesModel>();
+            var driversPoles = new List<PolesModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
@@ -31,26 +33,30 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     string poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
 
-                    if (!driversPoles.Where(driver => driver.Name == poleSitter).Any())
+                    lock (lockObject)
                     {
-                        var newPolesModel = new PolesModel { Name = poleSitter, PoleCount = 1 };
-                        driversPoles.Add(newPolesModel);
-                    }
-                    else
-                    {
-                        driversPoles.Where(driver => driver.Name == poleSitter).First().PoleCount++;
+                        if (!driversPoles.Where(driver => driver.Name == poleSitter).Any())
+                        {
+                            var newPolesModel = new PolesModel { Name = poleSitter, PoleCount = 1 };
+                            driversPoles.Add(newPolesModel);
+                        }
+                        else
+                        {
+                            driversPoles.Where(driver => driver.Name == poleSitter).First().PoleCount++;
+                        } 
                     }
                 }
-            }
+            });
 
             return driversPoles;
         }
 
         public List<PolesModel> GetPoleSittersConstructors(int from, int to)
         {
-            var constructorsPoles = new List<PolesModel>();
+            var constructorsPoles = new List<PolesModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
@@ -58,82 +64,94 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     string poleSitter = $"{qualifying.QualifyingResults[0].Constructor.name}";
 
-                    if (!constructorsPoles.Where(constructor => constructor.Name == poleSitter).Any())
+                    lock (lockObject)
                     {
-                        var newPolesModel = new PolesModel { Name = poleSitter, PoleCount = 1 };
-                        constructorsPoles.Add(newPolesModel);
-                    }
-                    else
-                    {
-                        constructorsPoles.Where(constructor => constructor.Name == poleSitter).First().PoleCount++;
+                        if (!constructorsPoles.Where(constructor => constructor.Name == poleSitter).Any())
+                        {
+                            var newPolesModel = new PolesModel { Name = poleSitter, PoleCount = 1 };
+                            constructorsPoles.Add(newPolesModel);
+                        }
+                        else
+                        {
+                            constructorsPoles.Where(constructor => constructor.Name == poleSitter).First().PoleCount++;
+                        } 
                     }
                 }
-            }
+            });
 
             return constructorsPoles;
         }
 
         public List<UniqueSeasonPoleSittersModel> GetUniquePoleSittersDrivers(int from, int to)
         {
-            var uniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel>();
+            var uniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
                 var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, PoleSitters = new List<string>() };
-                uniquePoleSittersDrivers.Add(newUniqueSeasonPoleSittersModel);
 
                 foreach (var qualifying in qualifyings)
                 {
                     string poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
 
-                    if (!uniquePoleSittersDrivers[year - from].PoleSitters.Where(winner => winner == poleSitter).Any())
+                    lock (lockObject)
                     {
-                        uniquePoleSittersDrivers[year - from].PoleSitters.Add(poleSitter);
+                        if (!newUniqueSeasonPoleSittersModel.PoleSitters.Where(winner => winner == poleSitter).Any())
+                        {
+                            newUniqueSeasonPoleSittersModel.PoleSitters.Add(poleSitter);
+                        } 
                     }
                 }
-            }
+
+                uniquePoleSittersDrivers.Add(newUniqueSeasonPoleSittersModel);
+            });
 
             return uniquePoleSittersDrivers;
         }
 
         public List<UniqueSeasonPoleSittersModel> GetUniquePoleSittersConstructors(int from, int to)
         {
-            var uniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel>();
+            var uniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel>(to - from + 1);
+            var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
                 var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, PoleSitters = new List<string>() };
-                uniquePoleSittersConstructors.Add(newUniqueSeasonPoleSittersModel);
 
                 foreach (var qualifying in qualifyings)
                 {
                     string winnerName = $"{qualifying.QualifyingResults[0].Constructor.name}";
 
-                    if (!uniquePoleSittersConstructors[year - from].PoleSitters.Where(winner => winner == winnerName).Any())
+                    lock (lockObject)
                     {
-                        uniquePoleSittersConstructors[year - from].PoleSitters.Add(winnerName);
+                        if (!newUniqueSeasonPoleSittersModel.PoleSitters.Where(winner => winner == winnerName).Any())
+                        {
+                            newUniqueSeasonPoleSittersModel.PoleSitters.Add(winnerName);
+                        } 
                     }
                 }
-            }
+
+                uniquePoleSittersConstructors.Add(newUniqueSeasonPoleSittersModel);
+            });
 
             return uniquePoleSittersConstructors;
         }
 
         public List<WinnersFromPoleModel> GetWinnersFromPole(int from, int to)
         {
-            var winsFromPole = new List<WinnersFromPoleModel>();
+            var winsFromPole = new List<WinnersFromPoleModel>(to - from + 1);
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetRacesFrom(year);
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
                 var newWinnersFromPoleModel = new WinnersFromPoleModel { Season = year, WinnersFromPole = new List<string>() };
-                winsFromPole.Add(newWinnersFromPoleModel);
 
                 for (int i = 0; i < qualifyings.Count; i++)
                 {
@@ -143,10 +161,12 @@ namespace F1Statistics.Library.DataAggregation
 
                     if (winnerName == poleSitter)
                     {
-                        winsFromPole.Where(x => x.Season == year).First().WinnersFromPole.Add(winnerName);
+                        newWinnersFromPoleModel.WinnersFromPole.Add(winnerName);
                     }
                 }
-            }
+
+                winsFromPole.Add(newWinnersFromPoleModel);
+            });
 
             return winsFromPole;
         }

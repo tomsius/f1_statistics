@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace F1Statistics.Library.DataAggregation
 {
@@ -19,14 +20,13 @@ namespace F1Statistics.Library.DataAggregation
 
         public List<SeasonPointsModel> GetDriversPointsPerSeason(int from, int to)
         {
-            var driversPoints = new List<SeasonPointsModel>();
+            var driversPoints = new List<SeasonPointsModel>(to - from + 1);
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var standings = _standingsDataAccess.GetDriverStandingsFrom(year);
 
                 var newSeasonPointsModel = new SeasonPointsModel { Season = year, ScoredPoints = new List<PointsModel>() };
-                driversPoints.Add(newSeasonPointsModel);
 
                 foreach (var standing in standings)
                 {
@@ -34,23 +34,24 @@ namespace F1Statistics.Library.DataAggregation
                     var driverScoredPoints = int.Parse(standing.points);
 
                     var newPointsModel = new PointsModel { Name = driverName, Points = driverScoredPoints };
-                    driversPoints[year - from].ScoredPoints.Add(newPointsModel);
+                    newSeasonPointsModel.ScoredPoints.Add(newPointsModel);
                 }
-            }
+
+                driversPoints.Add(newSeasonPointsModel);
+            });
 
             return driversPoints;
         }
 
         public List<SeasonPointsModel> GetConstructorsPointsPerSeason(int from, int to)
         {
-            var constructorsPoints = new List<SeasonPointsModel>();
+            var constructorsPoints = new List<SeasonPointsModel>(to - from + 1);
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year => 
             {
                 var standings = _standingsDataAccess.GetConstructorStandingsFrom(year);
 
                 var newSeasonPointsModel = new SeasonPointsModel { Season = year, ScoredPoints = new List<PointsModel>() };
-                constructorsPoints.Add(newSeasonPointsModel);
 
                 foreach (var standing in standings)
                 {
@@ -58,9 +59,11 @@ namespace F1Statistics.Library.DataAggregation
                     var constructorScoredPoints = int.Parse(standing.points);
 
                     var newPointsModel = new PointsModel { Name = constructorName, Points = constructorScoredPoints };
-                    constructorsPoints[year - from].ScoredPoints.Add(newPointsModel);
+                    newSeasonPointsModel.ScoredPoints.Add(newPointsModel);
                 }
-            }
+
+                constructorsPoints.Add(newSeasonPointsModel);
+            });
 
             return constructorsPoints;
         }
