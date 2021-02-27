@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,20 +42,20 @@ namespace F1Statistics.Controllers
 
         // GET: api/wins/drivers/average
         [HttpPost]
-        [Route("drivers/average")]
-        public List<AverageWinsModel> GetDriversWinAverage(OptionsModel options)
+        [Route("drivers/percent")]
+        public List<AverageWinsModel> GetDriversWinPercent(OptionsModel options)
         {
-            var data = _service.AggregateDriversWinAverage(options);
+            var data = _service.AggregateDriversWinPercent(options);
 
             return data;
         }
 
         // GET: api/wins/constructors/average
         [HttpPost]
-        [Route("constructors/average")]
-        public List<AverageWinsModel> GetConstructorsWinAverage(OptionsModel options)
+        [Route("constructors/percent")]
+        public List<AverageWinsModel> GetConstructorsWinPercent(OptionsModel options)
         {
-            var data = _service.AggregateConstructorsWinAverage(options);
+            var data = _service.AggregateConstructorsWinPercent(options);
 
             return data;
         }

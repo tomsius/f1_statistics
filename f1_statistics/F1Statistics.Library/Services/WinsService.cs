@@ -59,7 +59,7 @@ namespace F1Statistics.Library.Services
             return constructorsWins;
         }
 
-        public List<AverageWinsModel> AggregateDriversWinAverage(OptionsModel options)
+        public List<AverageWinsModel> AggregateDriversWinPercent(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -67,11 +67,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                driversAverageWins = _aggregator.GetDriversWinAverage(options.YearFrom, options.YearTo);
+                driversAverageWins = _aggregator.GetDriversWinPercent(options.YearFrom, options.YearTo);
             }
             else
             {
-                driversAverageWins = _aggregator.GetDriversWinAverage(options.Season, options.Season);
+                driversAverageWins = _aggregator.GetDriversWinPercent(options.Season, options.Season);
             }
 
             driversAverageWins.Sort((x, y) => y.AverageWins.CompareTo(x.AverageWins));
@@ -79,7 +79,7 @@ namespace F1Statistics.Library.Services
             return driversAverageWins;
         }
 
-        public List<AverageWinsModel> AggregateConstructorsWinAverage(OptionsModel options)
+        public List<AverageWinsModel> AggregateConstructorsWinPercent(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -87,11 +87,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                constructorsAverageWins = _aggregator.GetConstructorsWinAverage(options.YearFrom, options.YearTo);
+                constructorsAverageWins = _aggregator.GetConstructorsWinPercent(options.YearFrom, options.YearTo);
             }
             else
             {
-                constructorsAverageWins = _aggregator.GetConstructorsWinAverage(options.Season, options.Season);
+                constructorsAverageWins = _aggregator.GetConstructorsWinPercent(options.Season, options.Season);
             }
 
             constructorsAverageWins.Sort((x, y) => y.AverageWins.CompareTo(x.AverageWins));
@@ -134,8 +134,6 @@ namespace F1Statistics.Library.Services
                 uniqueSeasonWinners = _aggregator.GetUniqueSeasonDriverWinners(options.Season, options.Season);
             }
 
-            uniqueSeasonWinners.Sort((x, y) => x.Season.CompareTo(y.Season));
-
             return uniqueSeasonWinners;
         }
 
@@ -153,8 +151,6 @@ namespace F1Statistics.Library.Services
             {
                 uniqueSeasonWinners = _aggregator.GetUniqueSeasonConstructorWinners(options.Season, options.Season);
             }
-
-            uniqueSeasonWinners.Sort((x, y) => x.Season.CompareTo(y.Season));
 
             return uniqueSeasonWinners;
         }

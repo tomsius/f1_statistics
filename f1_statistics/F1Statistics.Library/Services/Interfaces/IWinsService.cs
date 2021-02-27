@@ -7,8 +7,8 @@ namespace F1Statistics.Library.Services.Interfaces
     {
         List<WinsModel> AggregateDriversWins(OptionsModel options);
         List<WinsModel> AggregateConstructorsWins(OptionsModel options);
-        List<AverageWinsModel> AggregateDriversWinAverage(OptionsModel options);
-        List<AverageWinsModel> AggregateConstructorsWinAverage(OptionsModel options);
+        List<AverageWinsModel> AggregateDriversWinPercent(OptionsModel options);
+        List<AverageWinsModel> AggregateConstructorsWinPercent(OptionsModel options);
         List<CircuitWinsModel> AggregateCircuitsWinners(OptionsModel options);
         List<UniqueSeasonWinnersModel> AggregateUniqueSeasonDriverWinners(OptionsModel options);
         List<UniqueSeasonWinnersModel> AggregateUniqueSeasonConstructorWinners(OptionsModel options);
