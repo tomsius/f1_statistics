@@ -62,5 +62,45 @@ namespace F1Statistics.Library.Services
 
             return constructorsPoints;
         }
+
+        public List<SeasonWinnersPointsModel> AggregateDriversWinnersPointsPerSeason(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<SeasonWinnersPointsModel> driversWinnersPoints;
+
+            if (options.YearFrom != 0)
+            {
+                driversWinnersPoints = _aggregator.GetDriversWinnersPointsPerSeason(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                driversWinnersPoints = _aggregator.GetDriversWinnersPointsPerSeason(options.Season, options.Season);
+            }
+
+            driversWinnersPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+            return driversWinnersPoints;
+        }
+
+        public List<SeasonWinnersPointsModel> AggregateConstructorsWinnersPointsPerSeason(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<SeasonWinnersPointsModel> constructorsWinnersPoints;
+
+            if (options.YearFrom != 0)
+            {
+                constructorsWinnersPoints = _aggregator.GetConstructorsWinnersPointsPerSeason(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                constructorsWinnersPoints = _aggregator.GetConstructorsWinnersPointsPerSeason(options.Season, options.Season);
+            }
+
+            constructorsWinnersPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+            return constructorsWinnersPoints;
+        }
     }
 }

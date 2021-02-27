@@ -9,5 +9,7 @@ namespace F1Statistics.Library.Services.Interfaces
     {
         List<SeasonPointsModel> AggregateDriversPointsPerSeason(OptionsModel options);
         List<SeasonPointsModel> AggregateConstructorsPointsPerSeason(OptionsModel options);
+        List<SeasonWinnersPointsModel> AggregateDriversWinnersPointsPerSeason(OptionsModel options);
+        List<SeasonWinnersPointsModel> AggregateConstructorsWinnersPointsPerSeason(OptionsModel options);
     }
 }

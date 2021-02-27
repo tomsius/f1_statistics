@@ -67,5 +67,43 @@ namespace F1Statistics.Library.DataAggregation
 
             return constructorsPoints;
         }
+
+        public List<SeasonWinnersPointsModel> GetDriversWinnersPointsPerSeason(int from, int to)
+        {
+            var driversWinnersPoints = new List<SeasonWinnersPointsModel>(to - from + 1);
+
+            Parallel.For(from, to + 1, year =>
+            {
+                var standings = _standingsDataAccess.GetDriverStandingsFrom(year);
+
+                var winner = $"{standings[0].Driver.givenName} {standings[0].Driver.familyName}";
+                var points = int.Parse(standings[0].points);
+
+                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points };
+
+                driversWinnersPoints.Add(newSeasonWinnersPointsModel);
+            });
+
+            return driversWinnersPoints;
+        }
+
+        public List<SeasonWinnersPointsModel> GetConstructorsWinnersPointsPerSeason(int from, int to)
+        {
+            var constructorsWinnersPoints = new List<SeasonWinnersPointsModel>(to - from + 1);
+
+            Parallel.For(from, to + 1, year =>
+            {
+                var standings = _standingsDataAccess.GetConstructorStandingsFrom(year);
+
+                var winner = $"{standings[0].Constructor.name}";
+                var points = int.Parse(standings[0].points);
+
+                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points };
+
+                constructorsWinnersPoints.Add(newSeasonWinnersPointsModel);
+            });
+
+            return constructorsWinnersPoints;
+        }
     }
 }

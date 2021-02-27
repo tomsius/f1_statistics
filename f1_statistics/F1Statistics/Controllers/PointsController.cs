@@ -35,5 +35,21 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("drivers/winners")]
+        public List<SeasonWinnersPointsModel> GetDriversWinnersPointsPerSeason(OptionsModel options)
+        {
+            var data = _service.AggregateDriversWinnersPointsPerSeason(options);
+
+            return data;
+        }
+
+        [HttpPost("constructors/winners")]
+        public List<SeasonWinnersPointsModel> GetConstructorsWinnersPointsPerSeason(OptionsModel options)
+        {
+            var data = _service.AggregateConstructorsWinnersPointsPerSeason(options);
+
+            return data;
+        }
     }
 }
