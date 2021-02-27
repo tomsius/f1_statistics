@@ -115,6 +115,7 @@ namespace F1Statistics.Library.Services
             }
 
             circuitsWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
+            circuitsWinners.Sort((x, y) => x.Name.CompareTo(y.Name));
 
             return circuitsWinners;
         }
@@ -134,6 +135,8 @@ namespace F1Statistics.Library.Services
                 uniqueSeasonWinners = _aggregator.GetUniqueSeasonDriverWinners(options.Season, options.Season);
             }
 
+            uniqueSeasonWinners.Sort((x, y) => x.Season.CompareTo(y.Season));
+
             return uniqueSeasonWinners;
         }
 
@@ -151,6 +154,8 @@ namespace F1Statistics.Library.Services
             {
                 uniqueSeasonWinners = _aggregator.GetUniqueSeasonConstructorWinners(options.Season, options.Season);
             }
+
+            uniqueSeasonWinners.Sort((x, y) => x.Season.CompareTo(y.Season));
 
             return uniqueSeasonWinners;
         }
