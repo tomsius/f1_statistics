@@ -22,7 +22,6 @@ namespace F1Statistics.Tests.Controllers
         {
             _service = new Mock<IPodiumsService>();
 
-
             _controller = new PodiumsController(_service.Object);
         }
 

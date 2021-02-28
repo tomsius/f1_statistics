@@ -19,7 +19,6 @@ namespace F1Statistics.Tests.Controllers
         public void Setup()
         {
             _service = new Mock<IWinsService>();
-            
 
             _controller = new WinsController(_service.Object);
         }

@@ -22,7 +22,6 @@ namespace F1Statistics.Tests.Controllers
         {
             _service = new Mock<IFastestLapsService>();
 
-
             _controller = new FastestLapsController(_service.Object);
         }
 
