@@ -14,5 +14,7 @@ namespace F1Statistics.Library.Models.Responses
         public string total { get; set; }
         public RaceTableDataResponse RaceTable { get; set; }
         public StandingsTableDataResponse StandingsTable { get; set; }
+        public ConstructorTableDataResponse ConstructorTable { get; set; }
+        public DriverTableDataresponse DriverTable { get; set; }
     }
 }
