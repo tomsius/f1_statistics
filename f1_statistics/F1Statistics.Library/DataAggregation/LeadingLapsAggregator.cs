@@ -11,11 +11,6 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class LeadingLapsAggregator : ILeadingLapsAggregator
     {
-        // 1. http://ergast.com/api/f1/{year}/results.json?limit=1000 - pasiimti sezono rezultatus, kad suzinociau roundu skaiciu
-        // 2. http://ergast.com/api/f1/{year}/{round}/laps.json?limit=2000 - pasiimti kiekvieno rato pirmo lenktynininko driverId
-        // 3. http://ergast.com/api/f1/drivers.json?limit=1000 - pagal driverId susirandu lenktynininko varda ir pavarde
-        // 4. http://ergast.com/api/f1/2020/1/drivers/vettel/constructors.json?limit=1000 - pasiimti lenktynininko id pasiimti construcot pavadinima
-
         private readonly IResultsDataAccess _resultsDataAccess;
         private readonly ILapsDataAccess _lapsDataAccess;
         private readonly IDriversDataAccess _driversDataAccess;
