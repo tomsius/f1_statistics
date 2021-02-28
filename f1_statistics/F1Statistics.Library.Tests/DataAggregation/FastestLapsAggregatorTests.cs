@@ -144,17 +144,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetDriversFastestLaps(from, to);
-            actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
-
-            // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
-
-            for (int i = 0; i < expectedWinners.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinners[i].FastestLapsCount, actual[i].FastestLapsCount);
+                // Act
+                var actual = _aggregator.GetDriversFastestLaps(from, to);
+                actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+
+                // Assert
+                Assert.AreEqual(expectedWinners.Count, actual.Count);
+
+                for (int i = 0; i < expectedWinners.Count; i++)
+                {
+                    Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedWinners[i].FastestLapsCount, actual[i].FastestLapsCount);
+                } 
             }
         }
 
@@ -168,11 +171,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetDriversFastestLaps(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversFastestLaps(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedWinners.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -185,17 +191,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetConstructorsFastestLaps(from, to);
-            actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
-
-            // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
-
-            for (int i = 0; i < expectedWinners.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinners[i].FastestLapsCount, actual[i].FastestLapsCount);
+                // Act
+                var actual = _aggregator.GetConstructorsFastestLaps(from, to);
+                actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+
+                // Assert
+                Assert.AreEqual(expectedWinners.Count, actual.Count);
+
+                for (int i = 0; i < expectedWinners.Count; i++)
+                {
+                    Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedWinners[i].FastestLapsCount, actual[i].FastestLapsCount);
+                } 
             }
         }
 
@@ -209,11 +218,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetConstructorsFastestLaps(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsFastestLaps(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedWinners.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -246,17 +258,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetUniqueDriversFastestLaps(from, to);
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
-
-            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                // Act
+                var actual = _aggregator.GetUniqueDriversFastestLaps(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+
+                for (int i = 0; i < expectedUniqueWinners.Count; i++)
+                {
+                    Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                } 
             }
         }
 
@@ -270,13 +285,16 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetUniqueDriversFastestLaps(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetUniqueDriversFastestLaps(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
-            Assert.AreEqual(expectedUniqueWinners[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
-            Assert.AreEqual(expectedUniqueWinners[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count);
+                // Assert
+                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+                Assert.AreEqual(expectedUniqueWinners[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
+                Assert.AreEqual(expectedUniqueWinners[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count); 
+            }
         }
 
         [TestMethod]
@@ -309,17 +327,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetUniqueConstructorsFastestLaps(from, to);
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
-
-            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                // Act
+                var actual = _aggregator.GetUniqueConstructorsFastestLaps(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+
+                for (int i = 0; i < expectedUniqueWinners.Count; i++)
+                {
+                    Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                } 
             }
         }
 
@@ -333,13 +354,16 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetUniqueConstructorsFastestLaps(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetUniqueConstructorsFastestLaps(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
-            Assert.AreEqual(expectedUniqueWinners[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
-            Assert.AreEqual(expectedUniqueWinners[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count);
+                // Assert
+                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+                Assert.AreEqual(expectedUniqueWinners[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
+                Assert.AreEqual(expectedUniqueWinners[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count); 
+            }
         }
     }
 }

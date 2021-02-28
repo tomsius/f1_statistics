@@ -170,24 +170,27 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriverStandings()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriverStandings()[1]);
 
-            // Act
-            var actual = _aggregator.GetDriversPointsPerSeason(from, to);
-            actual.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedDriversPoints.Count, actual.Count);
-
-            for (int i = 0; i < expectedDriversPoints.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedDriversPoints[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedDriversPoints[i].TotalPoints, actual[i].TotalPoints);
+                // Act
+                var actual = _aggregator.GetDriversPointsPerSeason(from, to);
+                actual.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
 
-                for (int j = 0; j < expectedDriversPoints[i].ScoredPoints.Count; j++)
+                // Assert
+                Assert.AreEqual(expectedDriversPoints.Count, actual.Count);
+
+                for (int i = 0; i < expectedDriversPoints.Count; i++)
                 {
-                    Assert.AreEqual(expectedDriversPoints[i].ScoredPoints[j].Name, actual[i].ScoredPoints[j].Name);
-                    Assert.AreEqual(expectedDriversPoints[i].ScoredPoints[j].Points, actual[i].ScoredPoints[j].Points);
-                }
+                    Assert.AreEqual(expectedDriversPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedDriversPoints[i].TotalPoints, actual[i].TotalPoints);
+
+                    for (int j = 0; j < expectedDriversPoints[i].ScoredPoints.Count; j++)
+                    {
+                        Assert.AreEqual(expectedDriversPoints[i].ScoredPoints[j].Name, actual[i].ScoredPoints[j].Name);
+                        Assert.AreEqual(expectedDriversPoints[i].ScoredPoints[j].Points, actual[i].ScoredPoints[j].Points);
+                    }
+                } 
             }
         }
 
@@ -201,11 +204,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(new List<DriverStandingsDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetDriversPointsPerSeason(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversPointsPerSeason(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedDriversPoints.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedDriversPoints.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -254,24 +260,27 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(GenerateConstructorStandings()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(GenerateConstructorStandings()[1]);
 
-            // Act
-            var actual = _aggregator.GetConstructorsPointsPerSeason(from, to);
-            actual.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count);
-
-            for (int i = 0; i < expectedConstructorsPoints.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedConstructorsPoints[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedConstructorsPoints[i].TotalPoints, actual[i].TotalPoints);
+                // Act
+                var actual = _aggregator.GetConstructorsPointsPerSeason(from, to);
+                actual.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
 
-                for (int j = 0; j < expectedConstructorsPoints[i].ScoredPoints.Count; j++)
+                // Assert
+                Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count);
+
+                for (int i = 0; i < expectedConstructorsPoints.Count; i++)
                 {
-                    Assert.AreEqual(expectedConstructorsPoints[i].ScoredPoints[j].Name, actual[i].ScoredPoints[j].Name);
-                    Assert.AreEqual(expectedConstructorsPoints[i].ScoredPoints[j].Points, actual[i].ScoredPoints[j].Points);
-                }
+                    Assert.AreEqual(expectedConstructorsPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedConstructorsPoints[i].TotalPoints, actual[i].TotalPoints);
+
+                    for (int j = 0; j < expectedConstructorsPoints[i].ScoredPoints.Count; j++)
+                    {
+                        Assert.AreEqual(expectedConstructorsPoints[i].ScoredPoints[j].Name, actual[i].ScoredPoints[j].Name);
+                        Assert.AreEqual(expectedConstructorsPoints[i].ScoredPoints[j].Points, actual[i].ScoredPoints[j].Points);
+                    }
+                } 
             }
         }
 
@@ -285,11 +294,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(new List<ConstructorStandingsDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(new List<ConstructorStandingsDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetConstructorsPointsPerSeason(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsPointsPerSeason(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -316,18 +328,21 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriverStandings()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriverStandings()[1]);
 
-            // Act
-            var actual = _aggregator.GetDriversWinnersPointsPerSeason(from, to);
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedDriversWinnersPoints.Count, actual.Count);
-
-            for (int i = 0; i < expectedDriversWinnersPoints.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedDriversWinnersPoints[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedDriversWinnersPoints[i].Winner, actual[i].Winner);
-                Assert.AreEqual(expectedDriversWinnersPoints[i].Points, actual[i].Points);
+                // Act
+                var actual = _aggregator.GetDriversWinnersPointsPerSeason(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedDriversWinnersPoints.Count, actual.Count);
+
+                for (int i = 0; i < expectedDriversWinnersPoints.Count; i++)
+                {
+                    Assert.AreEqual(expectedDriversWinnersPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedDriversWinnersPoints[i].Winner, actual[i].Winner);
+                    Assert.AreEqual(expectedDriversWinnersPoints[i].Points, actual[i].Points);
+                } 
             }
         }
 
@@ -341,11 +356,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(new List<DriverStandingsDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetDriversWinnersPointsPerSeason(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversWinnersPointsPerSeason(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedDriversWinnersPoints.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedDriversWinnersPoints.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -372,18 +390,21 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(GenerateConstructorStandings()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(GenerateConstructorStandings()[1]);
 
-            // Act
-            var actual = _aggregator.GetConstructorsWinnersPointsPerSeason(from, to);
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedConstructorsWinnersPoints.Count, actual.Count);
-
-            for (int i = 0; i < expectedConstructorsWinnersPoints.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Winner, actual[i].Winner);
-                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Points, actual[i].Points);
+                // Act
+                var actual = _aggregator.GetConstructorsWinnersPointsPerSeason(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedConstructorsWinnersPoints.Count, actual.Count);
+
+                for (int i = 0; i < expectedConstructorsWinnersPoints.Count; i++)
+                {
+                    Assert.AreEqual(expectedConstructorsWinnersPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedConstructorsWinnersPoints[i].Winner, actual[i].Winner);
+                    Assert.AreEqual(expectedConstructorsWinnersPoints[i].Points, actual[i].Points);
+                } 
             }
         }
 
@@ -397,11 +418,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(new List<ConstructorStandingsDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(new List<ConstructorStandingsDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetConstructorsWinnersPointsPerSeason(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsWinnersPointsPerSeason(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count); 
+            }
         }
     }
 }

@@ -209,17 +209,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetDriversPodiums(from, to);
-            actual.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
-
-            // Assert
-            Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count);
-
-            for (int i = 0; i < expectedDriversPodiumsCount.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedDriversPodiumsCount[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                // Act
+                var actual = _aggregator.GetDriversPodiums(from, to);
+                actual.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+
+                // Assert
+                Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count);
+
+                for (int i = 0; i < expectedDriversPodiumsCount.Count; i++)
+                {
+                    Assert.AreEqual(expectedDriversPodiumsCount[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                } 
             }
         }
 
@@ -233,11 +236,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetDriversPodiums(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversPodiums(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -282,17 +288,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetConstructorsPodiums(from, to);
-            actual.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
-
-            // Assert
-            Assert.AreEqual(expectedConstructorsPodiumsCount.Count, actual.Count);
-
-            for (int i = 0; i < expectedConstructorsPodiumsCount.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedConstructorsPodiumsCount[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                // Act
+                var actual = _aggregator.GetConstructorsPodiums(from, to);
+                actual.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+
+                // Assert
+                Assert.AreEqual(expectedConstructorsPodiumsCount.Count, actual.Count);
+
+                for (int i = 0; i < expectedConstructorsPodiumsCount.Count; i++)
+                {
+                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                } 
             }
         }
 
@@ -306,11 +315,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetConstructorsPodiums(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsPodiums(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedWinners.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -345,23 +357,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetSameDriversPodiums(from, to);
-            actual.ForEach(podium => podium.PodiumFinishers.Sort());
-            actual.Sort((x, y) => y.SamePodiumCount.CompareTo(x.SamePodiumCount));
-
-            // Assert
-            Assert.AreEqual(expectedSameDriversPodiums.Count, actual.Count);
-
-            for (int i = 0; i < expectedSameDriversPodiums.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedSameDriversPodiums[i].SamePodiumCount, actual[i].SamePodiumCount);
-                Assert.AreEqual(expectedSameDriversPodiums[i].PodiumFinishers.Count, actual[i].PodiumFinishers.Count);
+                // Act
+                var actual = _aggregator.GetSameDriversPodiums(from, to);
+                actual.ForEach(podium => podium.PodiumFinishers.Sort());
+                actual.Sort((x, y) => y.SamePodiumCount.CompareTo(x.SamePodiumCount));
 
-                for (int j = 0; j < expectedSameDriversPodiums[i].PodiumFinishers.Count; j++)
+                // Assert
+                Assert.AreEqual(expectedSameDriversPodiums.Count, actual.Count);
+
+                for (int i = 0; i < expectedSameDriversPodiums.Count; i++)
                 {
-                    Assert.AreEqual(expectedSameDriversPodiums[i].PodiumFinishers[j], actual[i].PodiumFinishers[j]);
-                }
+                    Assert.AreEqual(expectedSameDriversPodiums[i].SamePodiumCount, actual[i].SamePodiumCount);
+                    Assert.AreEqual(expectedSameDriversPodiums[i].PodiumFinishers.Count, actual[i].PodiumFinishers.Count);
+
+                    for (int j = 0; j < expectedSameDriversPodiums[i].PodiumFinishers.Count; j++)
+                    {
+                        Assert.AreEqual(expectedSameDriversPodiums[i].PodiumFinishers[j], actual[i].PodiumFinishers[j]);
+                    }
+                } 
             }
         }
 
@@ -375,11 +390,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetSameDriversPodiums(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetSameDriversPodiums(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedSameDriversPodiums.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedSameDriversPodiums.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -414,23 +432,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateRaces()[1]);
 
-            // Act
-            var actual = _aggregator.GetSameConstructorsPodiums(from, to);
-            actual.ForEach(podium => podium.PodiumFinishers.Sort());
-            actual.Sort((x, y) => y.SamePodiumCount.CompareTo(x.SamePodiumCount));
-
-            // Assert
-            Assert.AreEqual(expectedSameConstructorsPodiums.Count, actual.Count);
-
-            for (int i = 0; i < expectedSameConstructorsPodiums.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedSameConstructorsPodiums[i].SamePodiumCount, actual[i].SamePodiumCount);
-                Assert.AreEqual(expectedSameConstructorsPodiums[i].PodiumFinishers.Count, actual[i].PodiumFinishers.Count);
+                // Act
+                var actual = _aggregator.GetSameConstructorsPodiums(from, to);
+                actual.ForEach(podium => podium.PodiumFinishers.Sort());
+                actual.Sort((x, y) => y.SamePodiumCount.CompareTo(x.SamePodiumCount));
 
-                for (int j = 0; j < expectedSameConstructorsPodiums[i].PodiumFinishers.Count; j++)
+                // Assert
+                Assert.AreEqual(expectedSameConstructorsPodiums.Count, actual.Count);
+
+                for (int i = 0; i < expectedSameConstructorsPodiums.Count; i++)
                 {
-                    Assert.AreEqual(expectedSameConstructorsPodiums[i].PodiumFinishers[j], actual[i].PodiumFinishers[j]);
-                }
+                    Assert.AreEqual(expectedSameConstructorsPodiums[i].SamePodiumCount, actual[i].SamePodiumCount);
+                    Assert.AreEqual(expectedSameConstructorsPodiums[i].PodiumFinishers.Count, actual[i].PodiumFinishers.Count);
+
+                    for (int j = 0; j < expectedSameConstructorsPodiums[i].PodiumFinishers.Count; j++)
+                    {
+                        Assert.AreEqual(expectedSameConstructorsPodiums[i].PodiumFinishers[j], actual[i].PodiumFinishers[j]);
+                    }
+                } 
             }
         }
 
@@ -444,11 +465,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetSameConstructorsPodiums(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetSameConstructorsPodiums(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedWinners.Count, actual.Count); 
+            }
         }
     }
 }

@@ -177,17 +177,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            // Act
-            var actual = _aggregator.GetPoleSittersDrivers(from, to);
-            actual.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
-
-            // Assert
-            Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count);
-
-            for (int i = 0; i < expectedPoleSittersDrivers.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedPoleSittersDrivers[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedPoleSittersDrivers[i].PoleCount, actual[i].PoleCount);
+                // Act
+                var actual = _aggregator.GetPoleSittersDrivers(from, to);
+                actual.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+
+                // Assert
+                Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count);
+
+                for (int i = 0; i < expectedPoleSittersDrivers.Count; i++)
+                {
+                    Assert.AreEqual(expectedPoleSittersDrivers[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedPoleSittersDrivers[i].PoleCount, actual[i].PoleCount);
+                } 
             }
         }
 
@@ -201,11 +204,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetPoleSittersDrivers(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetPoleSittersDrivers(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -218,17 +224,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            // Act
-            var actual = _aggregator.GetPoleSittersConstructors(from, to);
-            actual.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
-
-            // Assert
-            Assert.AreEqual(expectedPoleSittersConstructors.Count, actual.Count);
-
-            for (int i = 0; i < expectedPoleSittersConstructors.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedPoleSittersConstructors[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedPoleSittersConstructors[i].PoleCount, actual[i].PoleCount);
+                // Act
+                var actual = _aggregator.GetPoleSittersConstructors(from, to);
+                actual.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+
+                // Assert
+                Assert.AreEqual(expectedPoleSittersConstructors.Count, actual.Count);
+
+                for (int i = 0; i < expectedPoleSittersConstructors.Count; i++)
+                {
+                    Assert.AreEqual(expectedPoleSittersConstructors[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedPoleSittersConstructors[i].PoleCount, actual[i].PoleCount);
+                } 
             }
         }
 
@@ -242,11 +251,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetPoleSittersConstructors(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetPoleSittersConstructors(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedPoleSittersConstructors.Count, actual.Count);
+                // Assert
+                Assert.AreEqual(expectedPoleSittersConstructors.Count, actual.Count); 
+            }
         }
 
         [TestMethod]
@@ -259,17 +271,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            // Act
-            var actual = _aggregator.GetUniquePoleSittersDrivers(from, to);
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
-
-            for (int i = 0; i < expectedUniquePoleSittersDrivers.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                // Act
+                var actual = _aggregator.GetUniquePoleSittersDrivers(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
+
+                for (int i = 0; i < expectedUniquePoleSittersDrivers.Count; i++)
+                {
+                    Assert.AreEqual(expectedUniquePoleSittersDrivers[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniquePoleSittersDrivers[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                } 
             }
         }
 
@@ -283,13 +298,16 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetUniquePoleSittersDrivers(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetUniquePoleSittersDrivers(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
-            Assert.AreEqual(expectedUniquePoleSittersDrivers[0].PoleSitters.Count, actual[0].PoleSitters.Count);
-            Assert.AreEqual(expectedUniquePoleSittersDrivers[1].PoleSitters.Count, actual[1].PoleSitters.Count);
+                // Assert
+                Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
+                Assert.AreEqual(expectedUniquePoleSittersDrivers[0].PoleSitters.Count, actual[0].PoleSitters.Count);
+                Assert.AreEqual(expectedUniquePoleSittersDrivers[1].PoleSitters.Count, actual[1].PoleSitters.Count); 
+            }
         }
 
         [TestMethod]
@@ -302,17 +320,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            // Act
-            var actual = _aggregator.GetUniquePoleSittersConstructors(from, to);
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
-
-            for (int i = 0; i < expectedUniquePoleSittersConstructors.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedUniquePoleSittersConstructors[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniquePoleSittersConstructors[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                // Act
+                var actual = _aggregator.GetUniquePoleSittersConstructors(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
+
+                for (int i = 0; i < expectedUniquePoleSittersConstructors.Count; i++)
+                {
+                    Assert.AreEqual(expectedUniquePoleSittersConstructors[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniquePoleSittersConstructors[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                } 
             }
         }
 
@@ -326,13 +347,16 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
             _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetUniquePoleSittersConstructors(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetUniquePoleSittersConstructors(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
-            Assert.AreEqual(expectedUniquePoleSittersConstructors[0].PoleSitters.Count, actual[0].PoleSitters.Count);
-            Assert.AreEqual(expectedUniquePoleSittersConstructors[1].PoleSitters.Count, actual[1].PoleSitters.Count);
+                // Assert
+                Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[0].PoleSitters.Count, actual[0].PoleSitters.Count);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[1].PoleSitters.Count, actual[1].PoleSitters.Count); 
+            }
         }
 
         [TestMethod]
@@ -347,17 +371,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(GenerateQualifyings()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            // Act
-            var actual = _aggregator.GetWinnersFromPole(from, to);
-            actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-            // Assert
-            Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
-
-            for (int i = 0; i < expectedWinnersFromPole.Count; i++)
+            for (int k = 0; k < 10000; k++)
             {
-                Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
+                // Act
+                var actual = _aggregator.GetWinnersFromPole(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
+
+                for (int i = 0; i < expectedWinnersFromPole.Count; i++)
+                {
+                    Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
+                } 
             }
         }
 
@@ -373,13 +400,16 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetRacesFrom(2)).Returns(new List<RacesDataResponse>());
 
-            // Act
-            var actual = _aggregator.GetWinnersFromPole(from, to);
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetWinnersFromPole(from, to);
 
-            // Assert
-            Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
-            Assert.AreEqual(expectedUniquePoleSittersConstructors[0].WinnersFromPole.Count, actual[0].WinnersFromPole.Count);
-            Assert.AreEqual(expectedUniquePoleSittersConstructors[1].WinnersFromPole.Count, actual[1].WinnersFromPole.Count);
+                // Assert
+                Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[0].WinnersFromPole.Count, actual[0].WinnersFromPole.Count);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[1].WinnersFromPole.Count, actual[1].WinnersFromPole.Count); 
+            }
         }
     }
 }
