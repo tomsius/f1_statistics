@@ -86,6 +86,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             var uniqueDriverFastestLaps = new List<UniqueSeasonFastestLapModel>(to - from + 1);
             var lockObject = new object();
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -107,7 +108,10 @@ namespace F1Statistics.Library.DataAggregation
                     }
                 }
 
-                uniqueDriverFastestLaps.Add(newUniqueSeasonFastestLapModel);
+                lock (lockAdd)
+                {
+                    uniqueDriverFastestLaps.Add(newUniqueSeasonFastestLapModel); 
+                }
             });
 
             return uniqueDriverFastestLaps;
@@ -117,6 +121,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             var uniqueConstructorFastestLaps = new List<UniqueSeasonFastestLapModel>(to - from + 1);
             var lockObject = new object();
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year => 
             {
@@ -129,13 +134,19 @@ namespace F1Statistics.Library.DataAggregation
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
                     string fastestLapper = $"{fastestConstructor.name}";
 
-                    if (!newUniqueSeasonFastestLapModel.FastestLapAchievers.Where(driver => driver == fastestLapper).Any())
+                    lock (lockObject)
                     {
-                        newUniqueSeasonFastestLapModel.FastestLapAchievers.Add(fastestLapper);
+                        if (!newUniqueSeasonFastestLapModel.FastestLapAchievers.Where(driver => driver == fastestLapper).Any())
+                        {
+                            newUniqueSeasonFastestLapModel.FastestLapAchievers.Add(fastestLapper);
+                        } 
                     }
                 }
 
-                uniqueConstructorFastestLaps.Add(newUniqueSeasonFastestLapModel);
+                lock (lockAdd)
+                {
+                    uniqueConstructorFastestLaps.Add(newUniqueSeasonFastestLapModel); 
+                }
             });
 
             return uniqueConstructorFastestLaps;

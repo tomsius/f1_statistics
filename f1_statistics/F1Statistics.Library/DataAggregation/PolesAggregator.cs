@@ -86,6 +86,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             var uniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel>(to - from + 1);
             var lockObject = new object();
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -106,7 +107,10 @@ namespace F1Statistics.Library.DataAggregation
                     }
                 }
 
-                uniquePoleSittersDrivers.Add(newUniqueSeasonPoleSittersModel);
+                lock (lockAdd)
+                {
+                    uniquePoleSittersDrivers.Add(newUniqueSeasonPoleSittersModel); 
+                }
             });
 
             return uniquePoleSittersDrivers;
@@ -116,6 +120,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             var uniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel>(to - from + 1);
             var lockObject = new object();
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year => 
             {
@@ -136,7 +141,10 @@ namespace F1Statistics.Library.DataAggregation
                     }
                 }
 
-                uniquePoleSittersConstructors.Add(newUniqueSeasonPoleSittersModel);
+                lock (lockAdd)
+                {
+                    uniquePoleSittersConstructors.Add(newUniqueSeasonPoleSittersModel); 
+                }
             });
 
             return uniquePoleSittersConstructors;
@@ -145,6 +153,7 @@ namespace F1Statistics.Library.DataAggregation
         public List<WinnersFromPoleModel> GetWinnersFromPole(int from, int to)
         {
             var winsFromPole = new List<WinnersFromPoleModel>(to - from + 1);
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -165,7 +174,10 @@ namespace F1Statistics.Library.DataAggregation
                     }
                 }
 
-                winsFromPole.Add(newWinnersFromPoleModel);
+                lock (lockAdd)
+                {
+                    winsFromPole.Add(newWinnersFromPoleModel); 
+                }
             });
 
             return winsFromPole;

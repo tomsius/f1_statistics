@@ -85,6 +85,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             var driversAverageWins = new List<AverageWinsModel>(to - from + 1);
             var lockObject = new object();
+            var lockIncrement = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -111,10 +112,13 @@ namespace F1Statistics.Library.DataAggregation
                         }
                     }
 
-                    // Fill winner
-                    string winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    lock (lockIncrement)
+                    {
+                        // Fill winner
+                        string winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
 
-                    driversAverageWins.Where(driver => driver.Name == winner).First().WinCount++;
+                        driversAverageWins.Where(driver => driver.Name == winner).First().WinCount++; 
+                    }
                 }
             });
 
@@ -125,6 +129,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             var constructorsAverageWins = new List<AverageWinsModel>(to - from + 1);
             var lockObject = new object();
+            var lockIncrement = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -153,10 +158,13 @@ namespace F1Statistics.Library.DataAggregation
                         RemoveDoubleCarCountingInARace(constructorsAverageWins, race);  
                     }
 
-                    // Fill winner
-                    string winner = $"{race.Results[0].Constructor.name}";
+                    lock (lockIncrement)
+                    {
+                        // Fill winner
+                        string winner = $"{race.Results[0].Constructor.name}";
 
-                    constructorsAverageWins.Where(driver => driver.Name == winner).First().WinCount++;
+                        constructorsAverageWins.Where(driver => driver.Name == winner).First().WinCount++; 
+                    }
                 }
             });
 
@@ -235,6 +243,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             var uniqueDriverWinners = new List<UniqueSeasonWinnersModel>(to - from + 1);
             var lockObject = new object();
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year => 
             {
@@ -255,7 +264,10 @@ namespace F1Statistics.Library.DataAggregation
                     }
                 }
 
-                uniqueDriverWinners.Add(newUniqueSeasonWinnersModel);
+                lock (lockAdd)
+                {
+                    uniqueDriverWinners.Add(newUniqueSeasonWinnersModel); 
+                }
             });
 
             return uniqueDriverWinners;
@@ -264,6 +276,8 @@ namespace F1Statistics.Library.DataAggregation
         public List<UniqueSeasonWinnersModel> GetUniqueSeasonConstructorWinners(int from, int to)
         {
             var uniqueConstructorWinners = new List<UniqueSeasonWinnersModel>(to - from + 1);
+            var lockObject = new object();
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -275,13 +289,19 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     string winnerName = $"{race.Results[0].Constructor.name}";
 
-                    if (!newUniqueSeasonWinnersModel.Winners.Where(winner => winner == winnerName).Any())
+                    lock (lockObject)
                     {
-                        newUniqueSeasonWinnersModel.Winners.Add(winnerName);
+                        if (!newUniqueSeasonWinnersModel.Winners.Where(winner => winner == winnerName).Any())
+                        {
+                            newUniqueSeasonWinnersModel.Winners.Add(winnerName);
+                        } 
                     }
                 }
 
-                uniqueConstructorWinners.Add(newUniqueSeasonWinnersModel);
+                lock (lockAdd)
+                {
+                    uniqueConstructorWinners.Add(newUniqueSeasonWinnersModel); 
+                }
             });
 
             return uniqueConstructorWinners;

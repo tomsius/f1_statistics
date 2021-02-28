@@ -21,6 +21,7 @@ namespace F1Statistics.Library.DataAggregation
         public List<SeasonPointsModel> GetDriversPointsPerSeason(int from, int to)
         {
             var driversPoints = new List<SeasonPointsModel>(to - from + 1);
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year => 
             {
@@ -37,7 +38,10 @@ namespace F1Statistics.Library.DataAggregation
                     newSeasonPointsModel.ScoredPoints.Add(newPointsModel);
                 }
 
-                driversPoints.Add(newSeasonPointsModel);
+                lock (lockAdd)
+                {
+                    driversPoints.Add(newSeasonPointsModel); 
+                }
             });
 
             return driversPoints;
@@ -46,6 +50,7 @@ namespace F1Statistics.Library.DataAggregation
         public List<SeasonPointsModel> GetConstructorsPointsPerSeason(int from, int to)
         {
             var constructorsPoints = new List<SeasonPointsModel>(to - from + 1);
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year => 
             {
@@ -62,7 +67,10 @@ namespace F1Statistics.Library.DataAggregation
                     newSeasonPointsModel.ScoredPoints.Add(newPointsModel);
                 }
 
-                constructorsPoints.Add(newSeasonPointsModel);
+                lock (lockAdd)
+                {
+                    constructorsPoints.Add(newSeasonPointsModel); 
+                }
             });
 
             return constructorsPoints;
@@ -71,6 +79,7 @@ namespace F1Statistics.Library.DataAggregation
         public List<SeasonWinnersPointsModel> GetDriversWinnersPointsPerSeason(int from, int to)
         {
             var driversWinnersPoints = new List<SeasonWinnersPointsModel>(to - from + 1);
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -86,7 +95,10 @@ namespace F1Statistics.Library.DataAggregation
 
                 var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points };
 
-                driversWinnersPoints.Add(newSeasonWinnersPointsModel);
+                lock (lockAdd)
+                {
+                    driversWinnersPoints.Add(newSeasonWinnersPointsModel); 
+                }
             });
 
             return driversWinnersPoints;
@@ -95,6 +107,7 @@ namespace F1Statistics.Library.DataAggregation
         public List<SeasonWinnersPointsModel> GetConstructorsWinnersPointsPerSeason(int from, int to)
         {
             var constructorsWinnersPoints = new List<SeasonWinnersPointsModel>(to - from + 1);
+            var lockAdd = new object();
 
             Parallel.For(from, to + 1, year =>
             {
@@ -110,7 +123,10 @@ namespace F1Statistics.Library.DataAggregation
 
                 var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points };
 
-                constructorsWinnersPoints.Add(newSeasonWinnersPointsModel);
+                lock (lockAdd)
+                {
+                    constructorsWinnersPoints.Add(newSeasonWinnersPointsModel); 
+                }
             });
 
             return constructorsWinnersPoints;
