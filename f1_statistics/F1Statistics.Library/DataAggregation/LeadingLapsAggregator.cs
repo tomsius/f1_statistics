@@ -33,7 +33,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var rounds = _resultsDataAccess.GetRacesFrom(year).Count;
+                var rounds = _resultsDataAccess.GetResultsFrom(year).Count;
 
                 for (int round = 1; round <= rounds; round++)
                 {
@@ -85,7 +85,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var rounds = _resultsDataAccess.GetRacesFrom(year).Count;
+                var rounds = _resultsDataAccess.GetResultsFrom(year).Count;
 
                 for (int round = 1; round <= rounds; round++)
                 {

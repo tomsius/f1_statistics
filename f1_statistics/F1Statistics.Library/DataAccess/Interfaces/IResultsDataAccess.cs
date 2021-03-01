@@ -5,6 +5,6 @@ namespace F1Statistics.Library.DataAccess.Interfaces
 {
     public interface IResultsDataAccess
     {
-        List<RacesDataResponse> GetRacesFrom(int year);
+        List<RacesDataResponse> GetResultsFrom(int year);
     }
 }

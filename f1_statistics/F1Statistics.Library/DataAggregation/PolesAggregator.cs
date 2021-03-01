@@ -157,7 +157,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
                 var newWinnersFromPoleModel = new WinnersFromPoleModel { Season = year, WinnersFromPole = new List<string>() };

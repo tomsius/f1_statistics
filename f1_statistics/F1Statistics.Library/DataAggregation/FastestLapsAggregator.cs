@@ -25,7 +25,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year => 
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -57,7 +57,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -90,7 +90,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, FastestLapAchievers = new List<string>() };
 
@@ -125,7 +125,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year => 
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, FastestLapAchievers = new List<string>() };
 

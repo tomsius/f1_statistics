@@ -26,7 +26,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year => 
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -57,7 +57,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year => 
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -89,7 +89,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -133,7 +133,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -206,7 +206,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -247,7 +247,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year => 
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>() };
 
@@ -281,7 +281,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetRacesFrom(year);
+                var races = _resultsDataAccess.GetResultsFrom(year);
 
                 var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>() };
 
