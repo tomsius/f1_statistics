@@ -31,7 +31,7 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        string podiumFinisher = $"{race.Results[i].Driver.givenName} {race.Results[i].Driver.familyName}";
+                        var podiumFinisher = $"{race.Results[i].Driver.givenName} {race.Results[i].Driver.familyName}";
 
                         lock (lockObject)
                         {
@@ -65,7 +65,7 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        string podiumFinisher = $"{race.Results[i].Constructor.name}";
+                        var podiumFinisher = $"{race.Results[i].Constructor.name}";
 
                         lock (lockObject)
                         {
@@ -101,7 +101,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < 3; i++)
                     {
-                        string podiumFinisher = $"{race.Results[i].Driver.givenName} {race.Results[i].Driver.familyName}";
+                        var podiumFinisher = $"{race.Results[i].Driver.givenName} {race.Results[i].Driver.familyName}";
                         podiumFinishers.Add(podiumFinisher);
                     }
 
@@ -175,7 +175,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < 3; i++)
                     {
-                        string podiumFinisher = $"{race.Results[i].Constructor.name}";
+                        var podiumFinisher = $"{race.Results[i].Constructor.name}";
                         podiumFinishers.Add(podiumFinisher);
                     }
 

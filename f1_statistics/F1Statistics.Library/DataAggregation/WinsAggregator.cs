@@ -30,7 +30,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    string winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    var winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
 
                     lock (lockObject) 
                     {
@@ -61,7 +61,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    string winner = $"{race.Results[0].Constructor.name}";
+                    var winner = $"{race.Results[0].Constructor.name}";
 
                     lock (lockObject)
                     {
@@ -96,7 +96,7 @@ namespace F1Statistics.Library.DataAggregation
                     // Fill participations
                     foreach (var result in race.Results)
                     {
-                        string driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+                        var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
 
                         lock (lockObject)
                         {
@@ -115,7 +115,7 @@ namespace F1Statistics.Library.DataAggregation
                     lock (lockIncrement)
                     {
                         // Fill winner
-                        string winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                        var winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
 
                         driversAverageWins.Where(driver => driver.Name == winner).First().WinCount++; 
                     }
@@ -142,7 +142,7 @@ namespace F1Statistics.Library.DataAggregation
                         // Fill participations
                         foreach (var result in race.Results)
                         {
-                            string constructorName = $"{result.Constructor.name}";
+                            var constructorName = $"{result.Constructor.name}";
 
                             if (!constructorsAverageWins.Where(constructor => constructor.Name == constructorName).Any())
                             {
@@ -161,7 +161,7 @@ namespace F1Statistics.Library.DataAggregation
                     lock (lockIncrement)
                     {
                         // Fill winner
-                        string winner = $"{race.Results[0].Constructor.name}";
+                        var winner = $"{race.Results[0].Constructor.name}";
 
                         constructorsAverageWins.Where(driver => driver.Name == winner).First().WinCount++; 
                     }
@@ -188,7 +188,7 @@ namespace F1Statistics.Library.DataAggregation
 
             foreach (var result in race.Results)
             {
-                string constructorName = $"{result.Constructor.name}";
+                var constructorName = $"{result.Constructor.name}";
 
                 if (constructorName == constructor)
                 {
@@ -210,8 +210,8 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    string circuitName = race.Circuit.circuitName;
-                    string winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    var circuitName = race.Circuit.circuitName;
+                    var winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
                     var newWinnerModel = new WinsModel { Name = winnerName, WinCount = 1 };
 
                     lock (lockObject)
@@ -253,7 +253,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    string winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    var winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
 
                     lock (lockObject)
                     {
@@ -287,7 +287,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    string winnerName = $"{race.Results[0].Constructor.name}";
+                    var winnerName = $"{race.Results[0].Constructor.name}";
 
                     lock (lockObject)
                     {

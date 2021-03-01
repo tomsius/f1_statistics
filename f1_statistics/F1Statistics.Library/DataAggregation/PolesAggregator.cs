@@ -31,7 +31,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    string poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
+                    var poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
 
                     lock (lockObject)
                     {
@@ -62,7 +62,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    string poleSitter = $"{qualifying.QualifyingResults[0].Constructor.name}";
+                    var poleSitter = $"{qualifying.QualifyingResults[0].Constructor.name}";
 
                     lock (lockObject)
                     {
@@ -96,7 +96,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    string poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
+                    var poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
 
                     lock (lockObject)
                     {
@@ -130,7 +130,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    string winnerName = $"{qualifying.QualifyingResults[0].Constructor.name}";
+                    var winnerName = $"{qualifying.QualifyingResults[0].Constructor.name}";
 
                     lock (lockObject)
                     {
@@ -164,9 +164,9 @@ namespace F1Statistics.Library.DataAggregation
 
                 for (int i = 0; i < qualifyings.Count; i++)
                 {
-                    string poleSitter = $"{qualifyings[i].QualifyingResults[0].Driver.givenName} {qualifyings[i].QualifyingResults[0].Driver.familyName}";
+                    var poleSitter = $"{qualifyings[i].QualifyingResults[0].Driver.givenName} {qualifyings[i].QualifyingResults[0].Driver.familyName}";
                     var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
-                    string winnerName = $"{winner.givenName} {winner.familyName}";
+                    var winnerName = $"{winner.givenName} {winner.familyName}";
 
                     if (winnerName == poleSitter)
                     {

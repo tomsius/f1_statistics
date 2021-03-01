@@ -30,7 +30,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestDriver = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Driver).First();
-                    string fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
+                    var fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
 
                     lock (lockObject)
                     {
@@ -62,7 +62,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
-                    string fastestLapper = $"{fastestConstructor.name}";
+                    var fastestLapper = $"{fastestConstructor.name}";
 
                     lock (lockObject)
                     {
@@ -97,7 +97,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestDriver = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Driver).First();
-                    string fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
+                    var fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
 
                     lock (lockObject)
                     {
@@ -132,7 +132,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
-                    string fastestLapper = $"{fastestConstructor.name}";
+                    var fastestLapper = $"{fastestConstructor.name}";
 
                     lock (lockObject)
                     {
