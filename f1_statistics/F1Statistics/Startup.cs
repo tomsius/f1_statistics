@@ -53,6 +53,7 @@ namespace F1Statistics
             services.AddTransient<ILapsDataAccess, LapsDataAccess>();
             services.AddTransient<IDriversDataAccess, DriversDataAccess>();
             services.AddTransient<IConstructorsDataAccess, ConstructorsDataAccess>();
+            services.AddTransient<IRacesDataAccess, RacesDataAccess>();
 
             services.AddTransient<IWinsService, WinsService>();
             services.AddTransient<IPolesService, PolesService>();
@@ -60,6 +61,7 @@ namespace F1Statistics
             services.AddTransient<IPointsService, PointsService>();
             services.AddTransient<IPodiumsService, PodiumsService>();
             services.AddTransient<ILeadingLapsService, LeadingLapsService>();
+            services.AddTransient<IMiscService, MiscService>();
 
             services.AddTransient<IWinsAggregator, WinsAggregator>();
             services.AddTransient<IPolesAggregator, PolesAggregator>();
@@ -67,6 +69,7 @@ namespace F1Statistics
             services.AddTransient<IPointsAggregator, PointsAggregator>();
             services.AddTransient<IPodiumsAggregator, PodiumsAggregator>();
             services.AddTransient<ILeadingLapsAggregator, LeadingLapsAggregator>();
+            services.AddTransient<IMiscAggregator, MiscAggregator>();
 
             services.AddSwaggerGen(c =>
             {
