@@ -27,5 +27,21 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("hattricks")]
+        public List<HatTrickModel> GetHatTricks(OptionsModel options)
+        {
+            var data = _service.AggregateHatTricks(options);
+
+            return data;
+        }
+
+        [HttpPost("grandslams")]
+        public List<GrandSlamModel> GetGrandSlams(OptionsModel options)
+        {
+            var data = _service.AggregateGrandSlams(options);
+
+            return data;
+        }
     }
 }

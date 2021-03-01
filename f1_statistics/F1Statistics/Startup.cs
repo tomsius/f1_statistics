@@ -54,6 +54,7 @@ namespace F1Statistics
             services.AddTransient<IDriversDataAccess, DriversDataAccess>();
             services.AddTransient<IConstructorsDataAccess, ConstructorsDataAccess>();
             services.AddTransient<IRacesDataAccess, RacesDataAccess>();
+            services.AddTransient<IFastestDataAccess, FastestDataAccess>();
 
             services.AddTransient<IWinsService, WinsService>();
             services.AddTransient<IPolesService, PolesService>();

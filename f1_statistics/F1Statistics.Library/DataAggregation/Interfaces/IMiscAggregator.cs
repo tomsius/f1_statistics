@@ -8,5 +8,7 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
     public interface IMiscAggregator
     {
         List<SeasonRacesModel> GetRaceCountPerSeason(int from, int to);
+        List<HatTrickModel> GetHatTricks(int from, int to);
+        List<GrandSlamModel> GetGrandSlams(int from, int to);
     }
 }
