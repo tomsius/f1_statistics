@@ -109,31 +109,34 @@ namespace F1Statistics.Library.DataAggregation
                     var fastest = fastestDrivers.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
                     var fastestName = $"{fastest.givenName} {fastest.familyName}";
 
-                    var laps = _lapsDataAccess.GetLapsFrom(year, int.Parse(qualifyings[i].round));
-                    var leaderId = winner.driverId;
-                    var isLeadingAllLaps = true;
-
-                    foreach (var lap in laps)
+                    if (poleSitter == winnerName && winnerName == fastestName) 
                     {
-                        if (lap.Timings[0].driverId != leaderId)
-                        {
-                            isLeadingAllLaps = false;
-                            break;
-                        }
-                    }
+                        var laps = _lapsDataAccess.GetLapsFrom(year, int.Parse(qualifyings[i].round));
+                        var leaderId = winner.driverId;
+                        var isLeadingAllLaps = true;
 
-                    if (poleSitter == winnerName && winnerName == fastestName && isLeadingAllLaps)
-                    {
-                        lock (lockObject)
+                        foreach (var lap in laps)
                         {
-                            if (!grandSlams.Where(driver => driver.Name == winnerName).Any())
+                            if (lap.Timings[0].driverId != leaderId)
                             {
-                                var newHatTrickModel = new GrandSlamModel { Name = winnerName, GrandSlamCount = 1 };
-                                grandSlams.Add(newHatTrickModel);
+                                isLeadingAllLaps = false;
+                                break;
                             }
-                            else
+                        }
+
+                        if (isLeadingAllLaps)
+                        {
+                            lock (lockObject)
                             {
-                                grandSlams.Where(driver => driver.Name == winnerName).First().GrandSlamCount++;
+                                if (!grandSlams.Where(driver => driver.Name == winnerName).Any())
+                                {
+                                    var newHatTrickModel = new GrandSlamModel { Name = winnerName, GrandSlamCount = 1 };
+                                    grandSlams.Add(newHatTrickModel);
+                                }
+                                else
+                                {
+                                    grandSlams.Where(driver => driver.Name == winnerName).First().GrandSlamCount++;
+                                }
                             }
                         }
                     }
