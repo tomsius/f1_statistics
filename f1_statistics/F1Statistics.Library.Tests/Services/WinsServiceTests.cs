@@ -162,7 +162,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<WinsModel>();
-            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetDriversWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
 
             // Act
@@ -202,7 +201,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<WinsModel>();
-            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsWins(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
 
             // Act
@@ -244,7 +242,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<AverageWinsModel>();
-            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetDriversWinPercent(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
 
             // Act
@@ -286,7 +283,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedWinners = new List<AverageWinsModel>();
-            expectedWinners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsWinPercent(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinners);
 
             // Act
@@ -331,7 +327,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedCircuitWinners = new List<CircuitWinsModel>();
-            expectedCircuitWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
             _aggregator.Setup((aggregator) => aggregator.GetCircuitWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedCircuitWinners);
 
             // Act

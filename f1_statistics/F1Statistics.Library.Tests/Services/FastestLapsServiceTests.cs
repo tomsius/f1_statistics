@@ -106,7 +106,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedDriversFastestLappers = new List<FastestLapModel>();
-            expectedDriversFastestLappers.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
             _aggregator.Setup((aggregator) => aggregator.GetDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDriversFastestLappers);
 
             // Act
@@ -146,7 +145,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedConstructorsFastestLappers = new List<FastestLapModel>();
-            expectedConstructorsFastestLappers.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedConstructorsFastestLappers);
 
             // Act

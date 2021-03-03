@@ -116,7 +116,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedPoleSittersDrivers = new List<PolesModel>();
-            expectedPoleSittersDrivers.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
             _aggregator.Setup((aggregator) => aggregator.GetPoleSittersDrivers(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedPoleSittersDrivers);
 
             // Act
@@ -156,7 +155,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedPoleSittersCoonstructors = new List<PolesModel>();
-            expectedPoleSittersCoonstructors.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
             _aggregator.Setup((aggregator) => aggregator.GetPoleSittersConstructors(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedPoleSittersCoonstructors);
 
             // Act

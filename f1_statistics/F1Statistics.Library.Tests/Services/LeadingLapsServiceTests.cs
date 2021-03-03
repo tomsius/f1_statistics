@@ -78,7 +78,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedDriversLeadingLapsCount = new List<LeadingLapsModel>();
-            expectedDriversLeadingLapsCount.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
             _aggregator.Setup((aggregator) => aggregator.GetDriversLeadingLapsCount(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDriversLeadingLapsCount);
 
             // Act
@@ -118,7 +117,6 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedConstructorsLeadingLapsCount = new List<LeadingLapsModel>();
-            expectedConstructorsLeadingLapsCount.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsLeadingLapsCount(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedConstructorsLeadingLapsCount);
 
             // Act
