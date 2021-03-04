@@ -65,7 +65,7 @@ namespace F1Statistics.Tests.Controllers
 
         private List<GrandSlamModel> GenerateGrandSlams()
         {
-            var hatTricks = new List<GrandSlamModel>
+            var grandSlams = new List<GrandSlamModel>
             {
                 new GrandSlamModel
                 {
@@ -79,7 +79,26 @@ namespace F1Statistics.Tests.Controllers
                 }
             };
 
-            return hatTricks;
+            return grandSlams;
+        }
+
+        private List<DidNotFinishModel> GenerateNonFinishers()
+        {
+            var nonFinishers = new List<DidNotFinishModel>
+            {
+                new DidNotFinishModel
+                {
+                    Name = "First",
+                    DidNotFinishCount = 5
+                },
+                new DidNotFinishModel
+                {
+                    Name = "Second",
+                    DidNotFinishCount = 3
+                }
+            };
+
+            return nonFinishers;
         }
 
         [TestMethod]
@@ -188,6 +207,42 @@ namespace F1Statistics.Tests.Controllers
 
             // Assert
             Assert.AreEqual(expectedGrandSlams.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetNonFinishers_ReturnAggregatedNonFinishersList_IfThereAreAnyDriversWhoDidNotFinishRace()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedNonFinishgers = GenerateNonFinishers();
+            _service.Setup((service) => service.AggregateNonFinishers(It.IsAny<OptionsModel>())).Returns(expectedNonFinishgers);
+
+            // Act
+            var actual = _controller.GetNonFinishers(options);
+
+            // Assert
+            Assert.AreEqual(expectedNonFinishgers.Count, actual.Count);
+
+            for (int i = 0; i < expectedNonFinishgers.Count; i++)
+            {
+                Assert.AreEqual(expectedNonFinishgers[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedNonFinishgers[i].DidNotFinishCount, actual[i].DidNotFinishCount);
+            }
+        }
+
+        [TestMethod]
+        public void GetNonFinishers_ReturnEmptyList_IfAllDriversFinishedEveryRace()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedNonFinishgers = new List<DidNotFinishModel>();
+            _service.Setup((service) => service.AggregateNonFinishers(It.IsAny<OptionsModel>())).Returns(expectedNonFinishgers);
+
+            // Act
+            var actual = _controller.GetNonFinishers(options);
+
+            // Assert
+            Assert.AreEqual(expectedNonFinishgers.Count, actual.Count);
         }
     }
 }

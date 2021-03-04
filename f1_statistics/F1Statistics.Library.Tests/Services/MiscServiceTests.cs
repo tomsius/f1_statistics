@@ -70,7 +70,7 @@ namespace F1Statistics.Library.Tests.Services
 
         private List<GrandSlamModel> GenerateGrandSlams()
         {
-            var hatTricks = new List<GrandSlamModel>
+            var grandSlams = new List<GrandSlamModel>
             {
                 new GrandSlamModel
                 {
@@ -84,7 +84,26 @@ namespace F1Statistics.Library.Tests.Services
                 }
             };
 
-            return hatTricks;
+            return grandSlams;
+        }
+
+        private List<DidNotFinishModel> GenerateNonFinishers()
+        {
+            var nonFinishers = new List<DidNotFinishModel>
+            {
+                new DidNotFinishModel
+                {
+                    Name = "First",
+                    DidNotFinishCount = 5
+                },
+                new DidNotFinishModel
+                {
+                    Name = "Second",
+                    DidNotFinishCount = 3
+                }
+            };
+
+            return nonFinishers;
         }
 
         [TestMethod]
@@ -202,6 +221,45 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedGrandSlams.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateNonFinishers_ReturnSortedAggregatedNonFinisherssList_IfThereAreAnyDriversWhoDidNotFinishRace()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedNonFinishers = GenerateNonFinishers();
+            expectedNonFinishers.Sort((x, y) => x.DidNotFinishCount.CompareTo(y.DidNotFinishCount));
+            _aggregator.Setup((aggregator) => aggregator.GetNonFinishers(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateNonFinishers());
+
+            // Act
+            var actual = _service.AggregateNonFinishers(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedNonFinishers.Count, actual.Count);
+
+            for (int i = 0; i < expectedNonFinishers.Count; i++)
+            {
+                Assert.AreEqual(expectedNonFinishers[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedNonFinishers[i].DidNotFinishCount, actual[i].DidNotFinishCount);
+            }
+        }
+
+        [TestMethod]
+        public void AggregateNonFinisherss_ReturnEmptyList_IfAllDriversFinishedEveryRace()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedNonFinishers = new List<DidNotFinishModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetNonFinishers(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedNonFinishers);
+
+            // Act
+            var actual = _service.AggregateNonFinishers(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedNonFinishers.Count, actual.Count);
         }
     }
 }

@@ -52,7 +52,18 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     driverId = "1",
                                     familyName = "FirstFamily", 
                                     givenName= "FirstName"
-                                }
+                                },
+                                status = "Finished"
+                            },
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    driverId = "2",
+                                    familyName = "SecondFamily",
+                                    givenName= "SecondName"
+                                },
+                                status = "Electronics"
                             }
                         }
                     }
@@ -71,7 +82,18 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     driverId = "1",
                                     familyName = "FirstFamily",
                                     givenName = "FirstName"
-                                }
+                                },
+                                status = "+1"
+                            },
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    driverId = "2",
+                                    familyName = "SecondFamily",
+                                    givenName= "SecondName"
+                                },
+                                status = "Engine"
                             }
                         }
                     },
@@ -87,7 +109,18 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     driverId = "2",
                                     familyName = "SecondFamily",
                                     givenName = "SecondName"
-                                }
+                                },
+                                status = "+2"
+                            },
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    driverId = "1",
+                                    familyName = "FirstFamily",
+                                    givenName= "FirstName"
+                                },
+                                status = "Illness"
                             }
                         }
                     }
@@ -377,7 +410,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
         }
 
         [TestMethod]
-        public void GetGrandSlams_ReturnAggregatedHatTricksList_IfThereAreAnyDriversWithGrandSlams()
+        public void GetGrandSlams_ReturnAggregatedGrandSlamsList_IfThereAreAnyDriversWithGrandSlams()
         {
             // Arrange
             var from = 1;
@@ -424,6 +457,53 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetGrandSlams(from, to);
+
+                // Assert
+                Assert.AreEqual(expectedGrandslams.Count, actual.Count);
+            }
+        }
+
+        [TestMethod]
+        public void GetNonFinishers_ReturnAggregatedNonFinishersList_IfThereAreAnyDriversWhoDidNotFinishRace()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedGrandslams = new List<DidNotFinishModel> { new DidNotFinishModel { Name = "FirstName FirstFamily", DidNotFinishCount = 1 }, new DidNotFinishModel { Name = "SecondName SecondFamily", DidNotFinishCount = 2 } };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetNonFinishers(from, to);
+                actual.Sort((x, y) => x.DidNotFinishCount.CompareTo(y.DidNotFinishCount));
+
+                // Assert
+                Assert.AreEqual(expectedGrandslams.Count, actual.Count);
+
+                for (int i = 0; i < expectedGrandslams.Count; i++)
+                {
+                    Assert.AreEqual(expectedGrandslams[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedGrandslams[i].DidNotFinishCount, actual[i].DidNotFinishCount);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetNonFinishers_ReturnEmptyList_IfAllDriversFinishedEveryRace()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedGrandslams = new List<DidNotFinishModel>();
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetNonFinishers(from, to);
 
                 // Assert
                 Assert.AreEqual(expectedGrandslams.Count, actual.Count);
