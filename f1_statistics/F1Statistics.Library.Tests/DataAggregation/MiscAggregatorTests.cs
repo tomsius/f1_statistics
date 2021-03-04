@@ -19,7 +19,6 @@ namespace F1Statistics.Library.Tests.DataAggregation
         private Mock<IRacesDataAccess> _racesDataAccess;
         private Mock<IResultsDataAccess> _resultsDataAccess;
         private Mock<IQualifyingDataAccess> _qualifyingsDataAccess;
-        private Mock<IFastestDataAccess> _fastestDataAccess;
         private Mock<ILapsDataAccess> _lapsDataAccess;
 
         [TestInitialize]
@@ -28,10 +27,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _racesDataAccess = new Mock<IRacesDataAccess>();
             _resultsDataAccess = new Mock<IResultsDataAccess>();
             _qualifyingsDataAccess = new Mock<IQualifyingDataAccess>();
-            _fastestDataAccess = new Mock<IFastestDataAccess>();
             _lapsDataAccess = new Mock<ILapsDataAccess>();
 
-            _aggregator = new MiscAggregator(_racesDataAccess.Object, _resultsDataAccess.Object, _qualifyingsDataAccess.Object, _fastestDataAccess.Object, _lapsDataAccess.Object);
+            _aggregator = new MiscAggregator(_racesDataAccess.Object, _resultsDataAccess.Object, _qualifyingsDataAccess.Object, _lapsDataAccess.Object);
         }
 
         private List<List<RacesDataResponse>> GenerateRaces()
@@ -55,7 +53,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 },
                                 status = "Finished",
                                 grid = "1",
-                                position = "1"
+                                position = "1",
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "1"
+                                }
                             },
                             new ResultsDataResponse
                             {
@@ -67,7 +69,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 },
                                 status = "Electronics",
                                 grid = "5",
-                                position = "2"
+                                position = "2",
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "2"
+                                }
                             }
                         }
                     }
@@ -89,7 +95,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 },
                                 status = "+1",
                                 grid = "1",
-                                position = "1"
+                                position = "1",
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "1"
+                                }
                             },
                             new ResultsDataResponse
                             {
@@ -101,7 +111,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 },
                                 status = "Engine",
                                 grid = "2",
-                                position = "5"
+                                position = "5",
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "2"
+                                }
                             }
                         }
                     },
@@ -120,7 +134,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 },
                                 status = "+2",
                                 grid = "5",
-                                position = "1"
+                                position = "1",
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "1"
+                                }
                             },
                             new ResultsDataResponse
                             {
@@ -132,7 +150,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 },
                                 status = "Illness",
                                 grid = "3",
-                                position = "2"
+                                position = "2",
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "2"
+                                }
                             }
                         }
                     }
@@ -381,8 +403,6 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
-            _fastestDataAccess.Setup((fastestDataAccess) => fastestDataAccess.GetFastestDriversFrom(1)).Returns(GenerateFastestLaps()[0]);
-            _fastestDataAccess.Setup((fastestDataAccess) => fastestDataAccess.GetFastestDriversFrom(2)).Returns(GenerateFastestLaps()[1]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -432,8 +452,6 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
-            _fastestDataAccess.Setup((fastestDataAccess) => fastestDataAccess.GetFastestDriversFrom(1)).Returns(GenerateFastestLaps()[0]);
-            _fastestDataAccess.Setup((fastestDataAccess) => fastestDataAccess.GetFastestDriversFrom(2)).Returns(GenerateFastestLaps()[1]);
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(1, 1)).Returns(GenerateLaps()[1]);
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(2, 1)).Returns(GenerateLaps()[0]);
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(2, 2)).Returns(GenerateLaps()[2]);
