@@ -12,13 +12,20 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class MiscAggregator : IMiscAggregator
     {
+        private const string FINISHED_STATUS = "Finished";
+        private const string LAPPED_STATUS = "+";
+
         private readonly IRacesDataAccess _racesDataAccess;
         private readonly IResultsDataAccess _resultsDataAccess;
         private readonly IQualifyingDataAccess _qualifyingDataAccess;
         private readonly IFastestDataAccess _fastestDataAccess;
         private readonly ILapsDataAccess _lapsDataAccess;
 
-        public MiscAggregator(IRacesDataAccess racesDataAccess, IResultsDataAccess resultsDataAccess, IQualifyingDataAccess qualifyingDataAccess, IFastestDataAccess fastestDataAccess, ILapsDataAccess lapsDataAccess)
+        public MiscAggregator(IRacesDataAccess racesDataAccess, 
+                              IResultsDataAccess resultsDataAccess, 
+                              IQualifyingDataAccess qualifyingDataAccess, 
+                              IFastestDataAccess fastestDataAccess, 
+                              ILapsDataAccess lapsDataAccess)
         {
             _racesDataAccess = racesDataAccess;
             _resultsDataAccess = resultsDataAccess;
@@ -144,6 +151,45 @@ namespace F1Statistics.Library.DataAggregation
             }
 
             return grandSlams;
+        }
+
+        public List<DidNotFinishModel> GetNonFinishers(int from, int to)
+        {
+            var seasonRaces = new List<DidNotFinishModel>(to - from + 1);
+            var lockObject = new object();
+
+            Parallel.For(from, to + 1, year =>
+            {
+                var races = _resultsDataAccess.GetResultsFrom(year);
+
+                foreach (var race in races)
+                {
+                    foreach (var result in race.Results)
+                    {
+                        var status = result.status;
+
+                        if (status != FINISHED_STATUS && !status.Contains(LAPPED_STATUS))
+                        {
+                            var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+
+                            lock (lockObject)
+                            {
+                                if (!seasonRaces.Where(driver => driver.Name == driverName).Any())
+                                {
+                                    var newDidNotFinishModel = new DidNotFinishModel { Name = driverName, DidNotFinishCount = 1 };
+                                    seasonRaces.Add(newDidNotFinishModel); 
+                                }
+                                else
+                                {
+                                    seasonRaces.Where(driver => driver.Name == driverName).First().DidNotFinishCount++;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            return seasonRaces;
         }
     }
 }

@@ -10,5 +10,6 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
         List<SeasonRacesModel> GetRaceCountPerSeason(int from, int to);
         List<HatTrickModel> GetHatTricks(int from, int to);
         List<GrandSlamModel> GetGrandSlams(int from, int to);
+        List<DidNotFinishModel> GetNonFinishers(int from, int to);
     }
 }

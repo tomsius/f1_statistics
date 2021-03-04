@@ -107,5 +107,25 @@ namespace F1Statistics.Library.Services
 
             return hatTricks;
         }
+
+        public List<DidNotFinishModel> AggregateNonFinishers(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<DidNotFinishModel> nonFinishers;
+
+            if (options.YearFrom != 0)
+            {
+                nonFinishers = _aggregator.GetNonFinishers(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                nonFinishers = _aggregator.GetNonFinishers(options.Season, options.Season);
+            }
+
+            nonFinishers.Sort((x, y) => x.DidNotFinishCount.CompareTo(y.DidNotFinishCount));
+
+            return nonFinishers;
+        }
     }
 }

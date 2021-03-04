@@ -10,5 +10,6 @@ namespace F1Statistics.Library.Services.Interfaces
         List<SeasonRacesModel> AggregateRaceCountPerSeason(OptionsModel options);
         List<HatTrickModel> AggregateHatTricks(OptionsModel options);
         List<GrandSlamModel> AggregateGrandSlams(OptionsModel options);
+        List<DidNotFinishModel> AggregateNonFinishers(OptionsModel options);
     }
 }

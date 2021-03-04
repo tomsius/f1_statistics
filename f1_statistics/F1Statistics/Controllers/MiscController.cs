@@ -43,5 +43,13 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("dnfs")]
+        public List<DidNotFinishModel> GetNonFinishers(OptionsModel options)
+        {
+            var data = _service.AggregateNonFinishers(options);
+
+            return data;
+        }
     }
 }
