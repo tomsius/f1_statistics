@@ -17,15 +17,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
     {
         private PolesAggregator _aggregator;
         private Mock<IQualifyingDataAccess> _qualifyingDataAccess;
-        private Mock<IResultsDataAccess> _resultsDataAccess;
 
         [TestInitialize]
         public void Setup()
         {
             _qualifyingDataAccess = new Mock<IQualifyingDataAccess>();
-            _resultsDataAccess = new Mock<IResultsDataAccess>();
 
-            _aggregator = new PolesAggregator(_qualifyingDataAccess.Object, _resultsDataAccess.Object);
+            _aggregator = new PolesAggregator(_qualifyingDataAccess.Object);
         }
 
         private List<List<RacesDataResponse>> GenerateQualifyings()
@@ -356,59 +354,6 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
                 Assert.AreEqual(expectedUniquePoleSittersConstructors[0].PoleSitters.Count, actual[0].PoleSitters.Count);
                 Assert.AreEqual(expectedUniquePoleSittersConstructors[1].PoleSitters.Count, actual[1].PoleSitters.Count); 
-            }
-        }
-
-        [TestMethod]
-        public void GetWinnersFromPole_ReturnAggregatedWinnersFromPoleList_IfThereAreAnyWinnersFromPole()
-        {
-            // Arrange
-            var from = 1;
-            var to = 2;
-            var expectedWinnersFromPole = new List<WinnersFromPoleModel> { new WinnersFromPoleModel { Season = 1, WinnersFromPole = new List<string> { "FirstName FirstFamily" } }, new WinnersFromPoleModel { Season = 2, WinnersFromPole = new List<string> { "FirstName FirstFamily", "SecondName SecondFamily" } } };
-            _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
-            _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateQualifyings()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateQualifyings()[1]);
-
-            for (int k = 0; k < 10000; k++)
-            {
-                // Act
-                var actual = _aggregator.GetWinnersFromPole(from, to);
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-
-                // Assert
-                Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
-
-                for (int i = 0; i < expectedWinnersFromPole.Count; i++)
-                {
-                    Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
-                    Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
-                } 
-            }
-        }
-
-        [TestMethod]
-        public void GetWinnersFromPole_ReturnEmptyList_IfThereAreNoWinnersFromPole()
-        {
-            // Arrange
-            var from = 1;
-            var to = 2;
-            var expectedUniquePoleSittersConstructors = new List<WinnersFromPoleModel> { new WinnersFromPoleModel { WinnersFromPole = new List<string>() }, new WinnersFromPoleModel { WinnersFromPole = new List<string>() } };
-            _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
-            _qualifyingDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
-
-            for (int i = 0; i < 10000; i++)
-            {
-                // Act
-                var actual = _aggregator.GetWinnersFromPole(from, to);
-
-                // Assert
-                Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
-                Assert.AreEqual(expectedUniquePoleSittersConstructors[0].WinnersFromPole.Count, actual[0].WinnersFromPole.Count);
-                Assert.AreEqual(expectedUniquePoleSittersConstructors[1].WinnersFromPole.Count, actual[1].WinnersFromPole.Count); 
             }
         }
     }

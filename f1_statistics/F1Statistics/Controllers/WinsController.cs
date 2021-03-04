@@ -75,5 +75,13 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("frompole")]
+        public List<WinnersFromPoleModel> GetWinnersFromPole(OptionsModel options)
+        {
+            var data = _service.AggregateWinnersFromPole(options);
+
+            return data;
+        }
     }
 }

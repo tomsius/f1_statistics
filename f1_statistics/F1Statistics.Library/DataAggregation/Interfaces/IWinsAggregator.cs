@@ -12,5 +12,6 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
         List<CircuitWinsModel> GetCircuitWinners(int from, int to);
         List<UniqueSeasonWinnersModel> GetUniqueSeasonDriverWinners(int from, int to);
         List<UniqueSeasonWinnersModel> GetUniqueSeasonConstructorWinners(int from, int to);
+        List<WinnersFromPoleModel> GetWinnersFromPole(int from, int to);
     }
 }

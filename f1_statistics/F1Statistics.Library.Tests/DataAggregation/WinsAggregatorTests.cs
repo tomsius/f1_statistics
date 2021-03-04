@@ -42,12 +42,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             {
                                 Driver = new DriverDataResponse 
                                 { 
-                                    familyName = "FirstFamily", givenName= "FirstName" 
+                                    familyName = "FirstFamily", 
+                                    givenName= "FirstName" 
                                 },
                                 Constructor = new ConstructorDataResponse 
                                 { 
                                     name = "FirstConstructor"
-                                } 
+                                },
+                                position = "1",
+                                grid = "1"
                             },
                             new ResultsDataResponse
                             { 
@@ -59,7 +62,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse 
                                 { 
                                     name = "SecondConstructor"
-                                } 
+                                },
+                                position = "2",
+                                grid = "2"
                             }
                         }
                     } 
@@ -84,7 +89,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse 
                                 { 
                                     name = "FirstConstructor" 
-                                } 
+                                },
+                                position = "1",
+                                grid = "1"
                             } 
                         } 
                     },
@@ -106,7 +113,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse 
                                 { 
                                     name = "SecondConstructor" 
-                                }
+                                },
+                                position = "1",
+                                grid = "1"
                             }
                         }
                     }
@@ -535,6 +544,55 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
                 Assert.AreEqual(expectedUniqueWinners[0].Winners.Count, actual[0].Winners.Count);
                 Assert.AreEqual(expectedUniqueWinners[1].Winners.Count, actual[1].Winners.Count); 
+            }
+        }
+
+        [TestMethod]
+        public void GetWinnersFromPole_ReturnAggregatedWinnersFromPoleList_IfThereAreAnyWinnersFromPole()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedWinnersFromPole = new List<WinnersFromPoleModel> { new WinnersFromPoleModel { Season = 1, WinnersFromPole = new List<string> { "FirstName FirstFamily" } }, new WinnersFromPoleModel { Season = 2, WinnersFromPole = new List<string> { "FirstName FirstFamily", "SecondName SecondFamily" } } };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetWinnersFromPole(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+                // Assert
+                Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
+
+                for (int i = 0; i < expectedWinnersFromPole.Count; i++)
+                {
+                    Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetWinnersFromPole_ReturnEmptyList_IfThereAreNoWinnersFromPole()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedUniquePoleSittersConstructors = new List<WinnersFromPoleModel> { new WinnersFromPoleModel { WinnersFromPole = new List<string>() }, new WinnersFromPoleModel { WinnersFromPole = new List<string>() } };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
+
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetWinnersFromPole(from, to);
+
+                // Assert
+                Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[0].WinnersFromPole.Count, actual[0].WinnersFromPole.Count);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[1].WinnersFromPole.Count, actual[1].WinnersFromPole.Count);
             }
         }
     }

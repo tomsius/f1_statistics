@@ -133,6 +133,25 @@ namespace F1Statistics.Library.Tests.Services
             return uniqueSeaosnWinners;
         }
 
+        private List<WinnersFromPoleModel> GenerateWinnersFromPole()
+        {
+            var winners = new List<WinnersFromPoleModel>
+            {
+                new WinnersFromPoleModel
+                {
+                    Season = 1,
+                    WinnersFromPole = new List<string> { "First", "Second" }
+                },
+                new WinnersFromPoleModel
+                {
+                    Season = 2,
+                    WinnersFromPole = new List<string> { "First" }
+                }
+            };
+
+            return winners;
+        }
+
         [TestMethod]
         public void AggregateDriversWins_ReturnSortedAggregatedWinnersList_IfThereAreAnyDrivers()
         {
@@ -411,6 +430,44 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateWinnersFromPole_ReturnAggregatedWinnersFromPoleList_IfThereAreAnyWinnersFromPole()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedWinnersFromPole = GenerateWinnersFromPole();
+            _aggregator.Setup((aggregator) => aggregator.GetWinnersFromPole(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateWinnersFromPole());
+
+            // Act
+            var actual = _service.AggregateWinnersFromPole(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinnersFromPole.Count; i++)
+            {
+                Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
+            }
+        }
+
+        [TestMethod]
+        public void AggregateWinnersFromPole_ReturnEmptyList_IfThereAreNoWinnersFromPole()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedWinnersFromPole = new List<WinnersFromPoleModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetWinnersFromPole(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinnersFromPole);
+
+            // Act
+            var actual = _service.AggregateWinnersFromPole(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
         }
     }
 }

@@ -306,5 +306,39 @@ namespace F1Statistics.Library.DataAggregation
 
             return uniqueConstructorWinners;
         }
+
+        public List<WinnersFromPoleModel> GetWinnersFromPole(int from, int to)
+        {
+            var winsFromPole = new List<WinnersFromPoleModel>(to - from + 1);
+            var lockAdd = new object();
+
+            Parallel.For(from, to + 1, year =>
+            {
+                var races = _resultsDataAccess.GetResultsFrom(year);
+
+                var newWinnersFromPoleModel = new WinnersFromPoleModel { Season = year, WinnersFromPole = new List<string>() };
+
+                foreach (var race in races)
+                {
+                    var winnerInformation = race.Results[0];
+                    var gridPosition = winnerInformation.grid;
+                    var finishPosition = winnerInformation.position;
+
+                    var winnerName = $"{winnerInformation.Driver.givenName} {winnerInformation.Driver.familyName}";
+
+                    if (gridPosition == finishPosition)
+                    {
+                        newWinnersFromPoleModel.WinnersFromPole.Add(winnerName);
+                    }
+                }
+
+                lock (lockAdd)
+                {
+                    winsFromPole.Add(newWinnersFromPoleModel);
+                }
+            });
+
+            return winsFromPole;
+        }
     }
 }

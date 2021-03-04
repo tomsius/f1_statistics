@@ -129,6 +129,25 @@ namespace F1Statistics.Tests.Controllers
             return uniqueSeaosnWinners;
         }
 
+        private List<WinnersFromPoleModel> GenerateWinnersFromPole()
+        {
+            var winners = new List<WinnersFromPoleModel>
+            {
+                new WinnersFromPoleModel
+                {
+                    Season = 1,
+                    WinnersFromPole = new List<string> { "First", "Second" }
+                },
+                new WinnersFromPoleModel
+                {
+                    Season = 2,
+                    WinnersFromPole = new List<string> { "First" }
+                }
+            };
+
+            return winners;
+        }
+
         [TestMethod]
         public void GetDriversWins_ReturnAggregatedWinnersList_IfThereAreAnyDrivers()
         {
@@ -388,6 +407,42 @@ namespace F1Statistics.Tests.Controllers
 
             // Assert
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetWinnersFromPole_ReturnAggregatedWinnersFromPoleList_IfThereAreAnyWinnersFromPole()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinnersFromPole = GenerateWinnersFromPole();
+            _service.Setup((service) => service.AggregateWinnersFromPole(It.IsAny<OptionsModel>())).Returns(expectedWinnersFromPole);
+
+            // Act
+            var actual = _controller.GetWinnersFromPole(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinnersFromPole.Count; i++)
+            {
+                Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
+            }
+        }
+
+        [TestMethod]
+        public void GetWinnersFromPole_ReturnEmptyList_IfThereAreNoWinnersFromPole()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedWinnersFromPole = new List<WinnersFromPoleModel>();
+            _service.Setup((service) => service.AggregateWinnersFromPole(It.IsAny<OptionsModel>())).Returns(expectedWinnersFromPole);
+
+            // Act
+            var actual = _controller.GetWinnersFromPole(options);
+
+            // Assert
+            Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
         }
     }
 }
