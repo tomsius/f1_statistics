@@ -127,5 +127,26 @@ namespace F1Statistics.Library.Services
 
             return nonFinishers;
         }
+
+        public List<SeasonPositionChangesModel> AggregateSeasonPositionChanges(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<SeasonPositionChangesModel> positionChanges;
+
+            if (options.YearFrom != 0)
+            {
+                positionChanges = _aggregator.GetSeasonPositionChanges(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                positionChanges = _aggregator.GetSeasonPositionChanges(options.Season, options.Season);
+            }
+
+            positionChanges.ForEach(season => season.PositionChanges.Sort((x, y) => y.PositionChange.CompareTo(x.PositionChange)));
+            positionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+
+            return positionChanges;
+        }
     }
 }

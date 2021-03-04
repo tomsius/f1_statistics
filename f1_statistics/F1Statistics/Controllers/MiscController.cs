@@ -51,5 +51,13 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("positionchanges")]
+        public List<SeasonPositionChangesModel> GetSeasonPositionChanges(OptionsModel options)
+        {
+            var data = _service.AggregateSeasonPositionChanges(options);
+
+            return data;
+        }
     }
 }

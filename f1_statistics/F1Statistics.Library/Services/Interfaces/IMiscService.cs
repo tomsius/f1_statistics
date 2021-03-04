@@ -11,5 +11,6 @@ namespace F1Statistics.Library.Services.Interfaces
         List<HatTrickModel> AggregateHatTricks(OptionsModel options);
         List<GrandSlamModel> AggregateGrandSlams(OptionsModel options);
         List<DidNotFinishModel> AggregateNonFinishers(OptionsModel options);
+        List<SeasonPositionChangesModel> AggregateSeasonPositionChanges(OptionsModel options);
     }
 }

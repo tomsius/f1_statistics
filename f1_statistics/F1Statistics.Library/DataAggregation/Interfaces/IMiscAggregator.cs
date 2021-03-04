@@ -11,5 +11,6 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
         List<HatTrickModel> GetHatTricks(int from, int to);
         List<GrandSlamModel> GetGrandSlams(int from, int to);
         List<DidNotFinishModel> GetNonFinishers(int from, int to);
+        List<SeasonPositionChangesModel> GetSeasonPositionChanges(int from, int to);
     }
 }

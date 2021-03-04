@@ -155,7 +155,7 @@ namespace F1Statistics.Library.DataAggregation
 
         public List<DidNotFinishModel> GetNonFinishers(int from, int to)
         {
-            var seasonRaces = new List<DidNotFinishModel>(to - from + 1);
+            var nonFinishers = new List<DidNotFinishModel>(to - from + 1);
             var lockObject = new object();
 
             Parallel.For(from, to + 1, year =>
@@ -174,14 +174,14 @@ namespace F1Statistics.Library.DataAggregation
 
                             lock (lockObject)
                             {
-                                if (!seasonRaces.Where(driver => driver.Name == driverName).Any())
+                                if (!nonFinishers.Where(driver => driver.Name == driverName).Any())
                                 {
                                     var newDidNotFinishModel = new DidNotFinishModel { Name = driverName, DidNotFinishCount = 1 };
-                                    seasonRaces.Add(newDidNotFinishModel); 
+                                    nonFinishers.Add(newDidNotFinishModel); 
                                 }
                                 else
                                 {
-                                    seasonRaces.Where(driver => driver.Name == driverName).First().DidNotFinishCount++;
+                                    nonFinishers.Where(driver => driver.Name == driverName).First().DidNotFinishCount++;
                                 }
                             }
                         }
@@ -189,7 +189,51 @@ namespace F1Statistics.Library.DataAggregation
                 }
             });
 
-            return seasonRaces;
+            return nonFinishers;
+        }
+
+        public List<SeasonPositionChangesModel> GetSeasonPositionChanges(int from, int to)
+        {
+            var positionChanges = new List<SeasonPositionChangesModel>(to - from + 1);
+            var lockObject = new object();
+            var lockAdd = new object();
+
+            Parallel.For(from, to + 1, year =>
+            {
+                var seasonPositionChanges = new SeasonPositionChangesModel { Season = year, PositionChanges = new List<DriverPositionChangeModel>() };
+
+                var races = _resultsDataAccess.GetResultsFrom(year);
+
+                foreach (var race in races)
+                {
+                    foreach (var result in race.Results)
+                    {
+                        var driver = result.Driver;
+                        var driverName = $"{driver.givenName} {driver.familyName}";
+
+                        var gridPosition = int.Parse(result.grid);
+                        var finishPosition = int.Parse(result.position);
+                        var positionChange = gridPosition - finishPosition;
+
+                        if (!seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).Any())
+                        {
+                            var newDriverPositionChangeModel = new DriverPositionChangeModel { Name = driverName, PositionChange = positionChange };
+                            seasonPositionChanges.PositionChanges.Add(newDriverPositionChangeModel);
+                        }
+                        else
+                        {
+                            seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).First().PositionChange += positionChange;
+                        }
+                    }
+                }
+
+                lock (lockAdd)
+                {
+                    positionChanges.Add(seasonPositionChanges);
+                }
+            });
+
+            return positionChanges;
         }
     }
 }
