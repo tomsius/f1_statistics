@@ -106,6 +106,49 @@ namespace F1Statistics.Library.Tests.Services
             return nonFinishers;
         }
 
+        private List<SeasonPositionChangesModel> GenerateSeasonPositionChanges()
+        {
+            var seasonPositionChanges = new List<SeasonPositionChangesModel>
+            {
+                new SeasonPositionChangesModel
+                {
+                    Season = 1,
+                    PositionChanges = new List<DriverPositionChangeModel>
+                    {
+                        new DriverPositionChangeModel
+                        {
+                            Name = "First",
+                            PositionChange = 10
+                        },
+                        new DriverPositionChangeModel
+                        {
+                            Name = "Second",
+                            PositionChange = -10
+                        }
+                    }
+                },
+                new SeasonPositionChangesModel
+                {
+                    Season = 2,
+                    PositionChanges = new List<DriverPositionChangeModel>
+                    {
+                        new DriverPositionChangeModel
+                        {
+                            Name = "First",
+                            PositionChange = 20
+                        },
+                        new DriverPositionChangeModel
+                        {
+                            Name = "Second",
+                            PositionChange = 0
+                        }
+                    }
+                }
+            };
+
+            return seasonPositionChanges;
+        }
+
         [TestMethod]
         public void AggregateRaceCountPerSeason_ReturnSortedAggregatedRaceCountPerSeasonList_IfThereAreAnyRaces()
         {
@@ -224,7 +267,7 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateNonFinishers_ReturnSortedAggregatedNonFinisherssList_IfThereAreAnyDriversWhoDidNotFinishRace()
+        public void AggregateNonFinishers_ReturnSortedAggregatedNonFinishersList_IfThereAreAnyDriversWhoDidNotFinishRace()
         {
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
@@ -260,6 +303,52 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedNonFinishers.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateSeasonPositionChanges_ReturnSortedAggregatedSeasonPositionChangesList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedSeasonPositionChanges = GenerateSeasonPositionChanges();
+            expectedSeasonPositionChanges.ForEach(season => season.PositionChanges.Sort((x, y) => y.PositionChange.CompareTo(x.PositionChange)));
+            expectedSeasonPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            _aggregator.Setup((aggregator) => aggregator.GetSeasonPositionChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateSeasonPositionChanges());
+
+            // Act
+            var actual = _service.AggregateSeasonPositionChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedSeasonPositionChanges.Count, actual.Count);
+
+            for (int i = 0; i < expectedSeasonPositionChanges.Count; i++)
+            {
+                Assert.AreEqual(expectedSeasonPositionChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges.Count, actual[i].PositionChanges.Count);
+
+                for (int j = 0; j < expectedSeasonPositionChanges[i].PositionChanges.Count; j++)
+                {
+                    Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
+                    Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].PositionChange, actual[i].PositionChanges[j].PositionChange);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateSeasonPositionChanges_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedSeasonPositionChanges = new List<SeasonPositionChangesModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetSeasonPositionChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedSeasonPositionChanges);
+
+            // Act
+            var actual = _service.AggregateSeasonPositionChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedSeasonPositionChanges.Count, actual.Count);
         }
     }
 }
