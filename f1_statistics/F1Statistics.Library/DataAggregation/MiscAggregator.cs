@@ -14,23 +14,21 @@ namespace F1Statistics.Library.DataAggregation
     {
         private const string FINISHED_STATUS = "Finished";
         private const string LAPPED_STATUS = "+";
+        private const string FASTEST = "1";
 
         private readonly IRacesDataAccess _racesDataAccess;
         private readonly IResultsDataAccess _resultsDataAccess;
         private readonly IQualifyingDataAccess _qualifyingDataAccess;
-        private readonly IFastestDataAccess _fastestDataAccess;
         private readonly ILapsDataAccess _lapsDataAccess;
 
         public MiscAggregator(IRacesDataAccess racesDataAccess, 
                               IResultsDataAccess resultsDataAccess, 
-                              IQualifyingDataAccess qualifyingDataAccess, 
-                              IFastestDataAccess fastestDataAccess, 
+                              IQualifyingDataAccess qualifyingDataAccess,
                               ILapsDataAccess lapsDataAccess)
         {
             _racesDataAccess = racesDataAccess;
             _resultsDataAccess = resultsDataAccess;
             _qualifyingDataAccess = qualifyingDataAccess;
-            _fastestDataAccess = fastestDataAccess;
             _lapsDataAccess = lapsDataAccess;
         }
 
@@ -62,7 +60,6 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
-                var fastestDrivers = _fastestDataAccess.GetFastestDriversFrom(year);
 
                 for (int i = 0; i < qualifyings.Count; i++)
                 {
@@ -71,10 +68,9 @@ namespace F1Statistics.Library.DataAggregation
                     var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
                     var winnerName = $"{winner.givenName} {winner.familyName}";
 
-                    var fastest = fastestDrivers.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
-                    var fastestName = $"{fastest.givenName} {fastest.familyName}";
+                    var fastestRank = races.Where(race => race.round == qualifyings[i].round).First().Results[0].FastestLap.rank;
 
-                    if (poleSitter == winnerName && winnerName  == fastestName)
+                    if (poleSitter == winnerName && fastestRank == FASTEST)
                     {
                         lock (lockObject)
                         {
@@ -100,23 +96,21 @@ namespace F1Statistics.Library.DataAggregation
             var grandSlams = new List<GrandSlamModel>(to - from + 1);
             var lockObject = new object();
 
-            for (int year = from; year <= to; year++)
+            Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
-                var fastestDrivers = _fastestDataAccess.GetFastestDriversFrom(year);
 
-                Parallel.For(0, qualifyings.Count, i =>
+                for (int i = 0; i < qualifyings.Count; i++)
                 {
                     var poleSitter = $"{qualifyings[i].QualifyingResults[0].Driver.givenName} {qualifyings[i].QualifyingResults[0].Driver.familyName}";
 
                     var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
                     var winnerName = $"{winner.givenName} {winner.familyName}";
 
-                    var fastest = fastestDrivers.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
-                    var fastestName = $"{fastest.givenName} {fastest.familyName}";
+                    var fastestRank = races.Where(race => race.round == qualifyings[i].round).First().Results[0].FastestLap.rank;
 
-                    if (poleSitter == winnerName && winnerName == fastestName) 
+                    if (poleSitter == winnerName && fastestRank == FASTEST) 
                     {
                         var laps = _lapsDataAccess.GetLapsFrom(year, int.Parse(qualifyings[i].round));
                         var leaderId = winner.driverId;
@@ -147,8 +141,8 @@ namespace F1Statistics.Library.DataAggregation
                             }
                         }
                     }
-                });
-            }
+                }
+            });
 
             return grandSlams;
         }
