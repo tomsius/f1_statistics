@@ -34,7 +34,16 @@ namespace F1Statistics.Library.Services
                 driversNationalities = _aggregator.GetDriversNationalities(options.Season, options.Season);
             }
 
-            driversNationalities.Sort((x, y) => y.DriversCount.CompareTo(x.DriversCount));
+            driversNationalities.Sort((x, y) => {
+                var cmp = y.DriversCount.CompareTo(x.DriversCount);
+
+                if (cmp == 0)
+                {
+                    cmp = x.Nationality.CompareTo(y.Nationality);
+                }
+
+                return cmp;
+            });
 
             return driversNationalities;
         }
@@ -54,7 +63,16 @@ namespace F1Statistics.Library.Services
                 nationalitiesRaceWins = _aggregator.GetNationalitiesRaceWins(options.Season, options.Season);
             }
 
-            nationalitiesRaceWins.Sort((x, y) => y.WinnersCount.CompareTo(x.WinnersCount));
+            nationalitiesRaceWins.Sort((x, y) => {
+                var cmp = y.WinnersCount.CompareTo(x.WinnersCount);
+
+                if (cmp == 0)
+                {
+                    cmp = x.Nationality.CompareTo(y.Nationality);
+                }
+
+                return cmp;
+            });
 
             return nationalitiesRaceWins;
         }
@@ -74,7 +92,16 @@ namespace F1Statistics.Library.Services
                 nationalitiesSeasonWins = _aggregator.GetNationalitiesSeasonWins(options.Season, options.Season);
             }
 
-            nationalitiesSeasonWins.Sort((x, y) => y.WinnersCount.CompareTo(x.WinnersCount));
+            nationalitiesSeasonWins.Sort((x, y) => {
+                var cmp = y.WinnersCount.CompareTo(x.WinnersCount);
+
+                if (cmp == 0)
+                {
+                    cmp = x.Nationality.CompareTo(y.Nationality);
+                }
+
+                return cmp;
+            });
 
             return nationalitiesSeasonWins;
         }
