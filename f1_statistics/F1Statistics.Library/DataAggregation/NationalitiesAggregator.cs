@@ -99,6 +99,11 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var standings = _standingsDataAccess.GetDriverStandingsFrom(year);
 
+                if (standings.Count == 0)
+                {
+                    return;
+                }
+
                 var seasonWinner = standings[0].Driver;
                 var seasonWinnerNationality = seasonWinner.nationality;
                 var seasonWinnerName = $"{seasonWinner.givenName} {seasonWinner.familyName}";
