@@ -21,5 +21,17 @@ namespace F1Statistics.Library.DataAccess
 
             return $"{result.MRData.DriverTable.Drivers[0].givenName} {result.MRData.DriverTable.Drivers[0].familyName}";
         }
+
+        public List<DriverDataResponse> GetDriversFrom(int year)
+        {
+            var client = new RestClient($"http://ergast.com/api/f1/{year}/drivers.json?limit=200");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            var response = client.Execute(request);
+
+            var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
+
+            return result.MRData.DriverTable.Drivers;
+        }
     }
 }
