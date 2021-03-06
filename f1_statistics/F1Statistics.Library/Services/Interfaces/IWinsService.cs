@@ -13,5 +13,6 @@ namespace F1Statistics.Library.Services.Interfaces
         List<UniqueSeasonWinnersModel> AggregateUniqueSeasonDriverWinners(OptionsModel options);
         List<UniqueSeasonWinnersModel> AggregateUniqueSeasonConstructorWinners(OptionsModel options);
         List<WinnersFromPoleModel> AggregateWinnersFromPole(OptionsModel options);
+        List<WinsByGridPositionModel> AggregateWinnersByGridPosition(OptionsModel options);
     }
 }

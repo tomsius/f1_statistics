@@ -179,5 +179,41 @@ namespace F1Statistics.Library.Services
 
             return winsFromPole;
         }
+
+        public List<WinsByGridPositionModel> AggregateWinnersByGridPosition(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<WinsByGridPositionModel> winnersByGridPosition;
+
+            if (options.YearFrom != 0)
+            {
+                winnersByGridPosition = _aggregator.GetWinnersByGridPosition(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                winnersByGridPosition = _aggregator.GetWinnersByGridPosition(options.Season, options.Season);
+            }
+
+            winnersByGridPosition.Sort((x, y) => x.GridPosition.CompareTo(y.GridPosition));
+
+            FillMissingGridPositions(winnersByGridPosition);
+
+            return winnersByGridPosition;
+        }
+
+        //TODO - iskelti
+        private void FillMissingGridPositions(List<WinsByGridPositionModel> winnersByGridPosition)
+        {
+            for (int i = 0; i < winnersByGridPosition.Count; i++)
+            {
+                var expectedGridPosition = i + 1;
+                if (winnersByGridPosition[i].GridPosition != expectedGridPosition)
+                {
+                    var missingGrid = new WinsByGridPositionModel { GridPosition = expectedGridPosition, Winners = new List<string>() };
+                    winnersByGridPosition.Insert(i, missingGrid);
+                }
+            }
+        }
     }
 }

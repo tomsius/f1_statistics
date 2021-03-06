@@ -83,5 +83,13 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("bygrid")]
+        public List<WinsByGridPositionModel> GetWinnersByGridPosition(OptionsModel options)
+        {
+            var data = _service.AggregateWinnersByGridPosition(options);
+
+            return data;
+        }
     }
 }
