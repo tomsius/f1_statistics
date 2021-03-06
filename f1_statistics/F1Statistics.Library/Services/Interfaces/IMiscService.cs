@@ -12,5 +12,6 @@ namespace F1Statistics.Library.Services.Interfaces
         List<GrandSlamModel> AggregateGrandSlams(OptionsModel options);
         List<DidNotFinishModel> AggregateNonFinishers(OptionsModel options);
         List<SeasonPositionChangesModel> AggregateSeasonPositionChanges(OptionsModel options);
+        List<FrontRowModel> AggregateConstructorsFrontRows(OptionsModel options);
     }
 }

@@ -77,7 +77,7 @@ namespace F1Statistics.Library.Services
         {
             _validator.ValidateOptionsModel(options);
 
-            // TODO - iskelti i options validator
+            //TODO - iskelti i options validator
             if (options.Season < 2004 && options.Season != 0)
             {
                 options.Season = 2004;
@@ -147,6 +147,26 @@ namespace F1Statistics.Library.Services
             positionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
 
             return positionChanges;
+        }
+
+        public List<FrontRowModel> AggregateConstructorsFrontRows(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<FrontRowModel> constructorsWithFrontRow;
+
+            if (options.YearFrom != 0)
+            {
+                constructorsWithFrontRow = _aggregator.GetConstructorsFrontRows(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                constructorsWithFrontRow = _aggregator.GetConstructorsFrontRows(options.Season, options.Season);
+            }
+
+            constructorsWithFrontRow.Sort((x, y) => y.FrontRowCount.CompareTo(x.FrontRowCount));
+
+            return constructorsWithFrontRow;
         }
     }
 }

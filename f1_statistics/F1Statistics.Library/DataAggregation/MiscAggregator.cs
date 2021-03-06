@@ -229,5 +229,40 @@ namespace F1Statistics.Library.DataAggregation
 
             return positionChanges;
         }
+
+        public List<FrontRowModel> GetConstructorsFrontRows(int from, int to)
+        {
+            var constructorsWithFrontRow = new List<FrontRowModel>(to - from + 1);
+            var lockObject = new object();
+
+            Parallel.For(from, to + 1, year =>
+            {
+                var races = _resultsDataAccess.GetResultsFrom(year);
+
+                foreach (var race in races)
+                {
+                    var firstOnGrid = $"{race.Results.Where(result => result.grid == "1").FirstOrDefault()?.Constructor.name}";
+                    var secondOnGrid = $"{race.Results.Where(result => result.grid == "2").FirstOrDefault()?.Constructor.name}";
+
+                    if (firstOnGrid == secondOnGrid && firstOnGrid != null)
+                    {
+                        lock (lockObject)
+                        {
+                            if (!constructorsWithFrontRow.Where(constructor => constructor.Name == firstOnGrid).Any())
+                            {
+                                var newFrontRowModel = new FrontRowModel { Name = firstOnGrid, FrontRowCount = 1 };
+                                constructorsWithFrontRow.Add(newFrontRowModel);
+                            }
+                            else
+                            {
+                                constructorsWithFrontRow.Where(constructor => constructor.Name == firstOnGrid).First().FrontRowCount++;
+                            }
+                        }
+                    }
+                }
+            });
+
+            return constructorsWithFrontRow;
+        }
     }
 }

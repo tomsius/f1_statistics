@@ -59,5 +59,13 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("frontrows")]
+        public List<FrontRowModel> GetConstructorsFrontRows(OptionsModel options)
+        {
+            var data = _service.AggregateConstructorsFrontRows(options);
+
+            return data;
+        }
     }
 }
