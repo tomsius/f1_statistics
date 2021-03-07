@@ -67,5 +67,13 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("finishingpositions")]
+        public List<DriverFinishingPositionsModel> GetDriversFinishingPositions(OptionsModel options)
+        {
+            var data = _service.AggregateDriversFinishingPositions(options);
+
+            return data;
+        }
     }
 }

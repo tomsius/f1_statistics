@@ -4,6 +4,7 @@ using F1Statistics.Library.Services.Interfaces;
 using F1Statistics.Library.Validators.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace F1Statistics.Library.Services
@@ -167,6 +168,46 @@ namespace F1Statistics.Library.Services
             constructorsWithFrontRow.Sort((x, y) => y.FrontRowCount.CompareTo(x.FrontRowCount));
 
             return constructorsWithFrontRow;
+        }
+
+        public List<DriverFinishingPositionsModel> AggregateDriversFinishingPositions(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<DriverFinishingPositionsModel> driversFinishingPositions;
+
+            if (options.YearFrom != 0)
+            {
+                driversFinishingPositions = _aggregator.GetDriversFinishingPositions(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                driversFinishingPositions = _aggregator.GetDriversFinishingPositions(options.Season, options.Season);
+            }
+
+            driversFinishingPositions.ForEach(driver => driver.FinishingPositions.Sort((x, y) => x.FinishingPosition.CompareTo(y.FinishingPosition)));
+            driversFinishingPositions.Sort((x, y) => x.Name.CompareTo(y.Name));
+
+            FillMissingFinishingPositions(driversFinishingPositions);
+
+            return driversFinishingPositions;
+        }
+
+        //TODO - iskelti kaip extension
+        private void FillMissingFinishingPositions(List<DriverFinishingPositionsModel> driversFinishingPositions)
+        {
+            for (int i = 0; i < driversFinishingPositions.Count; i++)
+            {
+                for (int j = 0; j < driversFinishingPositions[i].FinishingPositions.Count; j++)
+                {
+                    var expectedFinishingPosition = j + 1;
+                    if (driversFinishingPositions[i].FinishingPositions[j].FinishingPosition != expectedFinishingPosition)
+                    {
+                        var missingFinishingPosition = new FinishingPositionModel { FinishingPosition = expectedFinishingPosition, Count = 0 };
+                        driversFinishingPositions[i].FinishingPositions.Insert(j, missingFinishingPosition);
+                    }
+                }
+            }
         }
     }
 }

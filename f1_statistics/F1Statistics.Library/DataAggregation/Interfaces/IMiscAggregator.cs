@@ -13,5 +13,6 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
         List<DidNotFinishModel> GetNonFinishers(int from, int to);
         List<SeasonPositionChangesModel> GetSeasonPositionChanges(int from, int to);
         List<FrontRowModel> GetConstructorsFrontRows(int from, int to);
+        List<DriverFinishingPositionsModel> GetDriversFinishingPositions(int from, int to);
     }
 }

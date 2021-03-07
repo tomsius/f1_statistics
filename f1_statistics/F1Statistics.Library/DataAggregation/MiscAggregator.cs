@@ -264,5 +264,55 @@ namespace F1Statistics.Library.DataAggregation
 
             return constructorsWithFrontRow;
         }
+
+        public List<DriverFinishingPositionsModel> GetDriversFinishingPositions(int from, int to)
+        {
+            var driversFinishingPositions = new List<DriverFinishingPositionsModel>(to - from + 1);
+            var lockObject = new object();
+
+            Parallel.For(from, to + 1, year =>
+            {
+                var races = _resultsDataAccess.GetResultsFrom(year);
+
+                foreach (var race in races)
+                {
+                    foreach (var result in race.Results)
+                    {
+                        var driver = result.Driver;
+                        var driverName = $"{driver.givenName} {driver.familyName}";
+                        var driverFinishingPosition = int.Parse(result.position);
+
+                        lock (lockObject)
+                        {
+                            if (!driversFinishingPositions.Where(driver => driver.Name == driverName).Any())
+                            {
+                                var newFinishingPositionModel = new FinishingPositionModel { FinishingPosition = driverFinishingPosition, Count = 1 };
+                                var newFinishingPositionModelList = new List<FinishingPositionModel> { newFinishingPositionModel };
+                                var newDriverFinishingPositionsModel = new DriverFinishingPositionsModel { Name = driverName, FinishingPositions = newFinishingPositionModelList };
+
+                                driversFinishingPositions.Add(newDriverFinishingPositionsModel);
+                            }
+                            else
+                            {
+                                var driverFinishingPositionsList = driversFinishingPositions.Where(driver => driver.Name == driverName).First().FinishingPositions;
+
+                                if (!driverFinishingPositionsList.Where(positions => positions.FinishingPosition == driverFinishingPosition).Any())
+                                {
+                                    var newFinishingPositionModel = new FinishingPositionModel { FinishingPosition = driverFinishingPosition, Count = 1 };
+
+                                    driverFinishingPositionsList.Add(newFinishingPositionModel);
+                                }
+                                else
+                                {
+                                    driverFinishingPositionsList.Where(position => position.FinishingPosition == driverFinishingPosition).First().Count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            return driversFinishingPositions;
+        }
     }
 }

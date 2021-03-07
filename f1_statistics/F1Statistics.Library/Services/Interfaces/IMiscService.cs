@@ -13,5 +13,6 @@ namespace F1Statistics.Library.Services.Interfaces
         List<DidNotFinishModel> AggregateNonFinishers(OptionsModel options);
         List<SeasonPositionChangesModel> AggregateSeasonPositionChanges(OptionsModel options);
         List<FrontRowModel> AggregateConstructorsFrontRows(OptionsModel options);
+        List<DriverFinishingPositionsModel> AggregateDriversFinishingPositions(OptionsModel options);
     }
 }
