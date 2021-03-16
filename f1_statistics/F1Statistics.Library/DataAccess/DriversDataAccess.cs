@@ -10,9 +10,9 @@ namespace F1Statistics.Library.DataAccess
 {
     public class DriversDataAccess : IDriversDataAccess
     {
-        public string GetDriverName(string leadingDriverId)
+        public string GetDriverName(string driverId)
         {
-            var client = new RestClient($"http://ergast.com/api/f1/drivers/{leadingDriverId}.json");
+            var client = new RestClient($"http://ergast.com/api/f1/drivers/{driverId}.json");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             var response = client.Execute(request);

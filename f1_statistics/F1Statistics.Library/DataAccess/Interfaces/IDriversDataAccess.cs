@@ -7,7 +7,7 @@ namespace F1Statistics.Library.DataAccess.Interfaces
 {
     public interface IDriversDataAccess
     {
-        string GetDriverName(string leadingDriverId);
+        string GetDriverName(string driverId);
         List<DriverDataResponse> GetDriversFrom(int year);
     }
 }
