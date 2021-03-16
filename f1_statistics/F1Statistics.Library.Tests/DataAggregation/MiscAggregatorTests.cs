@@ -57,6 +57,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "1"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
                                 }
                             },
                             new ResultsDataResponse
@@ -68,11 +72,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     givenName= "SecondName"
                                 },
                                 status = "Electronics",
-                                grid = "5",
-                                position = "2",
+                                grid = "2",
+                                position = "3",
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "2"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
                                 }
                             }
                         }
@@ -99,6 +107,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "1"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
                                 }
                             },
                             new ResultsDataResponse
@@ -115,6 +127,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "2"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
                                 }
                             }
                         }
@@ -133,11 +149,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     givenName = "SecondName"
                                 },
                                 status = "+2",
-                                grid = "5",
+                                grid = "1",
                                 position = "1",
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "1"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "SecondConstructor"
                                 }
                             },
                             new ResultsDataResponse
@@ -149,11 +169,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     givenName= "FirstName"
                                 },
                                 status = "Illness",
-                                grid = "3",
+                                grid = "2",
                                 position = "2",
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "2"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "SecondConstructor"
                                 }
                             }
                         }
@@ -555,13 +579,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         new DriverPositionChangeModel
                         {
-                            Name = "SecondName SecondFamily",
-                            PositionChange = 3
+                            Name = "FirstName FirstFamily",
+                            PositionChange = 0
                         },
                         new DriverPositionChangeModel
                         {
-                            Name = "FirstName FirstFamily",
-                            PositionChange = 0
+                            Name = "SecondName SecondFamily",
+                            PositionChange = -1
                         }
                     }
                 },
@@ -573,12 +597,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new DriverPositionChangeModel
                         {
                             Name = "FirstName FirstFamily",
-                            PositionChange = 1
+                            PositionChange = 0
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "SecondName SecondFamily",
-                            PositionChange = 1
+                            PositionChange = -3
                         }
                     }
                 }
@@ -627,6 +651,160 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
                 // Assert
                 Assert.AreEqual(expectedSeasonPositionChanges.Count, actual.Count);
+            }
+        }
+
+        [TestMethod]
+        public void GetConstructorsFrontRows_ReturnAggregatedConstructorsFrontRowsCountList_IfThereAreAnyConstructorsWithFrontRows()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedConstructorsFrontRows = new List<FrontRowModel>
+            {
+                new FrontRowModel
+                {
+                    Name = "FirstConstructor",
+                    FrontRowCount = 2
+                },
+                new FrontRowModel
+                {
+                    Name = "SecondConstructor",
+                    FrontRowCount = 1
+                }
+            };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsFrontRows(from, to);
+                actual.Sort((x, y) => y.FrontRowCount.CompareTo(x.FrontRowCount));
+
+                // Assert
+                Assert.AreEqual(expectedConstructorsFrontRows.Count, actual.Count);
+
+                for (int i = 0; i < expectedConstructorsFrontRows.Count; i++)
+                {
+                    Assert.AreEqual(expectedConstructorsFrontRows[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowCount, actual[i].FrontRowCount);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetConstructorsFrontRows_ReturnEmptyList_IfThereAreNoConstructorsWithFrontRows()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedConstructorsFrontRows = new List<FrontRowModel>();
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsFrontRows(from, to);
+
+                // Assert
+                Assert.AreEqual(expectedConstructorsFrontRows.Count, actual.Count);
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversFinishingPositions_ReturnAggregatedDriversFinishingPositionsList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedDriversFinishingPositions = new List<DriverFinishingPositionsModel>
+            {
+                new DriverFinishingPositionsModel
+                {
+                    Name = "FirstName FirstFamily",
+                    FinishingPositions = new List<FinishingPositionModel>
+                    {
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 1,
+                            Count = 2
+                        },
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 2,
+                            Count = 1
+                        }
+                    }
+                },
+                new DriverFinishingPositionsModel
+                {
+                    Name = "SecondName SecondFamily",
+                    FinishingPositions = new List<FinishingPositionModel>
+                    {
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 1,
+                            Count = 1
+                        },
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 3,
+                            Count = 1
+                        },
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 5,
+                            Count = 1
+                        }
+                    }
+                }
+            };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversFinishingPositions(from, to);
+                actual.ForEach(driver => driver.FinishingPositions.Sort((x, y) => x.FinishingPosition.CompareTo(y.FinishingPosition)));
+                actual.Sort((x, y) => x.Name.CompareTo(y.Name));
+
+                // Assert
+                Assert.AreEqual(expectedDriversFinishingPositions.Count, actual.Count);
+
+                for (int i = 0; i < expectedDriversFinishingPositions.Count; i++)
+                {
+                    Assert.AreEqual(expectedDriversFinishingPositions[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions.Count, actual[i].FinishingPositions.Count);
+
+                    for (int j = 0; j < expectedDriversFinishingPositions[i].FinishingPositions.Count; j++)
+                    {
+                        Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPosition, actual[i].FinishingPositions[j].FinishingPosition);
+                        Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].Count, actual[i].FinishingPositions[j].Count);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversFinishingPositions_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedDriversFinishingPositions = new List<DriverFinishingPositionsModel>();
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversFinishingPositions(from, to);
+
+                // Assert
+                Assert.AreEqual(expectedDriversFinishingPositions.Count, actual.Count);
             }
         }
     }

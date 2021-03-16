@@ -149,6 +149,63 @@ namespace F1Statistics.Library.Tests.Services
             return seasonPositionChanges;
         }
 
+        private List<FrontRowModel> GenerateConstructorsFrontRows()
+        {
+            var constructorFrontRows = new List<FrontRowModel>
+            {
+                new FrontRowModel
+                {
+                    Name = "First",
+                    FrontRowCount = 3
+                },
+                new FrontRowModel
+                {
+                    Name = "Second",
+                    FrontRowCount = 1
+                }
+            };
+
+            return constructorFrontRows;
+        }
+
+        private List<DriverFinishingPositionsModel> GenerateDriversFinishingPositions()
+        {
+            var driversfinishingPositions = new List<DriverFinishingPositionsModel>()
+            {
+                new DriverFinishingPositionsModel
+                {
+                    Name = "First",
+                    FinishingPositions = new List<FinishingPositionModel>
+                    {
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 1,
+                            Count = 10
+                        },
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 2,
+                            Count = 5
+                        }
+                    }
+                },
+                new DriverFinishingPositionsModel
+                {
+                    Name = "Second",
+                    FinishingPositions = new List<FinishingPositionModel>
+                    {
+                        new FinishingPositionModel
+                        {
+                            FinishingPosition = 1,
+                            Count = 2
+                        }
+                    }
+                }
+            };
+
+            return driversfinishingPositions;
+        }
+
         [TestMethod]
         public void AggregateRaceCountPerSeason_ReturnSortedAggregatedRaceCountPerSeasonList_IfThereAreAnyRaces()
         {
@@ -349,6 +406,91 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedSeasonPositionChanges.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsFrontRows_ReturnSortedAggregatedConstructorsFrontRowsCountList_IfThereAreAnyConstructorsWithFrontRows()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedConstructorsFrontRows = GenerateConstructorsFrontRows();
+            expectedConstructorsFrontRows.Sort((x, y) => y.FrontRowCount.CompareTo(x.FrontRowCount));
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsFrontRows(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateConstructorsFrontRows());
+
+            // Act
+            var actual = _service.AggregateConstructorsFrontRows(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedConstructorsFrontRows.Count, actual.Count);
+
+            for (int i = 0; i < expectedConstructorsFrontRows.Count; i++)
+            {
+                Assert.AreEqual(expectedConstructorsFrontRows[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowCount, actual[i].FrontRowCount);
+            }
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsFrontRows_ReturnEmptyList_IfThereAreNoConstructorsWithFrontRows()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedConstructorsFrontRows = new List<FrontRowModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsFrontRows(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedConstructorsFrontRows);
+
+            // Act
+            var actual = _service.AggregateConstructorsFrontRows(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedConstructorsFrontRows.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateDriversFinishingPositions_ReturnSortedAggregatedDriversFinishingPositionsList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedDriversFinishingPositions = GenerateDriversFinishingPositions();
+            expectedDriversFinishingPositions.ForEach(driver => driver.FinishingPositions.Sort((x, y) => x.FinishingPosition.CompareTo(y.FinishingPosition)));
+            expectedDriversFinishingPositions.Sort((x, y) => x.Name.CompareTo(y.Name));
+            _aggregator.Setup((aggregator) => aggregator.GetDriversFinishingPositions(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateDriversFinishingPositions());
+
+            // Act
+            var actual = _service.AggregateDriversFinishingPositions(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedDriversFinishingPositions.Count, actual.Count);
+
+            for (int i = 0; i < expectedDriversFinishingPositions.Count; i++)
+            {
+                Assert.AreEqual(expectedDriversFinishingPositions[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions.Count, actual[i].FinishingPositions.Count);
+
+                for (int j = 0; j < expectedDriversFinishingPositions[i].FinishingPositions.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPosition, actual[i].FinishingPositions[j].FinishingPosition);
+                    Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].Count, actual[i].FinishingPositions[j].Count);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateDriversFinishingPositions_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedDriversFinishingPositions = new List<DriverFinishingPositionsModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetDriversFinishingPositions(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDriversFinishingPositions);
+
+            // Act
+            var actual = _service.AggregateDriversFinishingPositions(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedDriversFinishingPositions.Count, actual.Count);
         }
     }
 }
