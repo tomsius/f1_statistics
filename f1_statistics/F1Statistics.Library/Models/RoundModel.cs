@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace F1Statistics.Library.Models
+{
+    public class RoundModel
+    {
+        public int Round { get; set; }
+        public List<StandingModel> Standings { get; set; }
+    }
+}

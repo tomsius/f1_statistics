@@ -20,16 +20,22 @@ namespace F1Statistics.Library.DataAggregation
         private readonly IResultsDataAccess _resultsDataAccess;
         private readonly IQualifyingDataAccess _qualifyingDataAccess;
         private readonly ILapsDataAccess _lapsDataAccess;
+        private readonly IStandingsDataAccess _standingsDataAccess;
+        private readonly IDriversDataAccess _driversDataAccess;
 
         public MiscAggregator(IRacesDataAccess racesDataAccess, 
                               IResultsDataAccess resultsDataAccess, 
                               IQualifyingDataAccess qualifyingDataAccess,
-                              ILapsDataAccess lapsDataAccess)
+                              ILapsDataAccess lapsDataAccess,
+                              IStandingsDataAccess standingsDataAccess,
+                              IDriversDataAccess driversDataAccess)
         {
             _racesDataAccess = racesDataAccess;
             _resultsDataAccess = resultsDataAccess;
             _qualifyingDataAccess = qualifyingDataAccess;
             _lapsDataAccess = lapsDataAccess;
+            _standingsDataAccess = standingsDataAccess;
+            _driversDataAccess = driversDataAccess;
         }
 
         public List<SeasonRacesModel> GetRaceCountPerSeason(int from, int to)
@@ -313,6 +319,113 @@ namespace F1Statistics.Library.DataAggregation
             });
 
             return driversFinishingPositions;
+        }
+
+        public List<SeasonStandingsChangesModel> GetDriversPositionChanges(int from, int to)
+        {
+            var driversPositionChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
+            var lockAdd = new object();
+
+            for (int year = from; year <= to; year++)
+            {
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Rounds = new List<RoundModel>() };
+
+                var racesCount = _racesDataAccess.GetRacesCountFrom(year);
+
+                Parallel.For(1, racesCount + 1, round =>
+                {
+                    var standings = _standingsDataAccess.GetDriverStandingsFromRace(year, round);
+
+                    var newRoundModel = new RoundModel { Round = round, Standings = new List<StandingModel>() };
+
+                    for (int i = 0; i < standings.Count; i++)
+                    {
+                        var driverName = $"{standings[i].Driver.givenName} {standings[i].Driver.familyName}";
+                        var points = double.Parse(standings[i].points);
+                        var position = i + 1;
+
+                        var newStandingModel = new StandingModel { Name = driverName, Points = points, Position = position };
+                        newRoundModel.Standings.Add(newStandingModel);
+                    }
+
+                    lock (lockAdd)
+                    {
+                        newSeasonStandingsChangesModel.Rounds.Add(newRoundModel);
+                    }
+                });
+
+                driversPositionChanges.Add(newSeasonStandingsChangesModel);
+            }
+
+            return driversPositionChanges;
+        }
+
+        public List<SeasonStandingsChangesModel> GetConstructorsPositionChanges(int from, int to)
+        {
+            var constructorsPositionChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
+            var lockAdd = new object();
+
+            for (int year = from; year <= to; year++)
+            {
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Rounds = new List<RoundModel>() };
+
+                var racesCount = _racesDataAccess.GetRacesCountFrom(year);
+
+                Parallel.For(1, racesCount + 1, round =>
+                {
+                    var standings = _standingsDataAccess.GetConstructorStandingsFromRace(year, round);
+
+                    var newRoundModel = new RoundModel { Round = round, Standings = new List<StandingModel>() };
+
+                    for (int i = 0; i < standings.Count; i++)
+                    {
+                        var constructorName = $"{standings[i].Constructor.name}";
+                        var points = double.Parse(standings[i].points);
+                        var position = i + 1;
+
+                        var newStandingModel = new StandingModel { Name = constructorName, Points = points, Position = position };
+                        newRoundModel.Standings.Add(newStandingModel);
+                    }
+
+                    lock (lockAdd)
+                    {
+                        newSeasonStandingsChangesModel.Rounds.Add(newRoundModel);
+                    }
+                });
+
+                constructorsPositionChanges.Add(newSeasonStandingsChangesModel);
+            }
+
+            return constructorsPositionChanges;
+        }
+
+        public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)
+        {
+            var laps = _lapsDataAccess.GetLapsFrom(season, race);
+            var driversPositionChangesDuringRace = new List<RacePositionChangesModel>(laps.Count);
+            var lockAdd = new object();
+
+            Parallel.ForEach(laps, lap =>
+            {
+                var lapNumber = int.Parse(lap.number);
+                var newRacePositionChangesModel = new RacePositionChangesModel { LapNumber = lapNumber, DriversPositions = new List<DriverPositionModel>() };
+
+                foreach (var timing in lap.Timings)
+                {
+                    var driverName = _driversDataAccess.GetDriverName(timing.driverId);
+                    var position = int.Parse(timing.position);
+
+                    var newDriverPositionModel = new DriverPositionModel { Name = driverName, Position = position };
+                    newRacePositionChangesModel.DriversPositions.Add(newDriverPositionModel);
+                }
+
+                lock (lockAdd)
+                {
+                    driversPositionChangesDuringRace.Add(newRacePositionChangesModel);
+                }
+            });
+
+            return driversPositionChangesDuringRace;
         }
     }
 }

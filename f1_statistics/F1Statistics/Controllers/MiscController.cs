@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -72,6 +73,30 @@ namespace F1Statistics.Controllers
         public List<DriverFinishingPositionsModel> GetDriversFinishingPositions(OptionsModel options)
         {
             var data = _service.AggregateDriversFinishingPositions(options);
+
+            return data;
+        }
+
+        [HttpPost("drivers/positionchanges")]
+        public List<SeasonStandingsChangesModel> GetDriversPositionChanges(OptionsModel options)
+        {
+            var data = _service.AggregateDriversPositionChanges(options);
+
+            return data;
+        }
+
+        [HttpPost("constructors/positionchanges")]
+        public List<SeasonStandingsChangesModel> GetConstructorsPositionChanges(OptionsModel options)
+        {
+            var data = _service.AggregateConstructorsPositionChanges(options);
+
+            return data;
+        }
+
+        [HttpPost("drivers/{season}/{race}/positionchangesduringrace")]
+        public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)
+        {
+            var data = _service.GetDriversPositionChangesDuringRace(season, race);
 
             return data;
         }

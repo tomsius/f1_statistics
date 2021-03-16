@@ -14,5 +14,8 @@ namespace F1Statistics.Library.Services.Interfaces
         List<SeasonPositionChangesModel> AggregateSeasonPositionChanges(OptionsModel options);
         List<FrontRowModel> AggregateConstructorsFrontRows(OptionsModel options);
         List<DriverFinishingPositionsModel> AggregateDriversFinishingPositions(OptionsModel options);
+        List<SeasonStandingsChangesModel> AggregateDriversPositionChanges(OptionsModel options);
+        List<SeasonStandingsChangesModel> AggregateConstructorsPositionChanges(OptionsModel options);
+        List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race);
     }
 }
