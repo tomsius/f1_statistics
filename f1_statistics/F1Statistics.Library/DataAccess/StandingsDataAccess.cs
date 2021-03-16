@@ -33,5 +33,29 @@ namespace F1Statistics.Library.DataAccess
 
             return result.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
         }
+
+        public List<DriverStandingsDataResponse> GetDriverStandingsFromRace(int year, int round)
+        {
+            var client = new RestClient($"http://ergast.com/api/f1/{year}/{round}/driverStandings.json?limit=200");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            var response = client.Execute(request);
+
+            var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
+
+            return result.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+        }
+
+        public List<ConstructorStandingsDataResponse> GetConstructorStandingsFromRace(int year, int round)
+        {
+            var client = new RestClient($"http://ergast.com/api/f1/{year}/{round}/constructorStandings.json?limit=200");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            var response = client.Execute(request);
+
+            var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
+
+            return result.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
+        }
     }
 }

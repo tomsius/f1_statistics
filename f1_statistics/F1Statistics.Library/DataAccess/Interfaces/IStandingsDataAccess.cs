@@ -9,5 +9,7 @@ namespace F1Statistics.Library.DataAccess.Interfaces
     {
         List<DriverStandingsDataResponse> GetDriverStandingsFrom(int year);
         List<ConstructorStandingsDataResponse> GetConstructorStandingsFrom(int year);
+        List<DriverStandingsDataResponse> GetDriverStandingsFromRace(int year, int round);
+        List<ConstructorStandingsDataResponse> GetConstructorStandingsFromRace(int year, int round);
     }
 }
