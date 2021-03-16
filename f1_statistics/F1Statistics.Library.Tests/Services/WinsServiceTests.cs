@@ -152,6 +152,38 @@ namespace F1Statistics.Library.Tests.Services
             return winners;
         }
 
+        private List<WinsByGridPositionModel> GenerateWinnersByGridPosition()
+        {
+            var winnersByGridPosition = new List<WinsByGridPositionModel>
+            {
+                new WinsByGridPositionModel
+                {
+                    GridPosition = 1,
+                    Winners = new List<string>
+                    {
+                        "First",
+                        "Second"
+                    }
+                },
+                new WinsByGridPositionModel
+                {
+                    GridPosition = 2,
+                    Winners = new List<string>()
+                },
+                new WinsByGridPositionModel
+                {
+                    GridPosition = 3,
+                    Winners = new List<string>
+                    {
+                        "First",
+                        "Third"
+                    }
+                }
+            };
+
+            return winnersByGridPosition;
+        }
+
         [TestMethod]
         public void AggregateDriversWins_ReturnSortedAggregatedWinnersList_IfThereAreAnyDrivers()
         {
@@ -468,6 +500,52 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateWinnersByGridPosition_ReturnAggregatedWinnersByGridPositionList_IfThereAreAnyWinners()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedWinnersByGridPosition = GenerateWinnersByGridPosition();
+            var mockReturn = GenerateWinnersByGridPosition();
+            mockReturn.RemoveAt(1);
+            _aggregator.Setup((aggregator) => aggregator.GetWinnersByGridPosition(It.IsAny<int>(), It.IsAny<int>())).Returns(mockReturn);
+
+            // Act
+            var actual = _service.AggregateWinnersByGridPosition(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinnersByGridPosition.Count, actual.Count);
+
+            for (int i = 0; i < expectedWinnersByGridPosition.Count; i++)
+            {
+                Assert.AreEqual(expectedWinnersByGridPosition[i].GridPosition, actual[i].GridPosition);
+                Assert.AreEqual(expectedWinnersByGridPosition[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinnersByGridPosition[i].Winners.Count, actual[i].Winners.Count);
+
+                for (int j = 0; j < expectedWinnersByGridPosition[i].Winners.Count; j++)
+                {
+                    Assert.AreEqual(expectedWinnersByGridPosition[i].Winners[j], actual[i].Winners[j]);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateWinnersByGridPosition_ReturnEmptyList_IfThereAreNoWinners()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedWinnersByGridPosition = new List<WinsByGridPositionModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetWinnersByGridPosition(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedWinnersByGridPosition);
+
+            // Act
+            var actual = _service.AggregateWinnersByGridPosition(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedWinnersByGridPosition.Count, actual.Count);
         }
     }
 }

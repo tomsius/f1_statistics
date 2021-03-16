@@ -595,5 +595,71 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 Assert.AreEqual(expectedUniquePoleSittersConstructors[1].WinnersFromPole.Count, actual[1].WinnersFromPole.Count);
             }
         }
+
+        [TestMethod]
+        public void GetWinnersByGridPosition_ReturnAggregatedWinnersByGridPositionList_IfThereAreAnyWinners()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedWinnersByGridPosition = new List<WinsByGridPositionModel> 
+            {
+                new WinsByGridPositionModel
+                {
+                    GridPosition = 1, 
+                    Winners = new List<string> 
+                    {
+                        "FirstName FirstFamily",
+                        "FirstName FirstFamily",
+                        "SecondName SecondFamily"
+                    }
+                }
+            };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetWinnersByGridPosition(from, to);
+                actual.Sort((x, y) => x.GridPosition.CompareTo(y.GridPosition));
+                actual.ForEach(model => model.Winners.Sort((x, y) => x.CompareTo(y)));
+
+                // Assert
+                Assert.AreEqual(expectedWinnersByGridPosition.Count, actual.Count);
+
+                for (int i = 0; i < expectedWinnersByGridPosition.Count; i++)
+                {
+                    Assert.AreEqual(expectedWinnersByGridPosition[i].GridPosition, actual[i].GridPosition);
+                    Assert.AreEqual(expectedWinnersByGridPosition[i].WinCount, actual[i].WinCount);
+                    Assert.AreEqual(expectedWinnersByGridPosition[i].Winners.Count, actual[i].Winners.Count);
+
+                    for (int j = 0; j < expectedWinnersByGridPosition[i].Winners.Count; j++)
+                    {
+                        Assert.AreEqual(expectedWinnersByGridPosition[i].Winners[j], actual[i].Winners[j]);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetWinnersByGridPosition_ReturnEmptyList_IfThereAreNoWinners()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedWinnersByGridPosition = new List<WinsByGridPositionModel>();
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
+
+            for (int i = 0; i < 10000; i++)
+            {
+                // Act
+                var actual = _aggregator.GetWinnersByGridPosition(from, to);
+
+                // Assert
+                Assert.AreEqual(expectedWinnersByGridPosition.Count, actual.Count);
+            }
+        }
     }
 }
