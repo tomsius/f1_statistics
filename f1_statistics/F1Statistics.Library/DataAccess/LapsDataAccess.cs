@@ -12,7 +12,7 @@ namespace F1Statistics.Library.DataAccess
     {
         public List<LapsDataResponse> GetLapsFrom(int year, int round)
         {
-            var client = new RestClient($"http://ergast.com/api/f1/{year}/{round}/laps.json?limit=1500");
+            var client = new RestClient($"http://ergast.com/api/f1/{year}/{round}/laps.json?limit=2000");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             var response = client.Execute(request);
