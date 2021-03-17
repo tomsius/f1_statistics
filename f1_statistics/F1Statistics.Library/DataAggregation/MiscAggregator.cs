@@ -321,9 +321,9 @@ namespace F1Statistics.Library.DataAggregation
             return driversFinishingPositions;
         }
 
-        public List<SeasonStandingsChangesModel> GetDriversPositionChanges(int from, int to)
+        public List<SeasonStandingsChangesModel> GetDriversStandingsChanges(int from, int to)
         {
-            var driversPositionChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
+            var driversStandingsChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
             var lockAdd = new object();
 
             for (int year = from; year <= to; year++)
@@ -354,15 +354,15 @@ namespace F1Statistics.Library.DataAggregation
                     }
                 });
 
-                driversPositionChanges.Add(newSeasonStandingsChangesModel);
+                driversStandingsChanges.Add(newSeasonStandingsChangesModel);
             }
 
-            return driversPositionChanges;
+            return driversStandingsChanges;
         }
 
-        public List<SeasonStandingsChangesModel> GetConstructorsPositionChanges(int from, int to)
+        public List<SeasonStandingsChangesModel> GetConstructorsStandingsChanges(int from, int to)
         {
-            var constructorsPositionChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
+            var constructorsStandingsChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
             var lockAdd = new object();
 
             for (int year = from; year <= to; year++)
@@ -393,10 +393,10 @@ namespace F1Statistics.Library.DataAggregation
                     }
                 });
 
-                constructorsPositionChanges.Add(newSeasonStandingsChangesModel);
+                constructorsStandingsChanges.Add(newSeasonStandingsChangesModel);
             }
 
-            return constructorsPositionChanges;
+            return constructorsStandingsChanges;
         }
 
         public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)

@@ -77,18 +77,18 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        [HttpPost("drivers/positionchanges")]
-        public List<SeasonStandingsChangesModel> GetDriversPositionChanges(OptionsModel options)
+        [HttpPost("drivers/standingschanges")]
+        public List<SeasonStandingsChangesModel> GetDriversStandingsChanges(OptionsModel options)
         {
-            var data = _service.AggregateDriversPositionChanges(options);
+            var data = _service.AggregateDriversStandingsChanges(options);
 
             return data;
         }
 
-        [HttpPost("constructors/positionchanges")]
-        public List<SeasonStandingsChangesModel> GetConstructorsPositionChanges(OptionsModel options)
+        [HttpPost("constructors/standingschanges")]
+        public List<SeasonStandingsChangesModel> GetConstructorsStandingsChanges(OptionsModel options)
         {
-            var data = _service.AggregateConstructorsPositionChanges(options);
+            var data = _service.AggregateConstructorsStandingsChanges(options);
 
             return data;
         }
@@ -96,7 +96,7 @@ namespace F1Statistics.Controllers
         [HttpPost("drivers/{season}/{race}/positionchangesduringrace")]
         public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)
         {
-            var data = _service.GetDriversPositionChangesDuringRace(season, race);
+            var data = _service.AggregateDriversPositionChangesDuringRace(season, race);
 
             return data;
         }

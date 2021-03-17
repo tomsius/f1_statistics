@@ -211,7 +211,7 @@ namespace F1Statistics.Library.Services
             }
         }
 
-        public List<SeasonStandingsChangesModel> AggregateDriversPositionChanges(OptionsModel options)
+        public List<SeasonStandingsChangesModel> AggregateDriversStandingsChanges(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -219,11 +219,11 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                driversPositionChanges = _aggregator.GetDriversPositionChanges(options.YearFrom, options.YearTo);
+                driversPositionChanges = _aggregator.GetDriversStandingsChanges(options.YearFrom, options.YearTo);
             }
             else
             {
-                driversPositionChanges = _aggregator.GetDriversPositionChanges(options.Season, options.Season);
+                driversPositionChanges = _aggregator.GetDriversStandingsChanges(options.Season, options.Season);
             }
 
             driversPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
@@ -232,7 +232,7 @@ namespace F1Statistics.Library.Services
             return driversPositionChanges;
         }
 
-        public List<SeasonStandingsChangesModel> AggregateConstructorsPositionChanges(OptionsModel options)
+        public List<SeasonStandingsChangesModel> AggregateConstructorsStandingsChanges(OptionsModel options)
         {
             _validator.ValidateOptionsModel(options);
 
@@ -240,21 +240,22 @@ namespace F1Statistics.Library.Services
 
             if (options.YearFrom != 0)
             {
-                constructorsPositionChanges = _aggregator.GetConstructorsPositionChanges(options.YearFrom, options.YearTo);
+                constructorsPositionChanges = _aggregator.GetConstructorsStandingsChanges(options.YearFrom, options.YearTo);
             }
             else
             {
-                constructorsPositionChanges = _aggregator.GetConstructorsPositionChanges(options.Season, options.Season);
+                constructorsPositionChanges = _aggregator.GetConstructorsStandingsChanges(options.Season, options.Season);
             }
 
+            //TODO - galbut iskelti rikiavimus i atskira klase kaip extension
             constructorsPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
             constructorsPositionChanges.ForEach(model => model.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round)));
 
             return constructorsPositionChanges;
         }
 
-        // TODO - iskelti kaip konstanta, naudoti default metus is settings
-        public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)
+        // TODO - iskelti kaip konstanta, naudoti default metus is settings, galbut is vis iskelti i atskira validatoriu visus tikrinimus
+        public List<RacePositionChangesModel> AggregateDriversPositionChangesDuringRace(int season, int race)
         {
             if (season < 1996)
             {

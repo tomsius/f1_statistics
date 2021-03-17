@@ -14,8 +14,8 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
         List<SeasonPositionChangesModel> GetSeasonPositionChanges(int from, int to);
         List<FrontRowModel> GetConstructorsFrontRows(int from, int to);
         List<DriverFinishingPositionsModel> GetDriversFinishingPositions(int from, int to);
-        List<SeasonStandingsChangesModel> GetDriversPositionChanges(int from, int to);
-        List<SeasonStandingsChangesModel> GetConstructorsPositionChanges(int from, int to);
+        List<SeasonStandingsChangesModel> GetDriversStandingsChanges(int from, int to);
+        List<SeasonStandingsChangesModel> GetConstructorsStandingsChanges(int from, int to);
         List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race);
     }
 }
