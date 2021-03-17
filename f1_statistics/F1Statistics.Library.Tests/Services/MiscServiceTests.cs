@@ -206,6 +206,172 @@ namespace F1Statistics.Library.Tests.Services
             return driversfinishingPositions;
         }
 
+        private List<SeasonStandingsChangesModel> GenerateSeasonStandingsChanges()
+        {
+            var seasonStandings = new List<SeasonStandingsChangesModel>
+            {
+                new SeasonStandingsChangesModel
+                {
+                    Season = 1,
+                    Rounds = new List<RoundModel>
+                    {
+                        new RoundModel
+                        {
+                            Round = 1,
+                            Standings = new List<StandingModel>
+                            {
+                                new StandingModel
+                                {
+                                    Name = "First",
+                                    Position = 1
+                                },
+                                new StandingModel
+                                {
+                                    Name = "Second",
+                                    Position = 2
+                                }
+                            }
+                        },
+                        new RoundModel
+                        {
+                            Round = 2,
+                            Standings = new List<StandingModel>
+                            {
+                                new StandingModel
+                                {
+                                    Name = "Second",
+                                    Position = 1
+                                },
+                                new StandingModel
+                                {
+                                    Name = "First",
+                                    Position = 2
+                                }
+                            }
+                        }
+                    }
+                },
+                new SeasonStandingsChangesModel
+                {
+                    Season = 2,
+                    Rounds = new List<RoundModel>
+                    {
+                        new RoundModel
+                        {
+                            Round = 1,
+                            Standings = new List<StandingModel>
+                            {
+                                new StandingModel
+                                {
+                                    Name = "Second",
+                                    Position = 1
+                                },
+                                new StandingModel
+                                {
+                                    Name = "First",
+                                    Position = 2
+                                }
+                            }
+                        },
+                        new RoundModel
+                        {
+                            Round = 2,
+                            Standings = new List<StandingModel>
+                            {
+                                new StandingModel
+                                {
+                                    Name = "First",
+                                    Position = 1
+                                },
+                                new StandingModel
+                                {
+                                    Name = "Second",
+                                    Position = 2
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            return seasonStandings;
+        }
+
+        private List<RacePositionChangesModel> GenerateDriversPositionChangesDuringRace()
+        {
+            var positionChangesDuringRace = new List<RacePositionChangesModel>
+            {
+                new RacePositionChangesModel
+                {
+                    LapNumber = 1,
+                    DriversPositions = new List<DriverPositionModel>
+                    {
+                        new DriverPositionModel
+                        {
+                            Name = "First",
+                            Position = 1
+                        },
+                        new DriverPositionModel
+                        {
+                            Name = "Second",
+                            Position = 2
+                        },
+                        new DriverPositionModel
+                        {
+                            Name = "Third",
+                            Position = 3
+                        }
+                    }
+                },
+                new RacePositionChangesModel
+                {
+                    LapNumber = 2,
+                    DriversPositions = new List<DriverPositionModel>
+                    {
+                        new DriverPositionModel
+                        {
+                            Name = "Second",
+                            Position = 1
+                        },
+                        new DriverPositionModel
+                        {
+                            Name = "First",
+                            Position = 2
+                        },
+                        new DriverPositionModel
+                        {
+                            Name = "Third",
+                            Position = 3
+                        }
+                    }
+                },
+                new RacePositionChangesModel
+                {
+                    LapNumber = 2,
+                    DriversPositions = new List<DriverPositionModel>
+                    {
+                        new DriverPositionModel
+                        {
+                            Name = "Third",
+                            Position = 1
+                        },
+                        new DriverPositionModel
+                        {
+                            Name = "Second",
+                            Position = 2
+                        },
+                        new DriverPositionModel
+                        {
+                            Name = "First",
+                            Position = 3
+                        }
+                    }
+                }
+            };
+
+            return positionChangesDuringRace;
+        }
+
         [TestMethod]
         public void AggregateRaceCountPerSeason_ReturnSortedAggregatedRaceCountPerSeasonList_IfThereAreAnyRaces()
         {
@@ -491,6 +657,156 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversFinishingPositions.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateDriversStandingsChanges_ReturnSortedAggregatedDriversStandingsChangesList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedDriversStandingsChanges = GenerateSeasonStandingsChanges();
+            expectedDriversStandingsChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            expectedDriversStandingsChanges.ForEach(model => model.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round)));
+            _aggregator.Setup((aggregator) => aggregator.GetDriversStandingsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateSeasonStandingsChanges());
+
+            // Act
+            var actual = _service.AggregateDriversStandingsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedDriversStandingsChanges.Count, actual.Count);
+
+            for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
+            {
+                Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds.Count, actual[i].Rounds.Count);
+
+                for (int j = 0; j < expectedDriversStandingsChanges[i].Rounds.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Round, actual[i].Rounds[j].Round);
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Standings.Count, actual[i].Rounds[j].Standings.Count);
+
+                    for (int k = 0; k < expectedDriversStandingsChanges[i].Rounds[j].Standings.Count; k++)
+                    {
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Standings[k].Name, actual[i].Rounds[j].Standings[k].Name);
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Standings[k].Position, actual[i].Rounds[j].Standings[k].Position);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateDriversStandingsChanges_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetDriversStandingsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDriversStandingsChanges);
+
+            // Act
+            var actual = _service.AggregateDriversStandingsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedDriversStandingsChanges.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsStandingsChanges_ReturnSortedAggregatedConstructorsStandingsChangesList_IfThereAreAnyConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedConstructorsStandingsChanges = GenerateSeasonStandingsChanges();
+            expectedConstructorsStandingsChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            expectedConstructorsStandingsChanges.ForEach(model => model.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round)));
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsStandingsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateSeasonStandingsChanges());
+
+            // Act
+            var actual = _service.AggregateConstructorsStandingsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedConstructorsStandingsChanges.Count, actual.Count);
+
+            for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
+            {
+                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds.Count, actual[i].Rounds.Count);
+
+                for (int j = 0; j < expectedConstructorsStandingsChanges[i].Rounds.Count; j++)
+                {
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Round, actual[i].Rounds[j].Round);
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Standings.Count, actual[i].Rounds[j].Standings.Count);
+
+                    for (int k = 0; k < expectedConstructorsStandingsChanges[i].Rounds[j].Standings.Count; k++)
+                    {
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Standings[k].Name, actual[i].Rounds[j].Standings[k].Name);
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Standings[k].Position, actual[i].Rounds[j].Standings[k].Position);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsStandingsChanges_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedConstructorsStandingsChanges = new List<SeasonStandingsChangesModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsStandingsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedConstructorsStandingsChanges);
+
+            // Act
+            var actual = _service.AggregateConstructorsStandingsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedConstructorsStandingsChanges.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateDriversPositionChangesDuringRace_ReturnSortedAggregatedDriversPositionChangesDuringRaceList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var season = 2020;
+            var race = 1;
+            var expectedDriversPositionChangesDuringRace = GenerateDriversPositionChangesDuringRace();
+            expectedDriversPositionChangesDuringRace.Sort((x, y) => x.LapNumber.CompareTo(y.LapNumber));
+            _aggregator.Setup((aggregator) => aggregator.GetDriversPositionChangesDuringRace(season, race)).Returns(GenerateDriversPositionChangesDuringRace());
+
+            // Act
+            var actual = _service.AggregateDriversPositionChangesDuringRace(season, race);
+
+            // Assert
+            Assert.AreEqual(expectedDriversPositionChangesDuringRace.Count, actual.Count);
+
+            for (int i = 0; i < expectedDriversPositionChangesDuringRace.Count; i++)
+            {
+                Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].LapNumber, actual[i].LapNumber);
+                Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].DriversPositions.Count, actual[i].DriversPositions.Count);
+
+                for (int j = 0; j < expectedDriversPositionChangesDuringRace[i].DriversPositions.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].DriversPositions[j].Name, actual[i].DriversPositions[j].Name);
+                    Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].DriversPositions[j].Position, actual[i].DriversPositions[j].Position);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateDriversPositionChangesDuringRace_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var season = 1;
+            var race = 1;
+            var defaultYear = 1996;
+            var expectedDriversPositionChangesDuringRace = new List<RacePositionChangesModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetDriversPositionChangesDuringRace(defaultYear, race)).Returns(expectedDriversPositionChangesDuringRace);
+
+            // Act
+            var actual = _service.AggregateDriversPositionChangesDuringRace(season, race);
+
+            // Assert
+            Assert.AreEqual(expectedDriversPositionChangesDuringRace.Count, actual.Count);
         }
     }
 }
