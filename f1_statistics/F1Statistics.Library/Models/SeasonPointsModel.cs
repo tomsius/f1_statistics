@@ -9,7 +9,7 @@ namespace F1Statistics.Library.Models
     {
         public int Season { get; set; }
         public List<PointsModel> ScoredPoints { get; set; }
-        public int TotalPoints
+        public double TotalPoints
         {
             get 
             {

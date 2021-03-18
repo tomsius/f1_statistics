@@ -32,7 +32,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var standing in standings)
                 {
                     var driverName = $"{standing.Driver.givenName} {standing.Driver.familyName}";
-                    var driverScoredPoints = int.Parse(standing.points);
+                    var driverScoredPoints = double.Parse(standing.points);
 
                     var newPointsModel = new PointsModel { Name = driverName, Points = driverScoredPoints };
                     newSeasonPointsModel.ScoredPoints.Add(newPointsModel);
@@ -61,7 +61,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var standing in standings)
                 {
                     var constructorName = $"{standing.Constructor.name}";
-                    var constructorScoredPoints = int.Parse(standing.points);
+                    var constructorScoredPoints = double.Parse(standing.points);
 
                     var newPointsModel = new PointsModel { Name = constructorName, Points = constructorScoredPoints };
                     newSeasonPointsModel.ScoredPoints.Add(newPointsModel);

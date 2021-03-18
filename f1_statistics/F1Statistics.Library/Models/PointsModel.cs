@@ -7,6 +7,6 @@ namespace F1Statistics.Library.Models
     public class PointsModel
     {
         public string Name { get; set; }
-        public int Points { get; set; }
+        public double Points { get; set; }
     }
 }
