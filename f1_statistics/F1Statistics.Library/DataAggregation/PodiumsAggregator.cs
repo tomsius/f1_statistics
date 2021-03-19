@@ -63,20 +63,26 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
+                    HashSet<string> uniqueConstructors = new HashSet<string>(3);
+
                     for (int i = 0; i < 3; i++)
                     {
                         var podiumFinisher = $"{race.Results[i].Constructor.name}";
+                        uniqueConstructors.Add(podiumFinisher); 
+                    }
 
-                        lock (lockObject)
+                    lock (lockObject)
+                    {
+                        foreach (var uniqueConstructor in uniqueConstructors)
                         {
-                            if (!constructorsPodiums.Where(constructor => constructor.Name == podiumFinisher).Any())
+                            if (!constructorsPodiums.Where(constructor => constructor.Name == uniqueConstructor).Any())
                             {
-                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumCount = 1 };
+                                var newPodiumsModel = new PodiumsModel { Name = uniqueConstructor, PodiumCount = 1 };
                                 constructorsPodiums.Add(newPodiumsModel);
                             }
                             else
                             {
-                                constructorsPodiums.Where(constructor => constructor.Name == podiumFinisher).First().PodiumCount++;
+                                constructorsPodiums.Where(constructor => constructor.Name == uniqueConstructor).First().PodiumCount++;
                             }
                         }
                     }
