@@ -495,7 +495,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedNonFinishers = GenerateNonFinishers();
-            expectedNonFinishers.Sort((x, y) => x.DidNotFinishCount.CompareTo(y.DidNotFinishCount));
+            expectedNonFinishers.Sort((x, y) => y.DidNotFinishCount.CompareTo(x.DidNotFinishCount));
             _aggregator.Setup((aggregator) => aggregator.GetNonFinishers(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateNonFinishers());
 
             // Act

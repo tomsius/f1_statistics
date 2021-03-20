@@ -125,7 +125,7 @@ namespace F1Statistics.Library.Services
                 nonFinishers = _aggregator.GetNonFinishers(options.Season, options.Season);
             }
 
-            nonFinishers.Sort((x, y) => x.DidNotFinishCount.CompareTo(y.DidNotFinishCount));
+            nonFinishers.Sort((x, y) => y.DidNotFinishCount.CompareTo(x.DidNotFinishCount));
 
             return nonFinishers;
         }
