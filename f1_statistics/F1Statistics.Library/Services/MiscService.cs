@@ -227,7 +227,7 @@ namespace F1Statistics.Library.Services
             }
 
             driversPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
-            driversPositionChanges.ForEach(model => model.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round)));
+            driversPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
             return driversPositionChanges;
         }
@@ -249,7 +249,7 @@ namespace F1Statistics.Library.Services
 
             //TODO - galbut iskelti rikiavimus i atskira klase kaip extension
             constructorsPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
-            constructorsPositionChanges.ForEach(model => model.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round)));
+            constructorsPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
             return constructorsPositionChanges;
         }

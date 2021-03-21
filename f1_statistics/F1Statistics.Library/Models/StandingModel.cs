@@ -7,7 +7,6 @@ namespace F1Statistics.Library.Models
     public class StandingModel
     {
         public string Name { get; set; }
-        public double Points { get; set; }
-        public int Position { get; set; }
+        public List<RoundModel> Rounds { get; set; }
     }
 }

@@ -937,25 +937,25 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel>
+            var expectedDriversStandingsChanges = new List<OLDSeasonStandingsChangesModel>
             {
-                new SeasonStandingsChangesModel
+                new OLDSeasonStandingsChangesModel
                 {
                     Season = 1,
-                    Rounds = new List<RoundModel>
+                    Rounds = new List<OLDRoundModel>
                     {
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 1,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "FirstName FirstFamily",
                                     Position = 1,
                                     Points = 25
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "SecondName SecondFamily",
                                     Position = 2,
@@ -965,23 +965,23 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         }
                     }
                 },
-                new SeasonStandingsChangesModel
+                new OLDSeasonStandingsChangesModel
                 {
                     Season = 2,
-                    Rounds = new List<RoundModel>
+                    Rounds = new List<OLDRoundModel>
                     {
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 1,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "FirstName FirstFamily",
                                     Position = 1,
                                     Points = 25
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "SecondName SecondFamily",
                                     Position = 2,
@@ -989,18 +989,18 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 }
                             }
                         },
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 2,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "FirstName FirstFamily",
                                     Position = 1,
                                     Points = 43
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "SecondName SecondFamily",
                                     Position = 2,
@@ -1054,7 +1054,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
+            var expectedDriversStandingsChanges = new List<OLDSeasonStandingsChangesModel> { new OLDSeasonStandingsChangesModel { Season = 1 }, new OLDSeasonStandingsChangesModel { Season = 2 } };
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
 
@@ -1074,25 +1074,25 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedConstructorsStandingsChanges = new List<SeasonStandingsChangesModel>
+            var expectedConstructorsStandingsChanges = new List<OLDSeasonStandingsChangesModel>
             {
-                new SeasonStandingsChangesModel
+                new OLDSeasonStandingsChangesModel
                 {
                     Season = 1,
-                    Rounds = new List<RoundModel>
+                    Rounds = new List<OLDRoundModel>
                     {
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 1,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "First",
                                     Position = 1,
                                     Points = 25
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "Second",
                                     Position = 2,
@@ -1102,23 +1102,23 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         }
                     }
                 },
-                new SeasonStandingsChangesModel
+                new OLDSeasonStandingsChangesModel
                 {
                     Season = 2,
-                    Rounds = new List<RoundModel>
+                    Rounds = new List<OLDRoundModel>
                     {
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 1,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "First",
                                     Position = 1,
                                     Points = 25
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "Second",
                                     Position = 2,
@@ -1126,18 +1126,18 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 }
                             }
                         },
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 2,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "First",
                                     Position = 1,
                                     Points = 43
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "Second",
                                     Position = 2,
@@ -1191,7 +1191,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversFinishingPositions = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
+            var expectedDriversFinishingPositions = new List<OLDSeasonStandingsChangesModel> { new OLDSeasonStandingsChangesModel { Season = 1 }, new OLDSeasonStandingsChangesModel { Season = 2 } };
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
 

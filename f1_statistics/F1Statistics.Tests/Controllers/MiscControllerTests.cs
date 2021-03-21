@@ -201,43 +201,43 @@ namespace F1Statistics.Tests.Controllers
             return driversfinishingPositions;
         }
 
-        private List<SeasonStandingsChangesModel> GenerateSeasonStandingsChanges()
+        private List<OLDSeasonStandingsChangesModel> GenerateSeasonStandingsChanges()
         {
-            var seasonStandings = new List<SeasonStandingsChangesModel>
+            var seasonStandings = new List<OLDSeasonStandingsChangesModel>
             {
-                new SeasonStandingsChangesModel
+                new OLDSeasonStandingsChangesModel
                 {
                     Season = 1,
-                    Rounds = new List<RoundModel>
+                    Rounds = new List<OLDRoundModel>
                     {
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 1,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "First",
                                     Position = 1
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "Second",
                                     Position = 2
                                 }
                             }
                         },
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 2,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "Second",
                                     Position = 1
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "First",
                                     Position = 2
@@ -246,39 +246,39 @@ namespace F1Statistics.Tests.Controllers
                         }
                     }
                 },
-                new SeasonStandingsChangesModel
+                new OLDSeasonStandingsChangesModel
                 {
                     Season = 2,
-                    Rounds = new List<RoundModel>
+                    Rounds = new List<OLDRoundModel>
                     {
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 1,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "Second",
                                     Position = 1
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "First",
                                     Position = 2
                                 }
                             }
                         },
-                        new RoundModel
+                        new OLDRoundModel
                         {
                             Round = 2,
-                            Standings = new List<StandingModel>
+                            Standings = new List<OLDStandingModel>
                             {
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "First",
                                     Position = 1
                                 },
-                                new StandingModel
+                                new OLDStandingModel
                                 {
                                     Name = "Second",
                                     Position = 2
@@ -669,7 +669,7 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel>();
+            var expectedDriversStandingsChanges = new List<OLDSeasonStandingsChangesModel>();
             _service.Setup((service) => service.AggregateDriversStandingsChanges(It.IsAny<OptionsModel>())).Returns(expectedDriversStandingsChanges);
 
             // Act
@@ -717,7 +717,7 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedConstructorsStandingsChanges = new List<SeasonStandingsChangesModel>();
+            var expectedConstructorsStandingsChanges = new List<OLDSeasonStandingsChangesModel>();
             _service.Setup((service) => service.AggregateConstructorsStandingsChanges(It.IsAny<OptionsModel>())).Returns(expectedConstructorsStandingsChanges);
 
             // Act
