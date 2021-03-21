@@ -409,25 +409,28 @@ namespace F1Statistics.Library.DataAggregation
         {
             var laps = _lapsDataAccess.GetLapsFrom(season, race);
             var driversPositionChangesDuringRace = new List<RacePositionChangesModel>(laps.Count);
-            var lockAdd = new object();
+            var lockObject = new object();
 
             Parallel.ForEach(laps, lap =>
             {
                 var lapNumber = int.Parse(lap.number);
-                var newRacePositionChangesModel = new RacePositionChangesModel { LapNumber = lapNumber, DriversPositions = new List<DriverPositionModel>() };
 
                 foreach (var timing in lap.Timings)
                 {
                     var driverName = _driversDataAccess.GetDriverName(timing.driverId);
                     var position = int.Parse(timing.position);
 
-                    var newDriverPositionModel = new DriverPositionModel { Name = driverName, Position = position };
-                    newRacePositionChangesModel.DriversPositions.Add(newDriverPositionModel);
-                }
+                    lock (lockObject)
+                    {
+                        if (!driversPositionChangesDuringRace.Where(driver => driver.Name == driverName).Any())
+                        {
+                            var newRacePositionChangesModel = new RacePositionChangesModel { Name = driverName, Laps = new List<LapPositionModel>() };
+                            driversPositionChangesDuringRace.Add(newRacePositionChangesModel);
+                        }
 
-                lock (lockAdd)
-                {
-                    driversPositionChangesDuringRace.Add(newRacePositionChangesModel);
+                        var newLapPositionModel = new LapPositionModel { LapNumber = lapNumber, Position = position };
+                        driversPositionChangesDuringRace.Where(driver => driver.Name == driverName).First().Laps.Add(newLapPositionModel); 
+                    }
                 }
             });
 

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace F1Statistics.Library.Models
 {
-    public class DriverPositionModel
+    public class LapPositionModel
     {
-        public string Name { get; set; }
+        public int LapNumber { get; set; }
         public int Position { get; set; }
     }
 }

@@ -292,70 +292,70 @@ namespace F1Statistics.Tests.Controllers
             return seasonStandings;
         }
 
-        private List<RacePositionChangesModel> GenerateDriversPositionChangesDuringRace()
+        private List<OLDRacePositionChangesModel> GenerateDriversPositionChangesDuringRace()
         {
-            var positionChangesDuringRace = new List<RacePositionChangesModel>
+            var positionChangesDuringRace = new List<OLDRacePositionChangesModel>
             {
-                new RacePositionChangesModel
+                new OLDRacePositionChangesModel
                 {
                     LapNumber = 1,
-                    DriversPositions = new List<DriverPositionModel>
+                    DriversPositions = new List<OLDDriverPositionModel>
                     {
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "First",
                             Position = 1
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Second",
                             Position = 2
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Third",
                             Position = 3
                         }
                     }
                 },
-                new RacePositionChangesModel
+                new OLDRacePositionChangesModel
                 {
                     LapNumber = 2,
-                    DriversPositions = new List<DriverPositionModel>
+                    DriversPositions = new List<OLDDriverPositionModel>
                     {
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Second",
                             Position = 1
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "First",
                             Position = 2
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Third",
                             Position = 3
                         }
                     }
                 },
-                new RacePositionChangesModel
+                new OLDRacePositionChangesModel
                 {
                     LapNumber = 2,
-                    DriversPositions = new List<DriverPositionModel>
+                    DriversPositions = new List<OLDDriverPositionModel>
                     {
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Third",
                             Position = 1
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Second",
                             Position = 2
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "First",
                             Position = 3
@@ -761,7 +761,7 @@ namespace F1Statistics.Tests.Controllers
             // Arrange
             var season = 1;
             var race = 1;
-            var expectedDriversPositionChangesDuringRace = new List<RacePositionChangesModel>();
+            var expectedDriversPositionChangesDuringRace = new List<OLDRacePositionChangesModel>();
             _service.Setup((service) => service.AggregateDriversPositionChangesDuringRace(season, race)).Returns(expectedDriversPositionChangesDuringRace);
 
             // Act

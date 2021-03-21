@@ -6,7 +6,7 @@ namespace F1Statistics.Library.Models
 {
     public class RacePositionChangesModel
     {
-        public int LapNumber { get; set; }
-        public List<DriverPositionModel> DriversPositions { get; set; }
+        public string Name { get; set; }
+        public List<LapPositionModel> Laps { get; set; }
     }
 }

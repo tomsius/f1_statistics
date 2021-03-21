@@ -1211,56 +1211,56 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var season = 1;
             var race = 1;
-            var expectedDriversPositionChangesDuringRace = new List<RacePositionChangesModel>
+            var expectedDriversPositionChangesDuringRace = new List<OLDRacePositionChangesModel>
             {
-                new RacePositionChangesModel
+                new OLDRacePositionChangesModel
                 {
                     LapNumber = 1,
-                    DriversPositions = new List<DriverPositionModel>
+                    DriversPositions = new List<OLDDriverPositionModel>
                     {
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "First",
                             Position = 1
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Third",
                             Position = 2
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Forth",
                             Position = 3
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Second",
                             Position = 4
                         }
                     }
                 },
-                new RacePositionChangesModel
+                new OLDRacePositionChangesModel
                 {
                     LapNumber = 2,
-                    DriversPositions = new List<DriverPositionModel>
+                    DriversPositions = new List<OLDDriverPositionModel>
                     {
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "First",
                             Position = 1
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Forth",
                             Position = 2
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Second",
                             Position = 3
                         },
-                        new DriverPositionModel
+                        new OLDDriverPositionModel
                         {
                             Name = "Third",
                             Position = 4
@@ -1303,7 +1303,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var season = 1;
             var race = 1;
-            var expectedDriversFinishingPositions = new List<RacePositionChangesModel>();
+            var expectedDriversFinishingPositions = new List<OLDRacePositionChangesModel>();
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(season, race)).Returns(new List<LapsDataResponse>());
 
             for (int k = 0; k < 10000; k++)

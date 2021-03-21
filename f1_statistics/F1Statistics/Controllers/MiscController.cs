@@ -93,7 +93,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        [HttpPost("drivers/{season}/{race}/positionchangesduringrace")]
+        [HttpPost("{season}/{race}/positionchangesduringrace")]
         public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)
         {
             var data = _service.AggregateDriversPositionChangesDuringRace(season, race);
