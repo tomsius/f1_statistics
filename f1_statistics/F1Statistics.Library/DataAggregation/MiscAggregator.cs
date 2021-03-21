@@ -243,12 +243,12 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var races = _resultsDataAccess.GetResultsFrom(year);
+                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
-                foreach (var race in races)
+                foreach (var qualifying in qualifyings)
                 {
-                    var firstOnGrid = $"{race.Results.Where(result => result.grid == "1").FirstOrDefault()?.Constructor.name}";
-                    var secondOnGrid = $"{race.Results.Where(result => result.grid == "2").FirstOrDefault()?.Constructor.name}";
+                    var firstOnGrid = $"{qualifying.QualifyingResults.Where(result => result.position == "1").FirstOrDefault()?.Constructor.name}";
+                    var secondOnGrid = $"{qualifying.QualifyingResults.Where(result => result.position == "2").FirstOrDefault()?.Constructor.name}";
 
                     if (firstOnGrid == secondOnGrid && firstOnGrid != null)
                     {
