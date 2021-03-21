@@ -64,6 +64,7 @@ namespace F1Statistics
             services.AddTransient<ILeadingLapsService, LeadingLapsService>();
             services.AddTransient<IMiscService, MiscService>();
             services.AddTransient<INationalitiesService, NationalitiesService>();
+            services.AddTransient<ISeasonsService, SeasonsService>();
 
             services.AddTransient<IWinsAggregator, WinsAggregator>();
             services.AddTransient<IPolesAggregator, PolesAggregator>();
@@ -73,6 +74,7 @@ namespace F1Statistics
             services.AddTransient<ILeadingLapsAggregator, LeadingLapsAggregator>();
             services.AddTransient<IMiscAggregator, MiscAggregator>();
             services.AddTransient<INationalitiesAggregator, NationalitiesAggregator>();
+            services.AddTransient<ISeasonsAggregator, SeasonsAggregator>();
 
             services.AddSwaggerGen(c =>
             {
