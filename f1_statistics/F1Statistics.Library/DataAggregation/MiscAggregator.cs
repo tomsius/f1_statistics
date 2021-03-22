@@ -409,7 +409,9 @@ namespace F1Statistics.Library.DataAggregation
         {
             var laps = _lapsDataAccess.GetLapsFrom(season, race);
             var driversPositionChangesDuringRace = new List<RacePositionChangesModel>(laps.Count);
+            var driversNames = new Dictionary<string, string>();
             var lockObject = new object();
+            var lockCheck = new object();
 
             Parallel.ForEach(laps, lap =>
             {
@@ -417,7 +419,22 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var timing in lap.Timings)
                 {
-                    var driverName = _driversDataAccess.GetDriverName(timing.driverId);
+                    var driverId = timing.driverId;
+                    string driverName;
+
+                    lock (lockCheck)
+                    {
+                        if (driversNames.ContainsKey(driverId))
+                        {
+                            driverName = driversNames[driverId];
+                        }
+                        else
+                        {
+                            driverName = _driversDataAccess.GetDriverName(driverId);
+                            driversNames.Add(driverId, driverName);
+                        }
+                    }
+
                     var position = int.Parse(timing.position);
 
                     lock (lockObject)
