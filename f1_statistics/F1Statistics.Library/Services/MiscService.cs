@@ -264,6 +264,7 @@ namespace F1Statistics.Library.Services
 
             var driversPositionChangesDuringRace = _aggregator.GetDriversPositionChangesDuringRace(season, race);
 
+            driversPositionChangesDuringRace.Sort((x, y) => x.Name.CompareTo(y.Name));
             driversPositionChangesDuringRace.ForEach(driver => driver.Laps.Sort((x, y) => x.LapNumber.CompareTo(y.LapNumber)));
 
             return driversPositionChangesDuringRace;
