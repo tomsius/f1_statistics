@@ -94,6 +94,105 @@ namespace F1Statistics.Library.Tests.Services
             return winnersPoints;
         }
 
+        private List<SeasonStandingsChangesModel> GenerateSeasonPointsChanges()
+        {
+            var seasonStandings = new List<SeasonStandingsChangesModel>
+            {
+                new SeasonStandingsChangesModel
+                {
+                    Season = 1,
+                    Standings = new List<StandingModel>
+                    {
+                        new StandingModel
+                        {
+                            Name = "First",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Position = 2,
+                                    Points = 18
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Position = 1,
+                                    Points = 33
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "Second",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Position = 1,
+                                    Points = 25
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Position = 2,
+                                    Points = 32
+                                }
+                            }
+                        }
+                    }
+                },
+                new SeasonStandingsChangesModel
+                {
+                    Season = 2,
+                    Standings = new List<StandingModel>
+                    {
+                        new StandingModel
+                        {
+                            Name = "First",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Position = 1,
+                                    Points = 25
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Position = 1,
+                                    Points = 50
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "Second",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Position = 2,
+                                    Points = 18
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Position = 2,
+                                    Points = 32
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            return seasonStandings;
+        }
+
         [TestMethod]
         public void AggregateDriversPointsPerSeason_ReturnSortedAggregatedDriversPointsList_IfThereAreAnyDrivers()
         {
@@ -264,6 +363,110 @@ namespace F1Statistics.Library.Tests.Services
             // Assert
             _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsWinnersPoints.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateDriversPointsChanges_ReturnSortedAggregatedDriversPointsList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedDriversStandingsChanges = GenerateSeasonPointsChanges();
+            expectedDriversStandingsChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            expectedDriversStandingsChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
+            _aggregator.Setup((aggregator) => aggregator.GetDriversPointsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateSeasonPointsChanges());
+
+            // Act
+            var actual = _service.AggregateDriversPointsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedDriversStandingsChanges.Count, actual.Count);
+
+            for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
+            {
+                Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedDriversStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
+
+                for (int j = 0; j < expectedDriversStandingsChanges[i].Standings.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Name, actual[i].Standings[j].Name);
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds.Count, actual[i].Standings[j].Rounds.Count);
+
+                    for (int k = 0; k < expectedDriversStandingsChanges[i].Standings[j].Rounds.Count; k++)
+                    {
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[k].Round, actual[i].Standings[j].Rounds[k].Round);
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[k].Position, actual[i].Standings[j].Rounds[k].Position);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateDriversPointsChanges_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetDriversPointsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDriversStandingsChanges);
+
+            // Act
+            var actual = _service.AggregateDriversPointsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedDriversStandingsChanges.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsPointsChanges_ReturnSortedAggregatedConstructorsPointsList_IfThereAreAnyConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var expectedConstructorsStandingsChanges = GenerateSeasonPointsChanges();
+            expectedConstructorsStandingsChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            expectedConstructorsStandingsChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsPointsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateSeasonPointsChanges());
+
+            // Act
+            var actual = _service.AggregateConstructorsPointsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedConstructorsStandingsChanges.Count, actual.Count);
+
+            for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
+            {
+                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
+
+                for (int j = 0; j < expectedConstructorsStandingsChanges[i].Standings.Count; j++)
+                {
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Name, actual[i].Standings[j].Name);
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds.Count, actual[i].Standings[j].Rounds.Count);
+
+                    for (int k = 0; k < expectedConstructorsStandingsChanges[i].Standings[j].Rounds.Count; k++)
+                    {
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[k].Round, actual[i].Standings[j].Rounds[k].Round);
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[k].Position, actual[i].Standings[j].Rounds[k].Position);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsPointsChanges_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2000 };
+            var expectedConstructorsStandingsChanges = new List<SeasonStandingsChangesModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsPointsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedConstructorsStandingsChanges);
+
+            // Act
+            var actual = _service.AggregateConstructorsPointsChanges(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedConstructorsStandingsChanges.Count, actual.Count);
         }
     }
 }

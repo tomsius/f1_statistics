@@ -16,14 +16,16 @@ namespace F1Statistics.Library.Tests.DataAggregation
     public class PointsAggregatorTests
     {
         private PointsAggregator _aggregator;
-        private Mock<IStandingsDataAccess> _resultsDataAccess;
+        private Mock<IRacesDataAccess> _racesDataAccess;
+        private Mock<IStandingsDataAccess> _standingsDataAccess;
 
         [TestInitialize]
         public void Setup()
         {
-            _resultsDataAccess = new Mock<IStandingsDataAccess>();
+            _racesDataAccess = new Mock<IRacesDataAccess>();
+            _standingsDataAccess = new Mock<IStandingsDataAccess>();
 
-            _aggregator = new PointsAggregator(_resultsDataAccess.Object);
+            _aggregator = new PointsAggregator(_racesDataAccess.Object, _standingsDataAccess.Object);
         }
 
         private List<List<DriverStandingsDataResponse>> GenerateDriverStandings()
@@ -124,6 +126,144 @@ namespace F1Statistics.Library.Tests.DataAggregation
             return standings;
         }
 
+        private List<List<DriverStandingsDataResponse>> GenerateDriversStandingsAfterEachRace()
+        {
+            var driversStandings = new List<List<DriverStandingsDataResponse>>
+            {
+                new List<DriverStandingsDataResponse>
+                {
+                    new DriverStandingsDataResponse
+                    {
+                        Driver = new DriverDataResponse
+                        {
+                            familyName = "FirstFamily",
+                            givenName= "FirstName"
+                        },
+                        points = "25"
+                    },
+                    new DriverStandingsDataResponse
+                    {
+                        Driver = new DriverDataResponse
+                        {
+                            familyName = "SecondFamily",
+                            givenName= "SecondName"
+                        },
+                        points = "18"
+                    }
+                },
+                new List<DriverStandingsDataResponse>
+                {
+                    new DriverStandingsDataResponse
+                    {
+                        Driver = new DriverDataResponse
+                        {
+                            familyName = "FirstFamily",
+                            givenName= "FirstName"
+                        },
+                        points = "25"
+                    },
+                    new DriverStandingsDataResponse
+                    {
+                        Driver = new DriverDataResponse
+                        {
+                            familyName = "SecondFamily",
+                            givenName= "SecondName"
+                        },
+                        points = "15"
+                    }
+                },
+                new List<DriverStandingsDataResponse>
+                {
+                    new DriverStandingsDataResponse
+                    {
+                        Driver = new DriverDataResponse
+                        {
+                            familyName = "FirstFamily",
+                            givenName= "FirstName"
+                        },
+                        points = "43"
+                    },
+                    new DriverStandingsDataResponse
+                    {
+                        Driver = new DriverDataResponse
+                        {
+                            familyName = "SecondFamily",
+                            givenName= "SecondName"
+                        },
+                        points = "40"
+                    }
+                }
+            };
+
+            return driversStandings;
+        }
+
+        private List<List<ConstructorStandingsDataResponse>> GenerateConstructorsStandingsAfterEachRace()
+        {
+            var constructorsStandings = new List<List<ConstructorStandingsDataResponse>>
+            {
+                new List<ConstructorStandingsDataResponse>
+                {
+                    new ConstructorStandingsDataResponse
+                    {
+                        Constructor = new ConstructorDataResponse
+                        {
+                            name = "First"
+                        },
+                        points = "25"
+                    },
+                    new ConstructorStandingsDataResponse
+                    {
+                        Constructor = new ConstructorDataResponse
+                        {
+                            name = "Second"
+                        },
+                        points = "18"
+                    }
+                },
+                new List<ConstructorStandingsDataResponse>
+                {
+                    new ConstructorStandingsDataResponse
+                    {
+                        Constructor = new ConstructorDataResponse
+                        {
+                            name = "First"
+                        },
+                        points = "25"
+                    },
+                    new ConstructorStandingsDataResponse
+                    {
+                        Constructor = new ConstructorDataResponse
+                        {
+                            name = "Second"
+                        },
+                        points = "15"
+                    }
+                },
+                new List<ConstructorStandingsDataResponse>
+                {
+                    new ConstructorStandingsDataResponse
+                    {
+                        Constructor = new ConstructorDataResponse
+                        {
+                            name = "First"
+                        },
+                        points = "43"
+                    },
+                    new ConstructorStandingsDataResponse
+                    {
+                        Constructor = new ConstructorDataResponse
+                        {
+                            name = "Second"
+                        },
+                        points = "40"
+                    }
+                }
+            };
+
+            return constructorsStandings;
+        }
+
         [TestMethod]
         public void GetDriversPointsPerSeason_ReturnAggregatedDriversPointsList_IfThereAreAnyDrivers()
         {
@@ -167,8 +307,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     }
                 }
             };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriverStandings()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriverStandings()[1]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriverStandings()[0]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriverStandings()[1]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -201,8 +341,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedDriversPoints = new List<PointsModel> { new PointsModel(), new PointsModel() };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(new List<DriverStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(new List<DriverStandingsDataResponse>());
 
             for (int i = 0; i < 10000; i++)
             {
@@ -257,8 +397,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     }
                 }
             };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(GenerateConstructorStandings()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(GenerateConstructorStandings()[1]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(GenerateConstructorStandings()[0]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(GenerateConstructorStandings()[1]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -291,8 +431,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedConstructorsPoints = new List<PointsModel> { new PointsModel(), new PointsModel() };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(new List<ConstructorStandingsDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(new List<ConstructorStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(new List<ConstructorStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(new List<ConstructorStandingsDataResponse>());
 
             for (int i = 0; i < 10000; i++)
             {
@@ -325,8 +465,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Points = 200
                 }
             };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriverStandings()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriverStandings()[1]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriverStandings()[0]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriverStandings()[1]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -353,8 +493,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedDriversWinnersPoints = new List<SeasonWinnersPointsModel>();
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(new List<DriverStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(new List<DriverStandingsDataResponse>());
 
             for (int i = 0; i < 10000; i++)
             {
@@ -387,8 +527,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Points = 200
                 }
             };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(GenerateConstructorStandings()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(GenerateConstructorStandings()[1]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(GenerateConstructorStandings()[0]);
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(GenerateConstructorStandings()[1]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -415,8 +555,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedConstructorsPoints = new List<SeasonWinnersPointsModel>();
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(new List<ConstructorStandingsDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(new List<ConstructorStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(new List<ConstructorStandingsDataResponse>());
+            _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(new List<ConstructorStandingsDataResponse>());
 
             for (int i = 0; i < 10000; i++)
             {
@@ -425,6 +565,280 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count); 
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversPointsChanges_ReturnAggregatedDriversPointsList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel>
+            {
+                new SeasonStandingsChangesModel
+                {
+                    Season = 1,
+                    Standings = new List<StandingModel>
+                    {
+                        new StandingModel
+                        {
+                            Name = "FirstName FirstFamily",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 25
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "SecondName SecondFamily",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 18
+                                }
+                            }
+                        }
+                    }
+                },
+                new SeasonStandingsChangesModel
+                {
+                    Season = 2,
+                    Standings = new List<StandingModel>
+                    {
+                        new StandingModel
+                        {
+                            Name = "FirstName FirstFamily",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 25
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Points = 43
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "SecondName SecondFamily",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 15
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Points = 40
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(1);
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(2);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFromRace(1, 1)).Returns(GenerateDriversStandingsAfterEachRace()[0]);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFromRace(2, 1)).Returns(GenerateDriversStandingsAfterEachRace()[1]);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFromRace(2, 2)).Returns(GenerateDriversStandingsAfterEachRace()[2]);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversPointsChanges(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
+
+                // Assert
+                Assert.AreEqual(expectedDriversStandingsChanges.Count, actual.Count);
+
+                for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
+                {
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
+
+                    for (int j = 0; j < expectedDriversStandingsChanges[i].Standings.Count; j++)
+                    {
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Name, actual[i].Standings[j].Name);
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds.Count, actual[i].Standings[j].Rounds.Count);
+
+                        for (int l = 0; l < expectedDriversStandingsChanges[i].Standings[j].Rounds.Count; l++)
+                        {
+                            Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[l].Round, actual[i].Standings[j].Rounds[l].Round);
+                            Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[l].Points, actual[i].Standings[j].Rounds[l].Points);
+                        }
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversPointsChanges_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversPointsChanges(from, to);
+
+                // Assert
+                Assert.AreEqual(expectedDriversStandingsChanges.Count, actual.Count);
+            }
+        }
+
+        [TestMethod]
+        public void GetConstructorsPointsChanges_ReturnAggregatedConstructorsPointsList_IfThereAreAnyConstructors()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedConstructorsStandingsChanges = new List<SeasonStandingsChangesModel>
+            {
+                new SeasonStandingsChangesModel
+                {
+                    Season = 1,
+                    Standings = new List<StandingModel>
+                    {
+                        new StandingModel
+                        {
+                            Name = "First",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 25
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "Second",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 18
+                                }
+                            }
+                        }
+                    }
+                },
+                new SeasonStandingsChangesModel
+                {
+                    Season = 2,
+                    Standings = new List<StandingModel>
+                    {
+                        new StandingModel
+                        {
+                            Name = "First",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 25
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Points = 43
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "Second",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
+                                {
+                                    Round = 1,
+                                    Points = 15
+                                },
+                                new RoundModel
+                                {
+                                    Round = 2,
+                                    Points = 40
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(1);
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(2);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetConstructorStandingsFromRace(1, 1)).Returns(GenerateConstructorsStandingsAfterEachRace()[0]);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetConstructorStandingsFromRace(2, 1)).Returns(GenerateConstructorsStandingsAfterEachRace()[1]);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetConstructorStandingsFromRace(2, 2)).Returns(GenerateConstructorsStandingsAfterEachRace()[2]);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsPointsChanges(from, to);
+                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
+
+                // Assert
+                Assert.AreEqual(expectedConstructorsStandingsChanges.Count, actual.Count);
+
+                for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
+                {
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
+
+                    for (int j = 0; j < expectedConstructorsStandingsChanges[i].Standings.Count; j++)
+                    {
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Name, actual[i].Standings[j].Name);
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds.Count, actual[i].Standings[j].Rounds.Count);
+
+                        for (int l = 0; l < expectedConstructorsStandingsChanges[i].Standings[j].Rounds.Count; l++)
+                        {
+                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[l].Round, actual[i].Standings[j].Rounds[l].Round);
+                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[l].Points, actual[i].Standings[j].Rounds[l].Points);
+                        }
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetConstructorsPointsChanges_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var from = 1;
+            var to = 2;
+            var expectedDriversFinishingPositions = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
+            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetConstructorsPointsChanges(from, to);
+
+                // Assert
+                Assert.AreEqual(expectedDriversFinishingPositions.Count, actual.Count);
             }
         }
     }
