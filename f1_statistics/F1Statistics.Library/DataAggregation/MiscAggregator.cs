@@ -18,7 +18,7 @@ namespace F1Statistics.Library.DataAggregation
 
         private readonly IRacesDataAccess _racesDataAccess;
         private readonly IResultsDataAccess _resultsDataAccess;
-        private readonly IQualifyingDataAccess _qualifyingDataAccess;
+        private readonly IQualifyingDataAccess _qualifyingsDataAccess;
         private readonly ILapsDataAccess _lapsDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
         private readonly IDriversDataAccess _driversDataAccess;
@@ -32,7 +32,7 @@ namespace F1Statistics.Library.DataAggregation
         {
             _racesDataAccess = racesDataAccess;
             _resultsDataAccess = resultsDataAccess;
-            _qualifyingDataAccess = qualifyingDataAccess;
+            _qualifyingsDataAccess = qualifyingDataAccess;
             _lapsDataAccess = lapsDataAccess;
             _standingsDataAccess = standingsDataAccess;
             _driversDataAccess = driversDataAccess;
@@ -65,7 +65,7 @@ namespace F1Statistics.Library.DataAggregation
             Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
-                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
+                var qualifyings = _qualifyingsDataAccess.GetQualifyingsFrom(year);
 
                 for (int i = 0; i < qualifyings.Count; i++)
                 {
@@ -105,7 +105,7 @@ namespace F1Statistics.Library.DataAggregation
             Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
-                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
+                var qualifyings = _qualifyingsDataAccess.GetQualifyingsFrom(year);
 
                 for (int i = 0; i < qualifyings.Count; i++)
                 {
@@ -243,7 +243,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
+                var qualifyings = _qualifyingsDataAccess.GetQualifyingsFrom(year);
 
                 foreach (var qualifying in qualifyings)
                 {
