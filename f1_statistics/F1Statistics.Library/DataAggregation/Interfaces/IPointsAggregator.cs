@@ -11,5 +11,7 @@ namespace F1Statistics.Library.DataAggregation.Interfaces
         List<SeasonPointsModel> GetConstructorsPointsPerSeason(int from, int to);
         List<SeasonWinnersPointsModel> GetDriversWinnersPointsPerSeason(int from, int to);
         List<SeasonWinnersPointsModel> GetConstructorsWinnersPointsPerSeason(int from, int to);
+        List<SeasonStandingsChangesModel> GetDriversPointsChanges(int from, int to);
+        List<SeasonStandingsChangesModel> GetConstructorsPointsChanges(int from, int to);
     }
 }

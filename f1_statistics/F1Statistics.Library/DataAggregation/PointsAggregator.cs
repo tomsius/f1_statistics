@@ -11,10 +11,12 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class PointsAggregator : IPointsAggregator
     {
+        private readonly IRacesDataAccess _racesDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
 
-        public PointsAggregator(IStandingsDataAccess resultsDataAccess)
+        public PointsAggregator(IRacesDataAccess racesDataAccess, IStandingsDataAccess resultsDataAccess)
         {
+            _racesDataAccess = racesDataAccess;
             _standingsDataAccess = resultsDataAccess;
         }
 
@@ -130,6 +132,89 @@ namespace F1Statistics.Library.DataAggregation
             });
 
             return constructorsWinnersPoints;
+        }
+
+        public List<SeasonStandingsChangesModel> GetDriversPointsChanges(int from, int to)
+        {
+            var driversStandingsChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
+            var lockObject = new object();
+
+            for (int year = from; year <= to; year++)
+            {
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
+
+                var racesCount = _racesDataAccess.GetRacesCountFrom(year);
+
+                Parallel.For(1, racesCount + 1, round =>
+                {
+                    var standings = _standingsDataAccess.GetDriverStandingsFromRace(year, round);
+
+                    for (int i = 0; i < standings.Count; i++)
+                    {
+                        var driverName = $"{standings[i].Driver.givenName} {standings[i].Driver.familyName}";
+                        var points = double.Parse(standings[i].points);
+                        var position = i + 1;
+
+                        lock (lockObject)
+                        {
+                            if (!newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == driverName).Any())
+                            {
+                                var newStandingModel = new StandingModel { Name = driverName, Rounds = new List<RoundModel>() };
+                                newSeasonStandingsChangesModel.Standings.Add(newStandingModel);
+                            }
+
+                            var newRoundModel = new RoundModel { Round = round, Points = points, Position = position };
+                            newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == driverName).First().Rounds.Add(newRoundModel);
+                        }
+                    }
+                });
+
+                driversStandingsChanges.Add(newSeasonStandingsChangesModel);
+            }
+
+            return driversStandingsChanges;
+        }
+
+        public List<SeasonStandingsChangesModel> GetConstructorsPointsChanges(int from, int to)
+        {
+            var constructorsStandingsChanges = new List<SeasonStandingsChangesModel>(to - from + 1);
+            var lockObject = new object();
+
+            for (int year = from; year <= to; year++)
+            {
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
+
+                var racesCount = _racesDataAccess.GetRacesCountFrom(year);
+
+                Parallel.For(1, racesCount + 1, round =>
+                {
+                    var standings = _standingsDataAccess.GetConstructorStandingsFromRace(year, round);
+
+                    for (int i = 0; i < standings.Count; i++)
+                    {
+                        var constructorName = $"{standings[i].Constructor.name}";
+                        var points = double.Parse(standings[i].points);
+                        var position = i + 1;
+
+                        lock (lockObject)
+                        {
+
+                            if (!newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == constructorName).Any())
+                            {
+                                var newStandingModel = new StandingModel { Name = constructorName, Rounds = new List<RoundModel>() };
+                                newSeasonStandingsChangesModel.Standings.Add(newStandingModel);
+                            }
+
+                            var newRoundModel = new RoundModel { Round = round, Points = points, Position = position };
+                            newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == constructorName).First().Rounds.Add(newRoundModel);
+                        }
+                    }
+                });
+
+                constructorsStandingsChanges.Add(newSeasonStandingsChangesModel);
+            }
+
+            return constructorsStandingsChanges;
         }
     }
 }

@@ -51,5 +51,21 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("drivers/standingschanges")]
+        public List<SeasonStandingsChangesModel> GetDriversPointsChanges(OptionsModel options)
+        {
+            var data = _service.AggregateDriversPointsChanges(options);
+
+            return data;
+        }
+
+        [HttpPost("constructors/standingschanges")]
+        public List<SeasonStandingsChangesModel> GetConstructorsPointsChanges(OptionsModel options)
+        {
+            var data = _service.AggregateConstructorsPointsChanges(options);
+
+            return data;
+        }
     }
 }

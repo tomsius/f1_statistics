@@ -102,5 +102,47 @@ namespace F1Statistics.Library.Services
 
             return constructorsWinnersPoints;
         }
+
+        public List<SeasonStandingsChangesModel> AggregateDriversPointsChanges(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<SeasonStandingsChangesModel> driversPositionChanges;
+
+            if (options.YearFrom != 0)
+            {
+                driversPositionChanges = _aggregator.GetDriversPointsChanges(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                driversPositionChanges = _aggregator.GetDriversPointsChanges(options.Season, options.Season);
+            }
+
+            driversPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            driversPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
+
+            return driversPositionChanges;
+        }
+
+        public List<SeasonStandingsChangesModel> AggregateConstructorsPointsChanges(OptionsModel options)
+        {
+            _validator.ValidateOptionsModel(options);
+
+            List<SeasonStandingsChangesModel> constructorsPositionChanges;
+
+            if (options.YearFrom != 0)
+            {
+                constructorsPositionChanges = _aggregator.GetConstructorsPointsChanges(options.YearFrom, options.YearTo);
+            }
+            else
+            {
+                constructorsPositionChanges = _aggregator.GetConstructorsPointsChanges(options.Season, options.Season);
+            }
+
+            constructorsPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            constructorsPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
+
+            return constructorsPositionChanges;
+        }
     }
 }
