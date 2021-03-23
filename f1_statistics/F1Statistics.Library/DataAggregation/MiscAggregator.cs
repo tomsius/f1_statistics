@@ -344,7 +344,6 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
-
                             if (!newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == driverName).Any())
                             {
                                 var newStandingModel = new StandingModel { Name = driverName, Rounds = new List<RoundModel>() };
