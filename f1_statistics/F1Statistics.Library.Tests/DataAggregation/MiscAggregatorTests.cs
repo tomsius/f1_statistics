@@ -205,11 +205,24 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         {
                             new QualifyingResultsDataResponse
                             {
+                                position = "1",
                                 Driver = new DriverDataResponse
                                 {
                                     driverId = "1",
                                     familyName = "FirstFamily", 
                                     givenName= "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "First"
+                                }
+                            },
+                            new QualifyingResultsDataResponse
+                            {
+                                position = "2",
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "First"
                                 }
                             }
                         }
@@ -224,11 +237,24 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         {
                             new QualifyingResultsDataResponse
                             {
+                                position = "1",
                                 Driver = new DriverDataResponse
                                 {
                                     driverId = "1",
                                     familyName = "FirstFamily",
                                     givenName = "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "First"
+                                }
+                            },
+                            new QualifyingResultsDataResponse
+                            {
+                                position = "2",
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "First"
                                 }
                             }
                         }
@@ -240,11 +266,24 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         {
                             new QualifyingResultsDataResponse
                             {
+                                position = "1",
                                 Driver = new DriverDataResponse
                                 {
                                     driverId = "3",
                                     familyName = "ThirdFamily",
                                     givenName = "ThirdName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "Second"
+                                }
+                            },
+                            new QualifyingResultsDataResponse
+                            {
+                                position = "2",
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "Second"
                                 }
                             }
                         }
@@ -787,17 +826,17 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new FrontRowModel
                 {
-                    Name = "FirstConstructor",
+                    Name = "First",
                     FrontRowCount = 2
                 },
                 new FrontRowModel
                 {
-                    Name = "SecondConstructor",
+                    Name = "Second",
                     FrontRowCount = 1
                 }
             };
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+            _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
+            _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -823,8 +862,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedConstructorsFrontRows = new List<FrontRowModel>();
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
-            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
+            _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
+            _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
             for (int k = 0; k < 10000; k++)
             {
@@ -937,74 +976,75 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversStandingsChanges = new List<OLDSeasonStandingsChangesModel>
+            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel>
             {
-                new OLDSeasonStandingsChangesModel
+                new SeasonStandingsChangesModel
                 {
                     Season = 1,
-                    Rounds = new List<OLDRoundModel>
+                    Standings = new List<StandingModel>
                     {
-                        new OLDRoundModel
+                        new StandingModel
                         {
-                            Round = 1,
-                            Standings = new List<OLDStandingModel>
+                            Name = "FirstName FirstFamily",
+                            Rounds = new List<RoundModel>
                             {
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "FirstName FirstFamily",
-                                    Position = 1,
-                                    Points = 25
-                                },
-                                new OLDStandingModel
+                                    Round = 1,
+                                    Position = 1
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "SecondName SecondFamily",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
                                 {
-                                    Name = "SecondName SecondFamily",
-                                    Position = 2,
-                                    Points = 18
+                                    Round = 1,
+                                    Position = 2
                                 }
                             }
                         }
                     }
                 },
-                new OLDSeasonStandingsChangesModel
+                new SeasonStandingsChangesModel
                 {
                     Season = 2,
-                    Rounds = new List<OLDRoundModel>
+                    Standings = new List<StandingModel>
                     {
-                        new OLDRoundModel
+                        new StandingModel
                         {
-                            Round = 1,
-                            Standings = new List<OLDStandingModel>
+                            Name = "FirstName FirstFamily",
+                            Rounds = new List<RoundModel>
                             {
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "FirstName FirstFamily",
-                                    Position = 1,
-                                    Points = 25
+                                    Round = 1,
+                                    Position = 1
                                 },
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "SecondName SecondFamily",
-                                    Position = 2,
-                                    Points = 15
+                                    Round = 2,
+                                    Position = 1
                                 }
                             }
                         },
-                        new OLDRoundModel
+                        new StandingModel
                         {
-                            Round = 2,
-                            Standings = new List<OLDStandingModel>
+                            Name = "SecondName SecondFamily",
+                            Rounds = new List<RoundModel>
                             {
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "FirstName FirstFamily",
-                                    Position = 1,
-                                    Points = 43
+                                    Round = 1,
+                                    Position = 2
                                 },
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "SecondName SecondFamily",
-                                    Position = 2,
-                                    Points = 40
+                                    Round = 2,
+                                    Position = 2
                                 }
                             }
                         }
@@ -1022,7 +1062,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetDriversStandingsChanges(from, to);
                 actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-                actual.ForEach(model => model.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round)));
+                actual.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
                 // Assert
                 Assert.AreEqual(expectedDriversStandingsChanges.Count, actual.Count);
@@ -1030,18 +1070,17 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
                 {
                     Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
-                    Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds.Count, actual[i].Rounds.Count);
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
-                    for (int j = 0; j < expectedDriversStandingsChanges[i].Rounds.Count; j++)
+                    for (int j = 0; j < expectedDriversStandingsChanges[i].Standings.Count; j++)
                     {
-                        Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Round, actual[i].Rounds[j].Round);
-                        Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Standings.Count, actual[i].Rounds[j].Standings.Count);
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Name, actual[i].Standings[j].Name);
+                        Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds.Count, actual[i].Standings[j].Rounds.Count);
 
-                        for (int l = 0; l < expectedDriversStandingsChanges[i].Rounds[j].Standings.Count; l++)
+                        for (int l = 0; l < expectedDriversStandingsChanges[i].Standings[j].Rounds.Count; l++)
                         {
-                            Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Standings[l].Name, actual[i].Rounds[j].Standings[l].Name);
-                            Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Standings[l].Position, actual[i].Rounds[j].Standings[l].Position);
-                            Assert.AreEqual(expectedDriversStandingsChanges[i].Rounds[j].Standings[l].Points, actual[i].Rounds[j].Standings[l].Points);
+                            Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[l].Round, actual[i].Standings[j].Rounds[l].Round);
+                            Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[l].Position, actual[i].Standings[j].Rounds[l].Position);
                         }
                     }
                 }
@@ -1054,7 +1093,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversStandingsChanges = new List<OLDSeasonStandingsChangesModel> { new OLDSeasonStandingsChangesModel { Season = 1 }, new OLDSeasonStandingsChangesModel { Season = 2 } };
+            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
 
@@ -1074,74 +1113,75 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedConstructorsStandingsChanges = new List<OLDSeasonStandingsChangesModel>
+            var expectedConstructorsStandingsChanges = new List<SeasonStandingsChangesModel>
             {
-                new OLDSeasonStandingsChangesModel
+                new SeasonStandingsChangesModel
                 {
                     Season = 1,
-                    Rounds = new List<OLDRoundModel>
+                    Standings = new List<StandingModel>
                     {
-                        new OLDRoundModel
+                        new StandingModel
                         {
-                            Round = 1,
-                            Standings = new List<OLDStandingModel>
+                            Name = "First",
+                            Rounds = new List<RoundModel>
                             {
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "First",
-                                    Position = 1,
-                                    Points = 25
-                                },
-                                new OLDStandingModel
+                                    Round = 1,
+                                    Position = 1
+                                }
+                            }
+                        },
+                        new StandingModel
+                        {
+                            Name = "Second",
+                            Rounds = new List<RoundModel>
+                            {
+                                new RoundModel
                                 {
-                                    Name = "Second",
-                                    Position = 2,
-                                    Points = 18
+                                    Round = 1,
+                                    Position = 2
                                 }
                             }
                         }
                     }
                 },
-                new OLDSeasonStandingsChangesModel
+                new SeasonStandingsChangesModel
                 {
                     Season = 2,
-                    Rounds = new List<OLDRoundModel>
+                    Standings = new List<StandingModel>
                     {
-                        new OLDRoundModel
+                        new StandingModel
                         {
-                            Round = 1,
-                            Standings = new List<OLDStandingModel>
+                            Name = "First",
+                            Rounds = new List<RoundModel>
                             {
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "First",
-                                    Position = 1,
-                                    Points = 25
+                                    Round = 1,
+                                    Position = 1
                                 },
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "Second",
-                                    Position = 2,
-                                    Points = 15
+                                    Round = 2,
+                                    Position = 1
                                 }
                             }
                         },
-                        new OLDRoundModel
+                        new StandingModel
                         {
-                            Round = 2,
-                            Standings = new List<OLDStandingModel>
+                            Name = "Second",
+                            Rounds = new List<RoundModel>
                             {
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "First",
-                                    Position = 1,
-                                    Points = 43
+                                    Round = 1,
+                                    Position = 2
                                 },
-                                new OLDStandingModel
+                                new RoundModel
                                 {
-                                    Name = "Second",
-                                    Position = 2,
-                                    Points = 40
+                                    Round = 2,
+                                    Position = 2
                                 }
                             }
                         }
@@ -1159,7 +1199,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetConstructorsStandingsChanges(from, to);
                 actual.Sort((x, y) => x.Season.CompareTo(y.Season));
-                actual.ForEach(model => model.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round)));
+                actual.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsStandingsChanges.Count, actual.Count);
@@ -1167,18 +1207,17 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
                 {
                     Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
-                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds.Count, actual[i].Rounds.Count);
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
-                    for (int j = 0; j < expectedConstructorsStandingsChanges[i].Rounds.Count; j++)
+                    for (int j = 0; j < expectedConstructorsStandingsChanges[i].Standings.Count; j++)
                     {
-                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Round, actual[i].Rounds[j].Round);
-                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Standings.Count, actual[i].Rounds[j].Standings.Count);
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Name, actual[i].Standings[j].Name);
+                        Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds.Count, actual[i].Standings[j].Rounds.Count);
 
-                        for (int l = 0; l < expectedConstructorsStandingsChanges[i].Rounds[j].Standings.Count; l++)
+                        for (int l = 0; l < expectedConstructorsStandingsChanges[i].Standings[j].Rounds.Count; l++)
                         {
-                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Standings[l].Name, actual[i].Rounds[j].Standings[l].Name);
-                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Standings[l].Position, actual[i].Rounds[j].Standings[l].Position);
-                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Rounds[j].Standings[l].Points, actual[i].Rounds[j].Standings[l].Points);
+                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[l].Round, actual[i].Standings[j].Rounds[l].Round);
+                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[l].Position, actual[i].Standings[j].Rounds[l].Position);
                         }
                     }
                 }
@@ -1191,7 +1230,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversFinishingPositions = new List<OLDSeasonStandingsChangesModel> { new OLDSeasonStandingsChangesModel { Season = 1 }, new OLDSeasonStandingsChangesModel { Season = 2 } };
+            var expectedDriversFinishingPositions = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
             _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
 
@@ -1211,58 +1250,72 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var season = 1;
             var race = 1;
-            var expectedDriversPositionChangesDuringRace = new List<OLDRacePositionChangesModel>
+            var expectedDriversPositionChangesDuringRace = new List<RacePositionChangesModel>
             {
-                new OLDRacePositionChangesModel
+                new RacePositionChangesModel
                 {
-                    LapNumber = 1,
-                    DriversPositions = new List<OLDDriverPositionModel>
+                    Name = "First",
+                    Laps = new List<LapPositionModel>
                     {
-                        new OLDDriverPositionModel
+                        new LapPositionModel
                         {
-                            Name = "First",
+                            LapNumber = 1,
                             Position = 1
                         },
-                        new OLDDriverPositionModel
+                        new LapPositionModel
                         {
-                            Name = "Third",
-                            Position = 2
-                        },
-                        new OLDDriverPositionModel
-                        {
-                            Name = "Forth",
-                            Position = 3
-                        },
-                        new OLDDriverPositionModel
-                        {
-                            Name = "Second",
-                            Position = 4
+                            LapNumber = 2,
+                            Position = 1
                         }
                     }
                 },
-                new OLDRacePositionChangesModel
+                new RacePositionChangesModel
                 {
-                    LapNumber = 2,
-                    DriversPositions = new List<OLDDriverPositionModel>
+                    Name = "Forth",
+                    Laps = new List<LapPositionModel>
                     {
-                        new OLDDriverPositionModel
+                        new LapPositionModel
                         {
-                            Name = "First",
-                            Position = 1
-                        },
-                        new OLDDriverPositionModel
-                        {
-                            Name = "Forth",
-                            Position = 2
-                        },
-                        new OLDDriverPositionModel
-                        {
-                            Name = "Second",
+                            LapNumber = 1,
                             Position = 3
                         },
-                        new OLDDriverPositionModel
+                        new LapPositionModel
                         {
-                            Name = "Third",
+                            LapNumber = 2,
+                            Position = 2
+                        }
+                    }
+                },
+                new RacePositionChangesModel
+                {
+                    Name = "Second",
+                    Laps = new List<LapPositionModel>
+                    {
+                        new LapPositionModel
+                        {
+                            LapNumber = 1,
+                            Position = 4
+                        },
+                        new LapPositionModel
+                        {
+                            LapNumber = 2,
+                            Position = 3
+                        }
+                    }
+                },
+                new RacePositionChangesModel
+                {
+                    Name = "Third",
+                    Laps = new List<LapPositionModel>
+                    {
+                        new LapPositionModel
+                        {
+                            LapNumber = 1,
+                            Position = 2
+                        },
+                        new LapPositionModel
+                        {
+                            LapNumber = 2,
                             Position = 4
                         }
                     }
@@ -1278,20 +1331,21 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetDriversPositionChangesDuringRace(season, race);
-                actual.Sort((x, y) => x.LapNumber.CompareTo(y.LapNumber));
+                actual.Sort((x, y) => x.Name.CompareTo(y.Name));
+                actual.ForEach(driver => driver.Laps.Sort((x, y) => x.LapNumber.CompareTo(y.LapNumber)));
 
                 // Assert
                 Assert.AreEqual(expectedDriversPositionChangesDuringRace.Count, actual.Count);
 
                 for (int i = 0; i < expectedDriversPositionChangesDuringRace.Count; i++)
                 {
-                    Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].LapNumber, actual[i].LapNumber);
-                    Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].DriversPositions.Count, actual[i].DriversPositions.Count);
+                    Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].Laps.Count, actual[i].Laps.Count);
 
-                    for (int j = 0; j < expectedDriversPositionChangesDuringRace[i].DriversPositions.Count; j++)
+                    for (int j = 0; j < expectedDriversPositionChangesDuringRace[i].Laps.Count; j++)
                     {
-                        Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].DriversPositions[j].Name, actual[i].DriversPositions[j].Name);
-                        Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].DriversPositions[j].Position, actual[i].DriversPositions[j].Position);
+                        Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].Laps[j].LapNumber, actual[i].Laps[j].LapNumber);
+                        Assert.AreEqual(expectedDriversPositionChangesDuringRace[i].Laps[j].Position, actual[i].Laps[j].Position);
                     }
                 }
             }
@@ -1303,7 +1357,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var season = 1;
             var race = 1;
-            var expectedDriversFinishingPositions = new List<OLDRacePositionChangesModel>();
+            var expectedDriversFinishingPositions = new List<RacePositionChangesModel>();
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(season, race)).Returns(new List<LapsDataResponse>());
 
             for (int k = 0; k < 10000; k++)
