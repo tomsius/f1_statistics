@@ -11,13 +11,13 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class PointsAggregator : IPointsAggregator
     {
-        private readonly IRacesDataAccess _racesDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
+        private readonly IResultsDataAccess _resultsDataAccess;
 
-        public PointsAggregator(IRacesDataAccess racesDataAccess, IStandingsDataAccess resultsDataAccess)
+        public PointsAggregator(IResultsDataAccess resultsDataAccess, IStandingsDataAccess standingsDataAccess)
         {
-            _racesDataAccess = racesDataAccess;
-            _standingsDataAccess = resultsDataAccess;
+            _resultsDataAccess = resultsDataAccess;
+            _standingsDataAccess = standingsDataAccess;
         }
 
         public List<SeasonPointsModel> GetDriversPointsPerSeason(int from, int to)
@@ -143,11 +143,13 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
 
-                var racesCount = _racesDataAccess.GetRacesCountFrom(year);
+                var results = _resultsDataAccess.GetResultsFrom(year);
+                var racesCount = results.Count;
 
                 Parallel.For(1, racesCount + 1, round =>
                 {
                     var standings = _standingsDataAccess.GetDriverStandingsFromRace(year, round);
+                    var roundName = results[round - 1].raceName;
 
                     for (int i = 0; i < standings.Count; i++)
                     {
@@ -163,7 +165,7 @@ namespace F1Statistics.Library.DataAggregation
                                 newSeasonStandingsChangesModel.Standings.Add(newStandingModel);
                             }
 
-                            var newRoundModel = new RoundModel { Round = round, Points = points, Position = position };
+                            var newRoundModel = new RoundModel { Round = round, RoundName = roundName, Points = points, Position = position };
                             newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == driverName).First().Rounds.Add(newRoundModel);
                         }
                     }
@@ -184,11 +186,13 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
 
-                var racesCount = _racesDataAccess.GetRacesCountFrom(year);
+                var results = _resultsDataAccess.GetResultsFrom(year);
+                var racesCount = results.Count;
 
                 Parallel.For(1, racesCount + 1, round =>
                 {
                     var standings = _standingsDataAccess.GetConstructorStandingsFromRace(year, round);
+                    var roundName = results[round - 1].raceName;
 
                     for (int i = 0; i < standings.Count; i++)
                     {
@@ -205,7 +209,7 @@ namespace F1Statistics.Library.DataAggregation
                                 newSeasonStandingsChangesModel.Standings.Add(newStandingModel);
                             }
 
-                            var newRoundModel = new RoundModel { Round = round, Points = points, Position = position };
+                            var newRoundModel = new RoundModel { Round = round, RoundName = roundName, Points = points, Position = position };
                             newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == constructorName).First().Rounds.Add(newRoundModel);
                         }
                     }
