@@ -28,7 +28,7 @@ namespace F1Statistics.Controllers
             return data;
         }
 
-        [HttpPost("constructor")]
+        [HttpPost("constructors")]
         public List<LeadingLapsModel> GetConstructorsLeadingLapsCount(OptionsModel options)
         {
             var data = _service.AggregateConstructorsLeadingLapsCount(options);
