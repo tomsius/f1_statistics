@@ -16,16 +16,43 @@ namespace F1Statistics.Library.Tests.DataAggregation
     public class PointsAggregatorTests
     {
         private PointsAggregator _aggregator;
-        private Mock<IRacesDataAccess> _racesDataAccess;
+        private Mock<IResultsDataAccess> _resultsDataAccess;
         private Mock<IStandingsDataAccess> _standingsDataAccess;
 
         [TestInitialize]
         public void Setup()
         {
-            _racesDataAccess = new Mock<IRacesDataAccess>();
+            _resultsDataAccess = new Mock<IResultsDataAccess>();
             _standingsDataAccess = new Mock<IStandingsDataAccess>();
 
-            _aggregator = new PointsAggregator(_racesDataAccess.Object, _standingsDataAccess.Object);
+            _aggregator = new PointsAggregator(_resultsDataAccess.Object, _standingsDataAccess.Object);
+        }
+
+        private List<List<RacesDataResponse>> GenerateRaces()
+        {
+            var racesList = new List<List<RacesDataResponse>>
+            {
+                new List<RacesDataResponse>
+                {
+                    new RacesDataResponse
+                    {
+                        raceName = "FirstRace"
+                    }
+                },
+                new List<RacesDataResponse>
+                {
+                    new RacesDataResponse
+                    {
+                        raceName = "SecondRace"
+                    },
+                    new RacesDataResponse
+                    {
+                        raceName = "ThirdRace"
+                    }
+                }
+            };
+
+            return racesList;
         }
 
         private List<List<DriverStandingsDataResponse>> GenerateDriverStandings()
@@ -589,7 +616,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 25
+                                    Points = 25,
+                                    RoundName = "FirstRace"
                                 }
                             }
                         },
@@ -601,7 +629,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 18
+                                    Points = 18,
+                                    RoundName = "FirstRace"
                                 }
                             }
                         }
@@ -620,12 +649,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 25
+                                    Points = 25,
+                                    RoundName = "SecondRace"
                                 },
                                 new RoundModel
                                 {
                                     Round = 2,
-                                    Points = 43
+                                    Points = 43,
+                                    RoundName = "ThirdRace"
                                 }
                             }
                         },
@@ -637,20 +668,22 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 15
+                                    Points = 15,
+                                    RoundName = "SecondRace"
                                 },
                                 new RoundModel
                                 {
                                     Round = 2,
-                                    Points = 40
+                                    Points = 40,
+                                    RoundName = "ThirdRace"
                                 }
                             }
                         }
                     }
                 }
             };
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(1);
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(2);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFromRace(1, 1)).Returns(GenerateDriversStandingsAfterEachRace()[0]);
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFromRace(2, 1)).Returns(GenerateDriversStandingsAfterEachRace()[1]);
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFromRace(2, 2)).Returns(GenerateDriversStandingsAfterEachRace()[2]);
@@ -679,6 +712,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         {
                             Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[l].Round, actual[i].Standings[j].Rounds[l].Round);
                             Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[l].Points, actual[i].Standings[j].Rounds[l].Points);
+                            Assert.AreEqual(expectedDriversStandingsChanges[i].Standings[j].Rounds[l].RoundName, actual[i].Standings[j].Rounds[l].RoundName);
                         }
                     }
                 }
@@ -692,8 +726,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
             for (int k = 0; k < 10000; k++)
             {
@@ -726,7 +760,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 25
+                                    Points = 25,
+                                    RoundName = "FirstRace"
                                 }
                             }
                         },
@@ -738,7 +773,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 18
+                                    Points = 18,
+                                    RoundName = "FirstRace"
                                 }
                             }
                         }
@@ -757,12 +793,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 25
+                                    Points = 25,
+                                    RoundName = "SecondRace"
                                 },
                                 new RoundModel
                                 {
                                     Round = 2,
-                                    Points = 43
+                                    Points = 43,
+                                    RoundName = "ThirdRace"
                                 }
                             }
                         },
@@ -774,20 +812,22 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new RoundModel
                                 {
                                     Round = 1,
-                                    Points = 15
+                                    Points = 15,
+                                    RoundName = "SecondRace"
                                 },
                                 new RoundModel
                                 {
                                     Round = 2,
-                                    Points = 40
+                                    Points = 40,
+                                    RoundName = "ThirdRace"
                                 }
                             }
                         }
                     }
                 }
             };
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(1);
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(2);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetConstructorStandingsFromRace(1, 1)).Returns(GenerateConstructorsStandingsAfterEachRace()[0]);
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetConstructorStandingsFromRace(2, 1)).Returns(GenerateConstructorsStandingsAfterEachRace()[1]);
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetConstructorStandingsFromRace(2, 2)).Returns(GenerateConstructorsStandingsAfterEachRace()[2]);
@@ -816,6 +856,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         {
                             Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[l].Round, actual[i].Standings[j].Rounds[l].Round);
                             Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[l].Points, actual[i].Standings[j].Rounds[l].Points);
+                            Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings[j].Rounds[l].RoundName, actual[i].Standings[j].Rounds[l].RoundName);
                         }
                     }
                 }
@@ -829,8 +870,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var from = 1;
             var to = 2;
             var expectedDriversFinishingPositions = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(1)).Returns(0);
-            _racesDataAccess.Setup((racesDataAccess) => racesDataAccess.GetRacesCountFrom(2)).Returns(0);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
             for (int k = 0; k < 10000; k++)
             {
