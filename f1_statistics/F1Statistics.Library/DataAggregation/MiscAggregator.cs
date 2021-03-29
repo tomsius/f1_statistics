@@ -22,15 +22,13 @@ namespace F1Statistics.Library.DataAggregation
         private readonly ILapsDataAccess _lapsDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
         private readonly IDriversDataAccess _driversDataAccess;
-        private readonly IPitStopsDataAccess _pitStopsDataAccess;
 
         public MiscAggregator(IRacesDataAccess racesDataAccess, 
                               IResultsDataAccess resultsDataAccess, 
                               IQualifyingDataAccess qualifyingDataAccess,
                               ILapsDataAccess lapsDataAccess,
                               IStandingsDataAccess standingsDataAccess,
-                              IDriversDataAccess driversDataAccess,
-                              IPitStopsDataAccess pitStopsDataAccess)
+                              IDriversDataAccess driversDataAccess)
         {
             _racesDataAccess = racesDataAccess;
             _resultsDataAccess = resultsDataAccess;
@@ -38,7 +36,6 @@ namespace F1Statistics.Library.DataAggregation
             _lapsDataAccess = lapsDataAccess;
             _standingsDataAccess = standingsDataAccess;
             _driversDataAccess = driversDataAccess;
-            _pitStopsDataAccess = pitStopsDataAccess;
         }
 
         public List<SeasonRacesModel> GetRaceCountPerSeason(int from, int to)
