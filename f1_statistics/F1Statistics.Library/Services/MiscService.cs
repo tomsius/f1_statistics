@@ -269,5 +269,19 @@ namespace F1Statistics.Library.Services
 
             return driversPositionChangesDuringRace;
         }
+
+        public List<LapTimesModel> AggregateDriversLapTimes(int season, int race)
+        {
+            if (season < 1996)
+            {
+                season = 1996;
+            }
+
+            var driversLapTimes = _aggregator.GetDriversLapTimes(season, race);
+
+            driversLapTimes.Sort((x, y) => x.Name.CompareTo(y.Name));
+
+            return driversLapTimes;
+        }
     }
 }

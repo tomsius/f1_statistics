@@ -22,13 +22,15 @@ namespace F1Statistics.Library.DataAggregation
         private readonly ILapsDataAccess _lapsDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
         private readonly IDriversDataAccess _driversDataAccess;
+        private readonly IPitStopsDataAccess _pitStopsDataAccess;
 
         public MiscAggregator(IRacesDataAccess racesDataAccess, 
                               IResultsDataAccess resultsDataAccess, 
                               IQualifyingDataAccess qualifyingDataAccess,
                               ILapsDataAccess lapsDataAccess,
                               IStandingsDataAccess standingsDataAccess,
-                              IDriversDataAccess driversDataAccess)
+                              IDriversDataAccess driversDataAccess,
+                              IPitStopsDataAccess pitStopsDataAccess)
         {
             _racesDataAccess = racesDataAccess;
             _resultsDataAccess = resultsDataAccess;
@@ -36,6 +38,7 @@ namespace F1Statistics.Library.DataAggregation
             _lapsDataAccess = lapsDataAccess;
             _standingsDataAccess = standingsDataAccess;
             _driversDataAccess = driversDataAccess;
+            _pitStopsDataAccess = pitStopsDataAccess;
         }
 
         public List<SeasonRacesModel> GetRaceCountPerSeason(int from, int to)
@@ -386,17 +389,21 @@ namespace F1Statistics.Library.DataAggregation
                         var constructorName = $"{standings[i].Constructor.name}";
                         var points = double.Parse(standings[i].points);
                         var position = i + 1;
+                        var newRoundModel = new RoundModel { Round = round, RoundName = roundName, Points = points, Position = position };
 
                         lock (lockObject)
                         {
                             if (!newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == constructorName).Any())
                             {
                                 var newStandingModel = new StandingModel { Name = constructorName, Rounds = new List<RoundModel>() };
+                                newStandingModel.Rounds.Add(newRoundModel);
+
                                 newSeasonStandingsChangesModel.Standings.Add(newStandingModel);
                             }
-
-                            var newRoundModel = new RoundModel { Round = round, RoundName = roundName, Points = points, Position = position };
-                            newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == constructorName).First().Rounds.Add(newRoundModel);
+                            else
+                            {
+                                newSeasonStandingsChangesModel.Standings.Where(standings => standings.Name == constructorName).First().Rounds.Add(newRoundModel);
+                            }
                         }
                     }
                 });
@@ -410,7 +417,7 @@ namespace F1Statistics.Library.DataAggregation
         public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)
         {
             var laps = _lapsDataAccess.GetLapsFrom(season, race);
-            var driversPositionChangesDuringRace = new List<RacePositionChangesModel>(laps.Count);
+            var driversPositionChangesDuringRace = new List<RacePositionChangesModel>();
             var driversNames = new Dictionary<string, string>();
             var lockObject = new object();
             var lockCheck = new object();
@@ -438,22 +445,98 @@ namespace F1Statistics.Library.DataAggregation
                     }
 
                     var position = int.Parse(timing.position);
+                    var newLapPositionModel = new LapPositionModel { LapNumber = lapNumber, Position = position };
 
                     lock (lockObject)
                     {
                         if (!driversPositionChangesDuringRace.Where(driver => driver.Name == driverName).Any())
                         {
-                            var newRacePositionChangesModel = new RacePositionChangesModel { Name = driverName, Laps = new List<LapPositionModel>() };
+                            var newRacePositionChangesModel = new RacePositionChangesModel { Name = driverName, Laps = new List<LapPositionModel>(laps.Count) };
+                            newRacePositionChangesModel.Laps.Add(newLapPositionModel);
+
                             driversPositionChangesDuringRace.Add(newRacePositionChangesModel);
                         }
-
-                        var newLapPositionModel = new LapPositionModel { LapNumber = lapNumber, Position = position };
-                        driversPositionChangesDuringRace.Where(driver => driver.Name == driverName).First().Laps.Add(newLapPositionModel); 
+                        else
+                        {
+                            driversPositionChangesDuringRace.Where(driver => driver.Name == driverName).First().Laps.Add(newLapPositionModel);
+                        }
                     }
                 }
             });
 
             return driversPositionChangesDuringRace;
+        }
+
+        public List<LapTimesModel> GetDriversLapTimes(int season, int race)
+        {
+            var laps = _lapsDataAccess.GetLapsFrom(season, race);
+            var driversLapTimes = new List<LapTimesModel>();
+            var driversNames = new Dictionary<string, string>();
+            var lockObject = new object();
+            var lockCheck = new object();
+
+            Parallel.ForEach(laps, lap =>
+            {
+                foreach (var timing in lap.Timings)
+                {
+                    var driverId = timing.driverId;
+                    var lapTime = ConvertTimeToSeconds(timing.time);
+                    string driverName;
+
+                    lock (lockCheck)
+                    {
+                        //TODO - iskelti
+                        if (driversNames.ContainsKey(driverId))
+                        {
+                            driverName = driversNames[driverId];
+                        }
+                        else
+                        {
+                            driverName = _driversDataAccess.GetDriverName(driverId);
+                            driversNames.Add(driverId, driverName);
+                        }
+                    }
+
+                    lock (lockObject)
+                    {
+                        if (!driversLapTimes.Where(driver => driver.Name == driverName).Any())
+                        {
+                            var newLapTimesModel = new LapTimesModel { Name = driverName, Timings = new List<double>(laps.Count) };
+                            newLapTimesModel.Timings.Add(lapTime);
+
+                            driversLapTimes.Add(newLapTimesModel);
+                        }
+                        else
+                        {
+                            driversLapTimes.Where(driver => driver.Name == driverName).First().Timings.Add(lapTime);
+                        }
+                    }
+                }
+            });
+
+            return driversLapTimes;
+        }
+
+        private double ConvertTimeToSeconds(string time)
+        {
+            int minutes = 0;
+            double seconds = 0;
+
+            if (time.Contains(':'))
+            {
+                var splitMinutesFromRest = time.Split(':');
+
+                int.TryParse(splitMinutesFromRest[0], out minutes);
+                double.TryParse(splitMinutesFromRest[1], out seconds);
+            }
+            else
+            {
+                double.TryParse(time, out seconds);
+            }
+
+            var timeInSeconds = Math.Round(minutes * 60 + seconds, 3);
+
+            return timeInSeconds;
         }
     }
 }

@@ -100,5 +100,13 @@ namespace F1Statistics.Controllers
 
             return data;
         }
+
+        [HttpPost("{season}/{race}/laptimes")]
+        public List<LapTimesModel> GetDriversLapTimes(int season, int race)
+        {
+            var data = _service.AggregateDriversLapTimes(season, race);
+
+            return data;
+        }
     }
 }
