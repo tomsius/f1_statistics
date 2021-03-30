@@ -311,22 +311,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             new TimingsDataResponse
                             {
                                 driverId = "1",
-                                position = "1"
+                                position = "1",
+                                time = "0:1.1"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "3",
-                                position = "2"
+                                position = "2",
+                                time = "1:2.0"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "4",
-                                position = "3"
+                                position = "3",
+                                time = "1:5"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "2",
-                                position = "4"
+                                position = "4",
+                                time = "1:11"
                             }
                         }
                     },
@@ -338,22 +342,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             new TimingsDataResponse
                             {
                                 driverId = "1",
-                                position = "1"
+                                position = "1",
+                                time = "1:2.25"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "4",
-                                position = "2"
+                                position = "2",
+                                time = "2:0.0"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "2",
-                                position = "3"
+                                position = "3",
+                                time = "25.101"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "3",
-                                position = "4"
+                                position = "4",
+                                time = "1:55.05"
                             }
                         }
                     }
@@ -1384,6 +1392,99 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
                 // Assert
                 Assert.AreEqual(expectedDriversFinishingPositions.Count, actual.Count);
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversLapTimes_ReturnAggregatedDriversLapTimesList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var season = 1;
+            var race = 1;
+            var expectedDriversLapTimes = new List<LapTimesModel>
+            {
+                new LapTimesModel
+                {
+                    Name = "First",
+                    Timings = new List<double>
+                    {
+                        1.1,
+                        62.25
+                    }
+                },
+                new LapTimesModel
+                {
+                    Name = "Forth",
+                    Timings = new List<double>
+                    {
+                        65,
+                        120
+                    }
+                },
+                new LapTimesModel
+                {
+                    Name = "Second",
+                    Timings = new List<double>
+                    {
+                        25.101,
+                        71
+                    }
+                },
+                new LapTimesModel
+                {
+                    Name = "Third",
+                    Timings = new List<double>
+                    {
+                        62,
+                        115.05
+                    }
+                }
+            };
+            _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(1, 1)).Returns(GenerateLaps()[0]);
+            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("1")).Returns("First");
+            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("2")).Returns("Second");
+            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("3")).Returns("Third");
+            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("4")).Returns("Forth");
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversLapTimes(season, race);
+                actual.Sort((x, y) => x.Name.CompareTo(y.Name));
+                actual.ForEach(model => model.Timings.Sort((x, y) => x.CompareTo(y)));
+
+                // Assert
+                Assert.AreEqual(expectedDriversLapTimes.Count, actual.Count);
+
+                for (int i = 0; i < expectedDriversLapTimes.Count; i++)
+                {
+                    Assert.AreEqual(expectedDriversLapTimes[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedDriversLapTimes[i].Timings.Count, actual[i].Timings.Count);
+
+                    for (int j = 0; j < expectedDriversLapTimes[i].Timings.Count; j++)
+                    {
+                        Assert.AreEqual(expectedDriversLapTimes[i].Timings[j], actual[i].Timings[j]);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversLapTimes_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var season = 1;
+            var race = 1;
+            var expectedDriversLapTimes = new List<LapTimesModel>();
+            _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(season, race)).Returns(new List<LapsDataResponse>());
+
+            for (int k = 0; k < 10000; k++)
+            {
+                // Act
+                var actual = _aggregator.GetDriversLapTimes(season, race);
+
+                // Assert
+                Assert.AreEqual(expectedDriversLapTimes.Count, actual.Count);
             }
         }
     }

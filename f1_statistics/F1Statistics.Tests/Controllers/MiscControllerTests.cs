@@ -375,6 +375,35 @@ namespace F1Statistics.Tests.Controllers
             return positionChangesDuringRace;
         }
 
+        private List<LapTimesModel> GenerateDriversLapTimes()
+        {
+            var lapTimes = new List<LapTimesModel>
+            {
+                new LapTimesModel
+                {
+                    Name = "First",
+                    Timings = new List<double>
+                    {
+                        1.5,
+                        1,
+                        2
+                    }
+                },
+                new LapTimesModel
+                {
+                    Name = "Second",
+                    Timings = new List<double>
+                    {
+                        2.5,
+                        3,
+                        2.7
+                    }
+                }
+            };
+
+            return lapTimes;
+        }
+
         [TestMethod]
         public void GetRaceCountPerSeason_ReturnAggregatedRaceCountPerSeasonList_IfThereAreAnyRaces()
         {
@@ -777,6 +806,49 @@ namespace F1Statistics.Tests.Controllers
 
             // Assert
             Assert.AreEqual(expectedDriversPositionChangesDuringRace.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetDriversLapTimes_ReturnAggregatedDriversLapTimesList_IfThereAreAnyDrivers()
+        {
+            // Arrange
+            var season = 1;
+            var race = 1;
+            var expectedDriversLapTimes = GenerateDriversLapTimes();
+            _service.Setup((service) => service.AggregateDriversLapTimes(season, race)).Returns(expectedDriversLapTimes);
+
+            // Act
+            var actual = _controller.GetDriversLapTimes(season, race);
+
+            // Assert
+            Assert.AreEqual(expectedDriversLapTimes.Count, actual.Count);
+
+            for (int i = 0; i < expectedDriversLapTimes.Count; i++)
+            {
+                Assert.AreEqual(expectedDriversLapTimes[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedDriversLapTimes[i].Timings.Count, actual[i].Timings.Count);
+
+                for (int j = 0; j < expectedDriversLapTimes[i].Timings.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversLapTimes[i].Timings[j], actual[i].Timings[j]);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetDriversLapTimes_ReturnEmptyList_IfThereAreNoDrivers()
+        {
+            // Arrange
+            var season = 1;
+            var race = 1;
+            var expectedDriversLapTimes = new List<LapTimesModel>();
+            _service.Setup((service) => service.AggregateDriversLapTimes(season, race)).Returns(expectedDriversLapTimes);
+
+            // Act
+            var actual = _controller.GetDriversLapTimes(season, race);
+
+            // Assert
+            Assert.AreEqual(expectedDriversLapTimes.Count, actual.Count);
         }
     }
 }
