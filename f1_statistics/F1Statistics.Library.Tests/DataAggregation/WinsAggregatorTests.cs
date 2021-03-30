@@ -424,7 +424,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         "FirstName FirstFamily"
                     },
-                    RaceCount = 1
+                    RacesCount = 1
                 },
                 new UniqueSeasonWinnersModel
                 {
@@ -434,7 +434,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         "FirstName FirstFamily",
                         "SecondName SecondFamily"
                     },
-                    RaceCount = 2
+                    RacesCount = 2
                 }
             };
 
@@ -453,7 +453,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedUniqueWinners.Count; i++)
                 {
                     Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                    Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
+                    Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
                     Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
                 } 
             }
@@ -495,7 +495,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         "FirstConstructor"
                     },
-                    RaceCount = 1
+                    RacesCount = 1
                 },
                 new UniqueSeasonWinnersModel
                 {
@@ -505,7 +505,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         "FirstConstructor",
                         "SecondConstructor"
                     },
-                    RaceCount = 2
+                    RacesCount = 2
                 }
             };
 
@@ -524,7 +524,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedUniqueWinners.Count; i++)
                 {
                     Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                    Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
+                    Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
                     Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
                 } 
             }

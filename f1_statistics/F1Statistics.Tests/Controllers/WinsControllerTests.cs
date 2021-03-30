@@ -113,7 +113,7 @@ namespace F1Statistics.Tests.Controllers
                         "First",
                         "Second"
                     },
-                    RaceCount = 1
+                    RacesCount = 1
                 },
                 new UniqueSeasonWinnersModel
                 {
@@ -124,7 +124,7 @@ namespace F1Statistics.Tests.Controllers
                         "Second",
                         "Third"
                     },
-                    RaceCount = 2
+                    RacesCount = 2
                 }
             };
 
@@ -388,7 +388,7 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
+                Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
             }
         }
@@ -425,7 +425,7 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
+                Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
             }
         }
