@@ -280,6 +280,7 @@ namespace F1Statistics.Library.Services
             var driversLapTimes = _aggregator.GetDriversLapTimes(season, race);
 
             driversLapTimes.Sort((x, y) => x.Name.CompareTo(y.Name));
+            driversLapTimes.ForEach(model => model.Timings.Sort((x, y) => x.CompareTo(y)));
 
             return driversLapTimes;
         }
