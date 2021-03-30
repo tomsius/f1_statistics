@@ -423,7 +423,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Winners = new List<string>
                     {
                         "FirstName FirstFamily"
-                    }
+                    },
+                    RaceCount = 1
                 },
                 new UniqueSeasonWinnersModel
                 {
@@ -432,7 +433,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         "FirstName FirstFamily",
                         "SecondName SecondFamily"
-                    }
+                    },
+                    RaceCount = 2
                 }
             };
 
@@ -451,6 +453,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedUniqueWinners.Count; i++)
                 {
                     Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
                     Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
                 } 
             }
@@ -474,7 +477,6 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Assert
                 Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
                 Assert.AreEqual(expectedUniqueWinners[0].Winners.Count, actual[0].Winners.Count);
-                Assert.AreEqual(expectedUniqueWinners[1].Winners.Count, actual[1].Winners.Count); 
             }
         }
 
@@ -492,7 +494,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Winners = new List<string>
                     {
                         "FirstConstructor"
-                    }
+                    },
+                    RaceCount = 1
                 },
                 new UniqueSeasonWinnersModel
                 {
@@ -501,7 +504,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         "FirstConstructor",
                         "SecondConstructor"
-                    }
+                    },
+                    RaceCount = 2
                 }
             };
 
@@ -520,6 +524,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedUniqueWinners.Count; i++)
                 {
                     Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
                     Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
                 } 
             }
@@ -543,7 +548,6 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Assert
                 Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
                 Assert.AreEqual(expectedUniqueWinners[0].Winners.Count, actual[0].Winners.Count);
-                Assert.AreEqual(expectedUniqueWinners[1].Winners.Count, actual[1].Winners.Count); 
             }
         }
 

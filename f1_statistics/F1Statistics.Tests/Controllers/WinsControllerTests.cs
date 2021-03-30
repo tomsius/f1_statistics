@@ -112,7 +112,8 @@ namespace F1Statistics.Tests.Controllers
                     {
                         "First",
                         "Second"
-                    }
+                    },
+                    RaceCount = 1
                 },
                 new UniqueSeasonWinnersModel
                 {
@@ -122,7 +123,8 @@ namespace F1Statistics.Tests.Controllers
                         "First",
                         "Second",
                         "Third"
-                    }
+                    },
+                    RaceCount = 2
                 }
             };
 
@@ -253,7 +255,7 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetDriversAverageWins_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyDrivers()
+        public void GetDriversWinPercent_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyDrivers()
         {
             // Arrange
             var options = new OptionsModel();
@@ -276,7 +278,7 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetDriversAverageWins_ReturnEmptyList_IfThereAreNoDrivers()
+        public void GetDriversWinPercent_ReturnEmptyList_IfThereAreNoDrivers()
         {
             // Arrange
             var options = new OptionsModel();
@@ -291,7 +293,7 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetConstructorsAverageWins_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyConstructors()
+        public void GetConstructorsWinPercent_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyConstructors()
         {
             // Arrange
             var options = new OptionsModel();
@@ -314,7 +316,7 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetConstructorsAverageWins_ReturnEmptyList_IfThereAreNoConstructors()
+        public void GetConstructorsWinPercent_ReturnEmptyList_IfThereAreNoConstructors()
         {
             // Arrange
             var options = new OptionsModel();
@@ -386,6 +388,7 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
             }
         }
@@ -422,6 +425,7 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
             }
         }

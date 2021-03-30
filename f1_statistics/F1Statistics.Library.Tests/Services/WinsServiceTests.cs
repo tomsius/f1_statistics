@@ -263,7 +263,7 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateDriversAverageWins_ReturnSortedAggregatedWinnersListWithAverageWins_IfThereAreAnyDrivers()
+        public void AggregateDriversWinPercent_ReturnSortedAggregatedWinnersListWithAverageWins_IfThereAreAnyDrivers()
         {
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
@@ -288,7 +288,7 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateDriversAverageWins_ReturnEmptyList_IfThereAreNoDrivers()
+        public void AggregateDriversWinPercent_ReturnEmptyList_IfThereAreNoDrivers()
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
@@ -304,7 +304,7 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateConstructorsAverageWins_ReturnSortedAggregatedWinnersListWithAverageWins_IfThereAreAnyConstructors()
+        public void AggregateConstructorsWinPercent_ReturnSortedAggregatedWinnersListWithAverageWins_IfThereAreAnyConstructors()
         {
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
@@ -329,7 +329,7 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateConstructorsAverageWins_ReturnEmptyList_IfThereAreNoConstructors()
+        public void AggregateConstructorsWinPercent_ReturnEmptyList_IfThereAreNoConstructors()
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
@@ -406,6 +406,7 @@ namespace F1Statistics.Library.Tests.Services
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
             }
         }
@@ -444,6 +445,7 @@ namespace F1Statistics.Library.Tests.Services
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueWinners[i].RaceCount, actual[i].RaceCount);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueWinnersCount, actual[i].UniqueWinnersCount);
             }
         }

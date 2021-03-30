@@ -247,7 +247,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
 
-                var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>() };
+                var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>(), RaceCount = races.Count };
 
                 foreach (var race in races)
                 {
@@ -281,7 +281,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
 
-                var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>() };
+                var newUniqueSeasonWinnersModel = new UniqueSeasonWinnersModel { Season = year, Winners = new List<string>(), RaceCount = races.Count };
 
                 foreach (var race in races)
                 {
