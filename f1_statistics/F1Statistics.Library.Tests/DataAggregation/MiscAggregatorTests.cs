@@ -753,12 +753,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new DriverPositionChangeModel
                         {
                             Name = "FirstName FirstFamily",
-                            PositionChange = 0
+                            PositionChange = 0,
+                            ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "SecondName SecondFamily",
-                            PositionChange = -1
+                            PositionChange = -1,
+                            ChampionshipPosition = 2
                         }
                     }
                 },
@@ -770,18 +772,22 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new DriverPositionChangeModel
                         {
                             Name = "FirstName FirstFamily",
-                            PositionChange = 0
+                            PositionChange = 0,
+                            ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "SecondName SecondFamily",
-                            PositionChange = -3
+                            PositionChange = -3,
+                            ChampionshipPosition = 2
                         }
                     }
                 }
             };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriversStandings()[0]);
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriversStandings()[1]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -802,6 +808,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
                         Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].PositionChange, actual[i].PositionChanges[j].PositionChange);
+                        Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].ChampionshipPosition, actual[i].PositionChanges[j].ChampionshipPosition);
                     }
                 }
             }
@@ -816,6 +823,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             var expectedSeasonPositionChanges = new List<SeasonPositionChangesModel> { new SeasonPositionChangesModel { Season = 1 }, new SeasonPositionChangesModel { Season = 2 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());
+            _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFrom(2)).Returns(new List<DriverStandingsDataResponse>());
 
             for (int k = 0; k < 10000; k++)
             {

@@ -113,12 +113,14 @@ namespace F1Statistics.Tests.Controllers
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            PositionChange = 10
+                            PositionChange = 10,
+                            ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            PositionChange = -10
+                            PositionChange = -10,
+                            ChampionshipPosition = 2
                         }
                     }
                 },
@@ -130,12 +132,14 @@ namespace F1Statistics.Tests.Controllers
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            PositionChange = 20
+                            PositionChange = 20,
+                            ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            PositionChange = 0
+                            PositionChange = 0,
+                            ChampionshipPosition = 2
                         }
                     }
                 }
@@ -571,12 +575,13 @@ namespace F1Statistics.Tests.Controllers
                 {
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].PositionChange, actual[i].PositionChanges[j].PositionChange);
+                    Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].ChampionshipPosition, actual[i].PositionChanges[j].ChampionshipPosition);
                 }
             }
         }
 
         [TestMethod]
-        public void GetNonFinishers_ReturnEmptyList_IfThereAreNoDrivers()
+        public void GetSeasonPositionChanges_ReturnEmptyList_IfThereAreNoDrivers()
         {
             // Arrange
             var options = new OptionsModel();

@@ -203,6 +203,7 @@ namespace F1Statistics.Library.DataAggregation
                 var seasonPositionChanges = new SeasonPositionChangesModel { Season = year, PositionChanges = new List<DriverPositionChangeModel>() };
 
                 var races = _resultsDataAccess.GetResultsFrom(year);
+                var standings = _standingsDataAccess.GetDriverStandingsFrom(year);
 
                 foreach (var race in races)
                 {
@@ -225,6 +226,15 @@ namespace F1Statistics.Library.DataAggregation
                             seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).First().PositionChange += positionChange;
                         }
                     }
+                }
+
+                for (int i = 0; i < standings.Count; i++)
+                {
+                    var driver = standings[i].Driver;
+                    var driverName = $"{driver.givenName} {driver.familyName}";
+                    var championshipPosition = i + 1;
+
+                    seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).First().ChampionshipPosition = championshipPosition;
                 }
 
                 lock (lockAdd)

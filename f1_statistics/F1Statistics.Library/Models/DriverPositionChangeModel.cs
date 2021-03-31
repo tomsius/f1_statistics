@@ -8,5 +8,6 @@ namespace F1Statistics.Library.Models
     {
         public string Name { get; set; }
         public int PositionChange { get; set; }
+        public int ChampionshipPosition { get; set; }
     }
 }

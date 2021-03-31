@@ -118,12 +118,14 @@ namespace F1Statistics.Library.Tests.Services
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            PositionChange = 10
+                            PositionChange = 10,
+                            ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            PositionChange = -10
+                            PositionChange = -10,
+                            ChampionshipPosition = 2
                         }
                     }
                 },
@@ -135,12 +137,14 @@ namespace F1Statistics.Library.Tests.Services
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            PositionChange = 20
+                            PositionChange = 20,
+                            ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            PositionChange = 0
+                            PositionChange = 0,
+                            ChampionshipPosition = 2
                         }
                     }
                 }
@@ -591,6 +595,7 @@ namespace F1Statistics.Library.Tests.Services
                 {
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].PositionChange, actual[i].PositionChanges[j].PositionChange);
+                    Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].ChampionshipPosition, actual[i].PositionChanges[j].ChampionshipPosition);
                 }
             }
         }
