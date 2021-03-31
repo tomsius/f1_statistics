@@ -90,7 +90,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
-                var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, PoleSitters = new List<string>() };
+                var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, QualificationsCount = qualifyings.Count, PoleSitters = new List<string>() };
 
                 foreach (var qualifying in qualifyings)
                 {
@@ -124,7 +124,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
 
-                var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, PoleSitters = new List<string>() };
+                var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, QualificationsCount = qualifyings.Count, PoleSitters = new List<string>() };
 
                 foreach (var qualifying in qualifyings)
                 {

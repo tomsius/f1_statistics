@@ -265,7 +265,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel> { new UniqueSeasonPoleSittersModel { Season = 1, PoleSitters = new List<string> { "FirstName FirstFamily" } }, new UniqueSeasonPoleSittersModel { Season = 2, PoleSitters = new List<string> { "FirstName FirstFamily" , "SecondName SecondFamily" } } };
+            var expectedUniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel> { new UniqueSeasonPoleSittersModel { Season = 1, QualificationsCount = 1, PoleSitters = new List<string> { "FirstName FirstFamily" } }, new UniqueSeasonPoleSittersModel { Season = 2, QualificationsCount = 2, PoleSitters = new List<string> { "FirstName FirstFamily" , "SecondName SecondFamily" } } };
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
@@ -282,6 +282,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Assert.AreEqual(expectedUniquePoleSittersDrivers[i].Season, actual[i].Season);
                     Assert.AreEqual(expectedUniquePoleSittersDrivers[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                    Assert.AreEqual(expectedUniquePoleSittersDrivers[i].QualificationsCount, actual[i].QualificationsCount);
                 } 
             }
         }
@@ -314,7 +315,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel> { new UniqueSeasonPoleSittersModel { Season = 1, PoleSitters = new List<string> { "FirstName FirstFamily" } }, new UniqueSeasonPoleSittersModel { Season = 2, PoleSitters = new List<string> { "FirstName FirstFamily", "SecondName SecondFamily" } } };
+            var expectedUniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel> { new UniqueSeasonPoleSittersModel { Season = 1, QualificationsCount = 1, PoleSitters = new List<string> { "FirstName FirstFamily" } }, new UniqueSeasonPoleSittersModel { Season = 2, QualificationsCount = 2, PoleSitters = new List<string> { "FirstName FirstFamily", "SecondName SecondFamily" } } };
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
@@ -331,6 +332,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Assert.AreEqual(expectedUniquePoleSittersConstructors[i].Season, actual[i].Season);
                     Assert.AreEqual(expectedUniquePoleSittersConstructors[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                    Assert.AreEqual(expectedUniquePoleSittersConstructors[i].QualificationsCount, actual[i].QualificationsCount);
                 } 
             }
         }
