@@ -70,29 +70,32 @@ namespace F1Statistics.Tests.Controllers
                 new CircuitWinsModel
                 {
                     Name = "FirstCircuit",
-                    Winners = new List<WinsModel>
+                    Winners = new List<WinsAndParticipationsModel>
                     {
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "FirstDriver",
-                            WinCount = 2
+                            WinCount = 2,
+                            ParticipationsCount = 1
                         }
                     }
                 },
                 new CircuitWinsModel
                 {
                     Name = "SecondCircuit",
-                    Winners = new List<WinsModel>
+                    Winners = new List<WinsAndParticipationsModel>
                     {
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "FirstDriver",
-                            WinCount = 1
+                            WinCount = 1,
+                            ParticipationsCount = 1
                         },
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "SecondDriver",
-                            WinCount = 1
+                            WinCount = 1,
+                            ParticipationsCount = 1
                         }
                     }
                 }

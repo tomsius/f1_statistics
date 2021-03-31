@@ -210,26 +210,33 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     var circuitName = race.Circuit.circuitName;
                     var winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
-                    var newWinnerModel = new WinsModel { Name = winnerName, WinCount = 1 };
 
                     lock (lockObject)
                     {
-                        if (!circuitWinners.Where(circuit => circuit.Name == circuitName).Any())
+                        foreach (var result in race.Results)
                         {
-                            var circuitWinnersModel = new CircuitWinsModel { Name = circuitName, Winners = new List<WinsModel> { newWinnerModel } };
-                            circuitWinners.Add(circuitWinnersModel);
-                        }
-                        else
-                        {
-                            if (!circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).Any())
+                            var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+                            var newWinsAndParticipationsModel = new WinsAndParticipationsModel { Name = driverName, WinCount = 0, ParticipationsCount = 1 };
+
+                            if (!circuitWinners.Where(circuit => circuit.Name == circuitName).Any())
                             {
-                                circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Add(newWinnerModel);
+                                var newCircuitWinsModel = new CircuitWinsModel { Name = circuitName, Winners = new List<WinsAndParticipationsModel> { newWinsAndParticipationsModel } };
+                                circuitWinners.Add(newCircuitWinsModel);
                             }
                             else
                             {
-                                circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).First().WinCount++;
+                                if (!circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(driver => driver.Name == driverName).Any())
+                                {
+                                    circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Add(newWinsAndParticipationsModel);
+                                }
+                                else
+                                {
+                                    circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(driver => driver.Name == driverName).First().ParticipationsCount++;
+                                }
                             }
-                        } 
+                        }
+
+                        circuitWinners.Where(circuit => circuit.Name == circuitName).First().Winners.Where(winner => winner.Name == winnerName).First().WinCount++; 
                     }
                 }
             });

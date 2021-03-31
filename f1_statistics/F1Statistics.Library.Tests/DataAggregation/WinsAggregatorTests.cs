@@ -328,36 +328,39 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 new CircuitWinsModel
                 {
                     Name = "FirstCircuit",
-                    Winners = new List<WinsModel>
+                    Winners = new List<WinsAndParticipationsModel>
                     {
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "FirstName FirstFamily",
-                            WinCount = 1
+                            WinCount = 1,
+                            ParticipationsCount = 1
                         }
                     }
                 },
                 new CircuitWinsModel
                 {
                     Name = "SecondCircuit",
-                    Winners = new List<WinsModel>
+                    Winners = new List<WinsAndParticipationsModel>
                     {
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "FirstName FirstFamily",
-                            WinCount = 1
+                            WinCount = 1,
+                            ParticipationsCount = 1
                         }
                     }
                 },
                 new CircuitWinsModel
                 {
                     Name = "ThirdCircuit",
-                    Winners = new List<WinsModel>
+                    Winners = new List<WinsAndParticipationsModel>
                     {
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "SecondName SecondFamily",
-                            WinCount = 1
+                            WinCount = 1,
+                            ParticipationsCount = 1
                         }
                     }
                 }
@@ -384,6 +387,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         Assert.AreEqual(expectedCircuitWinners[i].Winners[j].Name, actual[i].Winners[j].Name);
                         Assert.AreEqual(expectedCircuitWinners[i].Winners[j].WinCount, actual[i].Winners[j].WinCount);
+                        Assert.AreEqual(expectedCircuitWinners[i].Winners[j].ParticipationsCount, actual[i].Winners[j].ParticipationsCount);
                     }
                 } 
             }

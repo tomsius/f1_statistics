@@ -4,6 +4,7 @@ using F1Statistics.Library.Services.Interfaces;
 using F1Statistics.Library.Validators.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace F1Statistics.Library.Services
@@ -114,6 +115,8 @@ namespace F1Statistics.Library.Services
                 circuitsWinners = _aggregator.GetCircuitWinners(options.Season, options.Season);
             }
 
+            circuitsWinners.ForEach(circuit => circuit.Winners = circuit.Winners.Where(winner => winner.WinCount > 0).ToList());
+
             circuitsWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
             circuitsWinners.Sort((x, y) => x.Name.CompareTo(y.Name));
 
@@ -202,7 +205,7 @@ namespace F1Statistics.Library.Services
             return winnersByGridPosition;
         }
 
-        //TODO - iskelti
+        //TODO - iskelti kaip extension
         private void FillMissingGridPositions(List<WinsByGridPositionModel> winnersByGridPosition)
         {
             for (int i = 0; i < winnersByGridPosition.Count; i++)

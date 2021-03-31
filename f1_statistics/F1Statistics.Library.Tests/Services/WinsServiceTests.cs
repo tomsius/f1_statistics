@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace F1Statistics.Library.Tests.Services
@@ -74,29 +75,32 @@ namespace F1Statistics.Library.Tests.Services
                 new CircuitWinsModel
                 {
                     Name = "FirstCircuit",
-                    Winners = new List<WinsModel>
+                    Winners = new List<WinsAndParticipationsModel>
                     {
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "FirstDriver",
-                            WinCount = 2
+                            WinCount = 2,
+                            ParticipationsCount = 1
                         }
                     }
                 },
                 new CircuitWinsModel
                 {
                     Name = "SecondCircuit",
-                    Winners = new List<WinsModel>
+                    Winners = new List<WinsAndParticipationsModel>
                     {
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "FirstDriver",
-                            WinCount = 1
+                            WinCount = 1,
+                            ParticipationsCount = 1
                         },
-                        new WinsModel
+                        new WinsAndParticipationsModel
                         {
                             Name = "SecondDriver",
-                            WinCount = 1
+                            WinCount = 1,
+                            ParticipationsCount = 1
                         }
                     }
                 }
@@ -350,7 +354,9 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedCircuitWinners = GenerateCircuitWinners();
+            expectedCircuitWinners.ForEach(circuit => circuit.Winners = circuit.Winners.Where(winner => winner.WinCount > 0).ToList());
             expectedCircuitWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
+            expectedCircuitWinners.Sort((x, y) => x.Name.CompareTo(y.Name));
             _aggregator.Setup((aggregator) => aggregator.GetCircuitWinners(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateCircuitWinners());
 
             // Act
