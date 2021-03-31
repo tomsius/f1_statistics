@@ -140,7 +140,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinners = new List<FastestLapModel> { new FastestLapModel { Name = "FirstName FirstFamily", FastestLapsCount = 2 }, new FastestLapModel { Name = "SecondName SecondFamily", FastestLapsCount = 1 } };
+            var expectedFastestDrivers = new List<FastestLapModel> { new FastestLapModel { Name = "FirstName FirstFamily", FastestLapsCount = 2 }, new FastestLapModel { Name = "SecondName SecondFamily", FastestLapsCount = 1 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -151,12 +151,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
 
                 // Assert
-                Assert.AreEqual(expectedWinners.Count, actual.Count);
+                Assert.AreEqual(expectedFastestDrivers.Count, actual.Count);
 
-                for (int i = 0; i < expectedWinners.Count; i++)
+                for (int i = 0; i < expectedFastestDrivers.Count; i++)
                 {
-                    Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedWinners[i].FastestLapsCount, actual[i].FastestLapsCount);
+                    Assert.AreEqual(expectedFastestDrivers[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedFastestDrivers[i].FastestLapsCount, actual[i].FastestLapsCount);
                 } 
             }
         }
@@ -167,7 +167,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinners = new List<FastestLapModel>();
+            var expectedFastestDrivers = new List<FastestLapModel>();
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -177,7 +177,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetDriversFastestLaps(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedWinners.Count, actual.Count); 
+                Assert.AreEqual(expectedFastestDrivers.Count, actual.Count); 
             }
         }
 
@@ -187,7 +187,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinners = new List<FastestLapModel> { new FastestLapModel { Name = "FirstConstructor", FastestLapsCount = 2 }, new FastestLapModel { Name = "SecondConstructor", FastestLapsCount = 1 } };
+            var expectedFastestConstructors = new List<FastestLapModel> { new FastestLapModel { Name = "FirstConstructor", FastestLapsCount = 2 }, new FastestLapModel { Name = "SecondConstructor", FastestLapsCount = 1 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -198,12 +198,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
 
                 // Assert
-                Assert.AreEqual(expectedWinners.Count, actual.Count);
+                Assert.AreEqual(expectedFastestConstructors.Count, actual.Count);
 
-                for (int i = 0; i < expectedWinners.Count; i++)
+                for (int i = 0; i < expectedFastestConstructors.Count; i++)
                 {
-                    Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedWinners[i].FastestLapsCount, actual[i].FastestLapsCount);
+                    Assert.AreEqual(expectedFastestConstructors[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedFastestConstructors[i].FastestLapsCount, actual[i].FastestLapsCount);
                 } 
             }
         }
@@ -214,7 +214,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinners = new List<FastestLapModel>();
+            var expectedFastestConstructors = new List<FastestLapModel>();
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -224,7 +224,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetConstructorsFastestLaps(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedWinners.Count, actual.Count); 
+                Assert.AreEqual(expectedFastestConstructors.Count, actual.Count); 
             }
         }
 
@@ -234,7 +234,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniqueWinners = new List<UniqueSeasonFastestLapModel>
+            var expectedUniqueFastestDrivers = new List<UniqueSeasonFastestLapModel>
             {
                 new UniqueSeasonFastestLapModel
                 {
@@ -242,7 +242,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     FastestLapAchievers = new List<string>
                     {
                         "FirstName FirstFamily"
-                    }
+                    },
+                    RacesCount = 1
                 },
                 new UniqueSeasonFastestLapModel
                 {
@@ -251,7 +252,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         "FirstName FirstFamily",
                         "SecondName SecondFamily"
-                    }
+                    },
+                    RacesCount = 2
                 }
             };
 
@@ -265,12 +267,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.Sort((x, y) => x.Season.CompareTo(y.Season));
 
                 // Assert
-                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+                Assert.AreEqual(expectedUniqueFastestDrivers.Count, actual.Count);
 
-                for (int i = 0; i < expectedUniqueWinners.Count; i++)
+                for (int i = 0; i < expectedUniqueFastestDrivers.Count; i++)
                 {
-                    Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                    Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                    Assert.AreEqual(expectedUniqueFastestDrivers[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniqueFastestDrivers[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                    Assert.AreEqual(expectedUniqueFastestDrivers[i].RacesCount, actual[i].RacesCount);
                 } 
             }
         }
@@ -281,7 +284,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniqueWinners = new List<UniqueSeasonFastestLapModel> { new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() }, new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() } };
+            var expectedUniqueFastestDrivers = new List<UniqueSeasonFastestLapModel> { new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() }, new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -291,9 +294,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetUniqueDriversFastestLaps(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
-                Assert.AreEqual(expectedUniqueWinners[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
-                Assert.AreEqual(expectedUniqueWinners[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count); 
+                Assert.AreEqual(expectedUniqueFastestDrivers.Count, actual.Count);
+                Assert.AreEqual(expectedUniqueFastestDrivers[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
+                Assert.AreEqual(expectedUniqueFastestDrivers[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count); 
             }
         }
 
@@ -303,7 +306,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniqueWinners = new List<UniqueSeasonFastestLapModel>
+            var expectedUniqueFastestConstructors = new List<UniqueSeasonFastestLapModel>
             {
                 new UniqueSeasonFastestLapModel
                 {
@@ -311,7 +314,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     FastestLapAchievers = new List<string>
                     {
                         "FirstConstructor"
-                    }
+                    },
+                    RacesCount = 1
                 },
                 new UniqueSeasonFastestLapModel
                 {
@@ -320,7 +324,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         "FirstConstructor",
                         "SecondConstructor"
-                    }
+                    },
+                    RacesCount = 2
                 }
             };
 
@@ -334,12 +339,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.Sort((x, y) => x.Season.CompareTo(y.Season));
 
                 // Assert
-                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+                Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
 
-                for (int i = 0; i < expectedUniqueWinners.Count; i++)
+                for (int i = 0; i < expectedUniqueFastestConstructors.Count; i++)
                 {
-                    Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                    Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                    Assert.AreEqual(expectedUniqueFastestConstructors[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedUniqueFastestConstructors[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                    Assert.AreEqual(expectedUniqueFastestConstructors[i].RacesCount, actual[i].RacesCount);
                 } 
             }
         }
@@ -350,7 +356,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniqueWinners = new List<UniqueSeasonFastestLapModel> { new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() }, new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() } };
+            var expectedUniqueFastestConstructors = new List<UniqueSeasonFastestLapModel> { new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() }, new UniqueSeasonFastestLapModel { FastestLapAchievers = new List<string>() } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -360,9 +366,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetUniqueConstructorsFastestLaps(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
-                Assert.AreEqual(expectedUniqueWinners[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
-                Assert.AreEqual(expectedUniqueWinners[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count); 
+                Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
+                Assert.AreEqual(expectedUniqueFastestConstructors[0].FastestLapAchievers.Count, actual[0].FastestLapAchievers.Count);
+                Assert.AreEqual(expectedUniqueFastestConstructors[1].FastestLapAchievers.Count, actual[1].FastestLapAchievers.Count); 
             }
         }
     }

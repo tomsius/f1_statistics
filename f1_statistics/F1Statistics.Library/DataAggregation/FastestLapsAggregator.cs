@@ -92,7 +92,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
 
-                var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, FastestLapAchievers = new List<string>() };
+                var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, RacesCount = races.Count, FastestLapAchievers = new List<string>() };
 
                 foreach (var race in races)
                 {
@@ -127,7 +127,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
 
-                var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, FastestLapAchievers = new List<string>() };
+                var newUniqueSeasonFastestLapModel = new UniqueSeasonFastestLapModel { Season = year, RacesCount = races.Count, FastestLapAchievers = new List<string>() };
 
                 foreach (var race in races)
                 {

@@ -55,7 +55,8 @@ namespace F1Statistics.Tests.Controllers
                     {
                         "First",
                         "Second"
-                    }
+                    },
+                    RacesCount = 1
                 },
                 new UniqueSeasonFastestLapModel
                 {
@@ -65,7 +66,8 @@ namespace F1Statistics.Tests.Controllers
                         "First",
                         "Second",
                         "Third"
-                    }
+                    },
+                    RacesCount = 1
                 }
             };
 
@@ -162,6 +164,7 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
             }
         }
 
@@ -198,6 +201,7 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
                 Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
             }
         }
 
