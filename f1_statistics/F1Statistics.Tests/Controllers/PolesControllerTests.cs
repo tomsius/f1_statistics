@@ -51,12 +51,14 @@ namespace F1Statistics.Tests.Controllers
                 new UniqueSeasonPoleSittersModel
                 {
                     Season = 1,
-                    PoleSitters = new List<string>{ "First", "Second" }
+                    PoleSitters = new List<string>{ "First", "Second" },
+                    QualificationsCount = 1
                 },
                 new UniqueSeasonPoleSittersModel
                 {
                     Season = 2,
-                    PoleSitters = new List<string>{ "First" }
+                    PoleSitters = new List<string>{ "First" },
+                    QualificationsCount = 1
                 }
             };
 
@@ -153,6 +155,7 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedUniquePoleSittersDrivers[i].Season, actual[i].Season);
                 Assert.AreEqual(expectedUniquePoleSittersDrivers[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                Assert.AreEqual(expectedUniquePoleSittersDrivers[i].QualificationsCount, actual[i].QualificationsCount);
             }
         }
 
@@ -189,6 +192,7 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedUniquePoleSittersConstructors[i].Season, actual[i].Season);
                 Assert.AreEqual(expectedUniquePoleSittersConstructors[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
+                Assert.AreEqual(expectedUniquePoleSittersConstructors[i].QualificationsCount, actual[i].QualificationsCount);
             }
         }
 
