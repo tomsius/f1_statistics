@@ -321,7 +321,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
 
-                var newWinnersFromPoleModel = new WinnersFromPoleModel { Season = year, WinnersFromPole = new List<string>() };
+                var newWinnersFromPoleModel = new WinnersFromPoleModel { Season = year, RacesCount = races.Count, WinnersFromPole = new List<string>() };
 
                 foreach (var race in races)
                 {

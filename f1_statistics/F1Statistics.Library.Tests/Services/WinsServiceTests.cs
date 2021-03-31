@@ -144,12 +144,14 @@ namespace F1Statistics.Library.Tests.Services
                 new WinnersFromPoleModel
                 {
                     Season = 1,
-                    WinnersFromPole = new List<string> { "First", "Second" }
+                    WinnersFromPole = new List<string> { "First", "Second" },
+                    RacesCount = 1
                 },
                 new WinnersFromPoleModel
                 {
                     Season = 2,
-                    WinnersFromPole = new List<string> { "First" }
+                    WinnersFromPole = new List<string> { "First" },
+                    RacesCount = 2
                 }
             };
 
@@ -491,6 +493,7 @@ namespace F1Statistics.Library.Tests.Services
             {
                 Assert.AreEqual(expectedWinnersFromPole[i].Season, actual[i].Season);
                 Assert.AreEqual(expectedWinnersFromPole[i].WinsFromPoleCount, actual[i].WinsFromPoleCount);
+                Assert.AreEqual(expectedWinnersFromPole[i].RacesCount, actual[i].RacesCount);
             }
         }
 
