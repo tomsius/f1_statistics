@@ -81,13 +81,15 @@ namespace F1Statistics.Library.Tests.Services
                 {
                     Season = 1,
                     Winner = "First",
-                    Points = 200
+                    Points = 200,
+                    RacesCount = 1
                 },
                 new SeasonWinnersPointsModel
                 {
                     Season = 2,
                     Winner = "Second",
-                    Points = 400
+                    Points = 400,
+                    RacesCount = 1
                 }
             };
 
@@ -306,6 +308,7 @@ namespace F1Statistics.Library.Tests.Services
                 Assert.AreEqual(expectedDriverWinnersPoints[i].Season, actual[i].Season);
                 Assert.AreEqual(expectedDriverWinnersPoints[i].Points, actual[i].Points);
                 Assert.AreEqual(expectedDriverWinnersPoints[i].Winner, actual[i].Winner);
+                Assert.AreEqual(expectedDriverWinnersPoints[i].RacesCount, actual[i].RacesCount);
             }
         }
 
@@ -346,6 +349,7 @@ namespace F1Statistics.Library.Tests.Services
                 Assert.AreEqual(expectedConstructorsWinnersPoints[i].Season, actual[i].Season);
                 Assert.AreEqual(expectedConstructorsWinnersPoints[i].Points, actual[i].Points);
                 Assert.AreEqual(expectedConstructorsWinnersPoints[i].Winner, actual[i].Winner);
+                Assert.AreEqual(expectedConstructorsWinnersPoints[i].RacesCount, actual[i].RacesCount);
             }
         }
 

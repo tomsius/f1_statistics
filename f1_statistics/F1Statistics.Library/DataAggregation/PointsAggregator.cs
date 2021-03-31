@@ -93,10 +93,12 @@ namespace F1Statistics.Library.DataAggregation
                     return;
                 }
 
+                var racesCount = _resultsDataAccess.GetResultsFrom(year).Count;
+
                 var winner = $"{standings[0].Driver.givenName} {standings[0].Driver.familyName}";
                 var points = int.Parse(standings[0].points);
 
-                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points };
+                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points, RacesCount = racesCount };
 
                 lock (lockAdd)
                 {
@@ -121,10 +123,12 @@ namespace F1Statistics.Library.DataAggregation
                     return;
                 }
 
+                var racesCount = _resultsDataAccess.GetResultsFrom(year).Count;
+
                 var winner = $"{standings[0].Constructor.name}";
                 var points = int.Parse(standings[0].points);
 
-                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points };
+                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points, RacesCount = racesCount };
 
                 lock (lockAdd)
                 {

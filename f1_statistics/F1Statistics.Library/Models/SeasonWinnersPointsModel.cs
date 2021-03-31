@@ -9,5 +9,6 @@ namespace F1Statistics.Library.Models
         public int Season { get; set; }
         public string Winner { get; set; }
         public int Points { get; set; }
+        public int RacesCount { get; set; }
     }
 }

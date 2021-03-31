@@ -483,15 +483,19 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Season = 1,
                     Winner = "FirstName FirstFamily",
-                    Points = 100
+                    Points = 100,
+                    RacesCount = 1
                 },
                 new SeasonWinnersPointsModel
                 {
                     Season = 2,
                     Winner = "FirstName FirstFamily",
-                    Points = 200
+                    Points = 200,
+                    RacesCount = 2
                 }
             };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
             _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriverStandings()[0]);
             _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriverStandings()[1]);
 
@@ -509,6 +513,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Assert.AreEqual(expectedDriversWinnersPoints[i].Season, actual[i].Season);
                     Assert.AreEqual(expectedDriversWinnersPoints[i].Winner, actual[i].Winner);
                     Assert.AreEqual(expectedDriversWinnersPoints[i].Points, actual[i].Points);
+                    Assert.AreEqual(expectedDriversWinnersPoints[i].RacesCount, actual[i].RacesCount);
                 } 
             }
         }
@@ -545,15 +550,19 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Season = 1,
                     Winner = "First",
-                    Points = 100
+                    Points = 100,
+                    RacesCount = 1
                 },
                 new SeasonWinnersPointsModel
                 {
                     Season = 2,
                     Winner = "First",
-                    Points = 200
+                    Points = 200,
+                    RacesCount = 2
                 }
             };
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
             _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(1)).Returns(GenerateConstructorStandings()[0]);
             _standingsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetConstructorStandingsFrom(2)).Returns(GenerateConstructorStandings()[1]);
 
@@ -571,6 +580,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Assert.AreEqual(expectedConstructorsWinnersPoints[i].Season, actual[i].Season);
                     Assert.AreEqual(expectedConstructorsWinnersPoints[i].Winner, actual[i].Winner);
                     Assert.AreEqual(expectedConstructorsWinnersPoints[i].Points, actual[i].Points);
+                    Assert.AreEqual(expectedConstructorsWinnersPoints[i].RacesCount, actual[i].RacesCount);
                 } 
             }
         }

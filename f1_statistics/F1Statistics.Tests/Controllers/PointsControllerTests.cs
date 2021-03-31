@@ -76,13 +76,15 @@ namespace F1Statistics.Tests.Controllers
                 {
                     Season = 1,
                     Winner = "First",
-                    Points = 200
+                    Points = 200,
+                    RacesCount = 1
                 },
                 new SeasonWinnersPointsModel
                 {
                     Season = 2,
                     Winner = "Second",
-                    Points = 400
+                    Points = 400,
+                    RacesCount = 1
                 }
             };
 
@@ -281,20 +283,21 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinnersPoints = GenerateWinnersPoints();
-            _service.Setup((service) => service.AggregateDriversWinnersPointsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedWinnersPoints);
+            var expectedDriverWinnersPoints = GenerateWinnersPoints();
+            _service.Setup((service) => service.AggregateDriversWinnersPointsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedDriverWinnersPoints);
 
             // Act
             var actual = _controller.GetDriversWinnersPointsPerSeason(options);
 
             // Assert
-            Assert.AreEqual(expectedWinnersPoints.Count, actual.Count);
+            Assert.AreEqual(expectedDriverWinnersPoints.Count, actual.Count);
 
-            for (int i = 0; i < expectedWinnersPoints.Count; i++)
+            for (int i = 0; i < expectedDriverWinnersPoints.Count; i++)
             {
-                Assert.AreEqual(expectedWinnersPoints[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedWinnersPoints[i].Points, actual[i].Points);
-                Assert.AreEqual(expectedWinnersPoints[i].Winner, actual[i].Winner);
+                Assert.AreEqual(expectedDriverWinnersPoints[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedDriverWinnersPoints[i].Points, actual[i].Points);
+                Assert.AreEqual(expectedDriverWinnersPoints[i].Winner, actual[i].Winner);
+                Assert.AreEqual(expectedDriverWinnersPoints[i].RacesCount, actual[i].RacesCount);
             }
         }
 
@@ -318,20 +321,21 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinnersPoints = GenerateWinnersPoints();
-            _service.Setup((service) => service.AggregateConstructorsWinnersPointsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedWinnersPoints);
+            var expectedConstructorsWinnersPoints = GenerateWinnersPoints();
+            _service.Setup((service) => service.AggregateConstructorsWinnersPointsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedConstructorsWinnersPoints);
 
             // Act
             var actual = _controller.GetConstructorsWinnersPointsPerSeason(options);
 
             // Assert
-            Assert.AreEqual(expectedWinnersPoints.Count, actual.Count);
+            Assert.AreEqual(expectedConstructorsWinnersPoints.Count, actual.Count);
 
-            for (int i = 0; i < expectedWinnersPoints.Count; i++)
+            for (int i = 0; i < expectedConstructorsWinnersPoints.Count; i++)
             {
-                Assert.AreEqual(expectedWinnersPoints[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedWinnersPoints[i].Points, actual[i].Points);
-                Assert.AreEqual(expectedWinnersPoints[i].Winner, actual[i].Winner);
+                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Points, actual[i].Points);
+                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Winner, actual[i].Winner);
+                Assert.AreEqual(expectedConstructorsWinnersPoints[i].RacesCount, actual[i].RacesCount);
             }
         }
 
