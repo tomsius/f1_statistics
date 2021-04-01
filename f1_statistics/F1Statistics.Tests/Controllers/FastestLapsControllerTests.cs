@@ -32,12 +32,36 @@ namespace F1Statistics.Tests.Controllers
                 new FastestLapModel
                 {
                     Name = "First",
-                    FastestLapsCount = 2
+                    FastestLapsByYear = new List<FastestLapsByYearModel>
+                    {
+                        new FastestLapsByYearModel
+                        {
+                            Year = 1,
+                            FastestLapCount = 1
+                        },
+                        new FastestLapsByYearModel
+                        {
+                            Year = 2,
+                            FastestLapCount = 2
+                        }
+                    }
                 },
                 new FastestLapModel
                 {
                     Name = "Second",
-                    FastestLapsCount = 1
+                    FastestLapsByYear = new List<FastestLapsByYearModel>
+                    {
+                        new FastestLapsByYearModel
+                        {
+                            Year = 1,
+                            FastestLapCount = 2
+                        },
+                        new FastestLapsByYearModel
+                        {
+                            Year = 2,
+                            FastestLapCount = 1
+                        }
+                    }
                 }
             };
 
@@ -92,6 +116,13 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedDriversFastestLappers[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsCount, actual[i].FastestLapsCount);
+                Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear.Count, actual[i].FastestLapsByYear.Count);
+
+                for (int j = 0; j < expectedDriversFastestLappers[i].FastestLapsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
+                    Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapCount, actual[i].FastestLapsByYear[j].FastestLapCount);
+                }
             }
         }
 
@@ -100,14 +131,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = new List<FastestLapModel>();
-            _service.Setup((service) => service.AggregateDriversFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedDriversFastestLappers = new List<FastestLapModel>();
+            _service.Setup((service) => service.AggregateDriversFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedDriversFastestLappers);
 
             // Act
             var actual = _controller.GetDriversFastestLaps(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
         }
 
         [TestMethod]
@@ -115,19 +146,26 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = GenerateFastestLappers();
-            _service.Setup((service) => service.AggregateConstructorsFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedConstructorsFastestLappers = GenerateFastestLappers();
+            _service.Setup((service) => service.AggregateConstructorsFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedConstructorsFastestLappers);
 
             // Act
             var actual = _controller.GetConstructorsFastestLaps(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
 
-            for (int i = 0; i < expectedWinners.Count; i++)
+            for (int i = 0; i < expectedConstructorsFastestLappers.Count; i++)
             {
-                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinners[i].FastestLapsCount, actual[i].FastestLapsCount);
+                Assert.AreEqual(expectedConstructorsFastestLappers[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsCount, actual[i].FastestLapsCount);
+                Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear.Count, actual[i].FastestLapsByYear.Count);
+
+                for (int j = 0; j < expectedConstructorsFastestLappers[i].FastestLapsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
+                    Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapCount, actual[i].FastestLapsByYear[j].FastestLapCount);
+                }
             }
         }
 
@@ -136,14 +174,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = new List<FastestLapModel>();
-            _service.Setup((service) => service.AggregateConstructorsFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedConstructorsFastestLappers = new List<FastestLapModel>();
+            _service.Setup((service) => service.AggregateConstructorsFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedConstructorsFastestLappers);
 
             // Act
             var actual = _controller.GetConstructorsFastestLaps(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
         }
 
         [TestMethod]
@@ -151,20 +189,20 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniqueWinners = GenerateUniqueSeasonFastestLappers();
-            _service.Setup((service) => service.AggregateUniqueDriversFastestLapsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+            var expectedUniqueFastestDrivers = GenerateUniqueSeasonFastestLappers();
+            _service.Setup((service) => service.AggregateUniqueDriversFastestLapsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestDrivers);
 
             // Act
             var actual = _controller.GetUniqueDriversFastestLapsPerSeason(options);
 
             // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+            Assert.AreEqual(expectedUniqueFastestDrivers.Count, actual.Count);
 
-            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            for (int i = 0; i < expectedUniqueFastestDrivers.Count; i++)
             {
-                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
-                Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
+                Assert.AreEqual(expectedUniqueFastestDrivers[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueFastestDrivers[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                Assert.AreEqual(expectedUniqueFastestDrivers[i].RacesCount, actual[i].RacesCount);
             }
         }
 
@@ -173,14 +211,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniqueWinners = new List<UniqueSeasonFastestLapModel>();
-            _service.Setup((service) => service.AggregateUniqueDriversFastestLapsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+            var expectedUniqueFastestDrivers = new List<UniqueSeasonFastestLapModel>();
+            _service.Setup((service) => service.AggregateUniqueDriversFastestLapsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestDrivers);
 
             // Act
             var actual = _controller.GetUniqueDriversFastestLapsPerSeason(options);
 
             // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+            Assert.AreEqual(expectedUniqueFastestDrivers.Count, actual.Count);
         }
 
         [TestMethod]
@@ -188,20 +226,20 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniqueWinners = GenerateUniqueSeasonFastestLappers();
-            _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+            var expectedUniqueFastestConstructors = GenerateUniqueSeasonFastestLappers();
+            _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestConstructors);
 
             // Act
             var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options);
 
             // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+            Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
 
-            for (int i = 0; i < expectedUniqueWinners.Count; i++)
+            for (int i = 0; i < expectedUniqueFastestConstructors.Count; i++)
             {
-                Assert.AreEqual(expectedUniqueWinners[i].Season, actual[i].Season);
-                Assert.AreEqual(expectedUniqueWinners[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
-                Assert.AreEqual(expectedUniqueWinners[i].RacesCount, actual[i].RacesCount);
+                Assert.AreEqual(expectedUniqueFastestConstructors[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedUniqueFastestConstructors[i].UniqueFastestLapsCount, actual[i].UniqueFastestLapsCount);
+                Assert.AreEqual(expectedUniqueFastestConstructors[i].RacesCount, actual[i].RacesCount);
             }
         }
 
@@ -210,14 +248,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedUniqueWinners = new List<UniqueSeasonFastestLapModel>();
-            _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueWinners);
+            var expectedUniqueFastestConstructors = new List<UniqueSeasonFastestLapModel>();
+            _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestConstructors);
 
             // Act
             var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options);
 
             // Assert
-            Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
+            Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
         }
     }
 }

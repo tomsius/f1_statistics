@@ -140,7 +140,38 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedFastestDrivers = new List<FastestLapModel> { new FastestLapModel { Name = "FirstName FirstFamily", FastestLapsCount = 2 }, new FastestLapModel { Name = "SecondName SecondFamily", FastestLapsCount = 1 } };
+            var expectedFastestDrivers = new List<FastestLapModel> 
+            {
+                new FastestLapModel 
+                {
+                    Name = "FirstName FirstFamily", 
+                    FastestLapsByYear = new List<FastestLapsByYearModel>
+                    {
+                        new FastestLapsByYearModel
+                        {
+                            Year = 1,
+                            FastestLapCount = 1
+                        },
+                        new FastestLapsByYearModel
+                        {
+                            Year = 2,
+                            FastestLapCount = 1
+                        }
+                    }
+                },
+                new FastestLapModel 
+                {
+                    Name = "SecondName SecondFamily",
+                    FastestLapsByYear = new List<FastestLapsByYearModel>
+                    {
+                        new FastestLapsByYearModel
+                        {
+                            Year = 2,
+                            FastestLapCount = 1
+                        }
+                    }
+                }
+            };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -149,6 +180,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetDriversFastestLaps(from, to);
                 actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+                actual.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
                 Assert.AreEqual(expectedFastestDrivers.Count, actual.Count);
@@ -187,7 +219,38 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedFastestConstructors = new List<FastestLapModel> { new FastestLapModel { Name = "FirstConstructor", FastestLapsCount = 2 }, new FastestLapModel { Name = "SecondConstructor", FastestLapsCount = 1 } };
+            var expectedFastestConstructors = new List<FastestLapModel> 
+            {
+                new FastestLapModel 
+                {
+                    Name = "FirstConstructor",
+                    FastestLapsByYear = new List<FastestLapsByYearModel>
+                    {
+                        new FastestLapsByYearModel
+                        {
+                            Year = 1,
+                            FastestLapCount = 1
+                        },
+                        new FastestLapsByYearModel
+                        {
+                            Year = 2,
+                            FastestLapCount = 1
+                        }
+                    }
+                },
+                new FastestLapModel 
+                {
+                    Name = "SecondConstructor",
+                    FastestLapsByYear = new List<FastestLapsByYearModel>
+                    {
+                        new FastestLapsByYearModel
+                        {
+                            Year = 2,
+                            FastestLapCount = 1
+                        }
+                    }
+                }
+            };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -196,6 +259,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetConstructorsFastestLaps(from, to);
                 actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+                actual.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
                 Assert.AreEqual(expectedFastestConstructors.Count, actual.Count);

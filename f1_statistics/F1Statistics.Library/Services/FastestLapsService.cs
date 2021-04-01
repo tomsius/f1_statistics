@@ -49,6 +49,7 @@ namespace F1Statistics.Library.Services
             }
 
             driversFastestLaps.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+            driversFastestLaps.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversFastestLaps;
         }
@@ -83,6 +84,7 @@ namespace F1Statistics.Library.Services
             }
 
             constructorsFastestLaps.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+            constructorsFastestLaps.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsFastestLaps;
         }
