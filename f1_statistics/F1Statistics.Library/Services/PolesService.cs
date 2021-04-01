@@ -35,6 +35,7 @@ namespace F1Statistics.Library.Services
             }
 
             driversPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            driversPoles.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversPoles;
         }
@@ -55,6 +56,7 @@ namespace F1Statistics.Library.Services
             }
 
             constructorPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            constructorPoles.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorPoles;
         }

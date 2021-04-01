@@ -33,14 +33,25 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
+                        var newPolesByYearModel = new PolesByYearModel { Year = year, PoleCount = 1 };
+
                         if (!driversPoles.Where(driver => driver.Name == poleSitter).Any())
                         {
-                            var newPolesModel = new PolesModel { Name = poleSitter, PoleCount = 1 };
+                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel } };
                             driversPoles.Add(newPolesModel);
                         }
                         else
                         {
-                            driversPoles.Where(driver => driver.Name == poleSitter).First().PoleCount++;
+                            var driver = driversPoles.Where(driver => driver.Name == poleSitter).First();
+
+                            if (!driver.PolesByYear.Where(model => model.Year == year).Any())
+                            {
+                                driver.PolesByYear.Add(newPolesByYearModel);
+                            }
+                            else
+                            {
+                                driver.PolesByYear.Where(model => model.Year == year).First().PoleCount++;
+                            }
                         } 
                     }
                 }
@@ -64,14 +75,25 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
+                        var newPolesByYearModel = new PolesByYearModel { Year = year, PoleCount = 1 };
+
                         if (!constructorsPoles.Where(constructor => constructor.Name == poleSitter).Any())
                         {
-                            var newPolesModel = new PolesModel { Name = poleSitter, PoleCount = 1 };
+                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel } };
                             constructorsPoles.Add(newPolesModel);
                         }
                         else
                         {
-                            constructorsPoles.Where(constructor => constructor.Name == poleSitter).First().PoleCount++;
+                            var constructor = constructorsPoles.Where(constructor => constructor.Name == poleSitter).First();
+
+                            if (!constructor.PolesByYear.Where(model => model.Year == year).Any())
+                            {
+                                constructor.PolesByYear.Add(newPolesByYearModel);
+                            }
+                            else
+                            {
+                                constructor.PolesByYear.Where(model => model.Year == year).First().PoleCount++;
+                            }
                         } 
                     }
                 }

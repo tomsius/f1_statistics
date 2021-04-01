@@ -32,12 +32,36 @@ namespace F1Statistics.Tests.Controllers
                 new PolesModel
                 {
                     Name = "First",
-                    PoleCount = 2
+                    PolesByYear = new List<PolesByYearModel>
+                    {
+                        new PolesByYearModel
+                        {
+                            Year = 1,
+                            PoleCount = 1
+                        },
+                        new PolesByYearModel
+                        {
+                            Year = 2,
+                            PoleCount = 2
+                        }
+                    }
                 },
                 new PolesModel
                 {
                     Name = "Second",
-                    PoleCount = 1
+                    PolesByYear = new List<PolesByYearModel>
+                    {
+                        new PolesByYearModel
+                        {
+                            Year = 1,
+                            PoleCount = 2
+                        },
+                        new PolesByYearModel
+                        {
+                            Year = 2,
+                            PoleCount = 1
+                        }
+                    }
                 }
             };
 
@@ -83,6 +107,13 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedPoleSitters[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedPoleSitters[i].PoleCount, actual[i].PoleCount);
+                Assert.AreEqual(expectedPoleSitters[i].PolesByYear.Count, actual[i].PolesByYear.Count);
+
+                for (int j = 0; j < expectedPoleSitters[i].PolesByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedPoleSitters[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
+                    Assert.AreEqual(expectedPoleSitters[i].PolesByYear[j].PoleCount, actual[i].PolesByYear[j].PoleCount);
+                }
             }
         }
 
@@ -119,6 +150,13 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedPoleSitters[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedPoleSitters[i].PoleCount, actual[i].PoleCount);
+                Assert.AreEqual(expectedPoleSitters[i].PolesByYear.Count, actual[i].PolesByYear.Count);
+
+                for (int j = 0; j < expectedPoleSitters[i].PolesByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedPoleSitters[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
+                    Assert.AreEqual(expectedPoleSitters[i].PolesByYear[j].PoleCount, actual[i].PolesByYear[j].PoleCount);
+                }
             }
         }
 

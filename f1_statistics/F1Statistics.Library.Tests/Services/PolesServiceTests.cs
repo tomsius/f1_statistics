@@ -37,12 +37,36 @@ namespace F1Statistics.Library.Tests.Services
                 new PolesModel
                 {
                     Name = "First",
-                    PoleCount = 2
+                    PolesByYear = new List<PolesByYearModel>
+                    {
+                        new PolesByYearModel
+                        {
+                            Year = 1,
+                            PoleCount = 1
+                        },
+                        new PolesByYearModel
+                        {
+                            Year = 2,
+                            PoleCount = 2
+                        }
+                    }
                 },
                 new PolesModel
                 {
                     Name = "Second",
-                    PoleCount = 1
+                    PolesByYear = new List<PolesByYearModel>
+                    {
+                        new PolesByYearModel
+                        {
+                            Year = 1,
+                            PoleCount = 2
+                        },
+                        new PolesByYearModel
+                        {
+                            Year = 2,
+                            PoleCount = 1
+                        }
+                    }
                 }
             };
 
@@ -77,6 +101,7 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedPoleSittersDrivers = GeneratePoleSitters();
             expectedPoleSittersDrivers.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            expectedPoleSittersDrivers.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetPoleSittersDrivers(It.IsAny<int>(), It.IsAny<int>())).Returns(GeneratePoleSitters());
 
             // Act
@@ -90,6 +115,13 @@ namespace F1Statistics.Library.Tests.Services
             {
                 Assert.AreEqual(expectedPoleSittersDrivers[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedPoleSittersDrivers[i].PoleCount, actual[i].PoleCount);
+                Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear.Count, actual[i].PolesByYear.Count);
+
+                for (int j = 0; j < expectedPoleSittersDrivers[i].PolesByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
+                    Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear[j].PoleCount, actual[i].PolesByYear[j].PoleCount);
+                }
             }
         }
 
@@ -116,6 +148,7 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedPoleSittersCoonstructors = GeneratePoleSitters();
             expectedPoleSittersCoonstructors.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            expectedPoleSittersCoonstructors.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetPoleSittersConstructors(It.IsAny<int>(), It.IsAny<int>())).Returns(GeneratePoleSitters());
 
             // Act
@@ -129,6 +162,13 @@ namespace F1Statistics.Library.Tests.Services
             {
                 Assert.AreEqual(expectedPoleSittersCoonstructors[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedPoleSittersCoonstructors[i].PoleCount, actual[i].PoleCount);
+                Assert.AreEqual(expectedPoleSittersCoonstructors[i].PolesByYear.Count, actual[i].PolesByYear.Count);
+
+                for (int j = 0; j < expectedPoleSittersCoonstructors[i].PolesByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedPoleSittersCoonstructors[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
+                    Assert.AreEqual(expectedPoleSittersCoonstructors[i].PolesByYear[j].PoleCount, actual[i].PolesByYear[j].PoleCount);
+                }
             }
         }
 
