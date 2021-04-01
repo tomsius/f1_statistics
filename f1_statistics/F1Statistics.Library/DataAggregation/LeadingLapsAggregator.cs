@@ -35,11 +35,11 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var rounds = _resultsDataAccess.GetResultsFrom(year).Count;
 
-                for (int round = 1; round <= rounds; round++)
+                Parallel.For(1, rounds + 1, round =>
                 {
                     var laps = _lapsDataAccess.GetLapsFrom(year, round);
 
-                    Parallel.ForEach(laps, lap =>
+                    foreach(var lap in laps)
                     {
                         var leadingDriverId = lap.Timings[0].driverId;
                         string leadingDriver;
@@ -80,8 +80,8 @@ namespace F1Statistics.Library.DataAggregation
                                 }
                             }
                         }
-                    });
-                }
+                    }
+                });
             }
 
             return driversLeadingLapsCount;
@@ -98,11 +98,11 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var rounds = _resultsDataAccess.GetResultsFrom(year).Count;
 
-                for (int round = 1; round <= rounds; round++)
+                Parallel.For(1, rounds + 1, round =>
                 {
                     var laps = _lapsDataAccess.GetLapsFrom(year, round);
 
-                    Parallel.ForEach(laps, lap =>
+                    foreach(var lap in laps)
                     {
                         var leadingDriverId = lap.Timings[0].driverId;
                         string leadingConstructor;
@@ -143,8 +143,8 @@ namespace F1Statistics.Library.DataAggregation
                                 }
                             }
                         }
-                    });
-                }
+                    }
+                });
             }
 
             return constructorsLeadingLapsCount;
