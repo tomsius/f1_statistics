@@ -32,12 +32,36 @@ namespace F1Statistics.Tests.Controllers
                 new LeadingLapsModel
                 {
                     Name = "First",
-                    LeadingLapCount = 2
+                    LeadingLapsByYear = new List<LeadingLapsByYearModel>
+                    {
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 1,
+                            LeadingLapCount = 1
+                        },
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 2,
+                            LeadingLapCount = 2
+                        }
+                    }
                 },
                 new LeadingLapsModel
                 {
                     Name = "Second",
-                    LeadingLapCount = 1
+                    LeadingLapsByYear = new List<LeadingLapsByYearModel>
+                    {
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 1,
+                            LeadingLapCount = 2
+                        },
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 2,
+                            LeadingLapCount = 1
+                        }
+                    }
                 }
             };
 
@@ -62,6 +86,13 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedDriversLeadingLapsCount[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapCount, actual[i].LeadingLapCount);
+                Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear.Count, actual[i].LeadingLapsByYear.Count);
+
+                for (int j = 0; j < expectedDriversLeadingLapsCount[i].LeadingLapsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].Year, actual[i].LeadingLapsByYear[j].Year);
+                    Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapCount, actual[i].LeadingLapsByYear[j].LeadingLapCount);
+                }
             }
         }
 
@@ -98,6 +129,13 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapCount, actual[i].LeadingLapCount);
+                Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear.Count, actual[i].LeadingLapsByYear.Count);
+
+                for (int j = 0; j < expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].Year, actual[i].LeadingLapsByYear[j].Year);
+                    Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapCount, actual[i].LeadingLapsByYear[j].LeadingLapCount);
+                }
             }
         }
 

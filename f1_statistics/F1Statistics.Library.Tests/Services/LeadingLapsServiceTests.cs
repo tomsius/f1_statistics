@@ -37,12 +37,36 @@ namespace F1Statistics.Library.Tests.Services
                 new LeadingLapsModel
                 {
                     Name = "First",
-                    LeadingLapCount = 2
+                    LeadingLapsByYear = new List<LeadingLapsByYearModel>
+                    {
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 1,
+                            LeadingLapCount = 1
+                        },
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 2,
+                            LeadingLapCount = 2
+                        }
+                    }
                 },
                 new LeadingLapsModel
                 {
                     Name = "Second",
-                    LeadingLapCount = 1
+                    LeadingLapsByYear = new List<LeadingLapsByYearModel>
+                    {
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 1,
+                            LeadingLapCount = 2
+                        },
+                        new LeadingLapsByYearModel
+                        {
+                            Year = 2,
+                            LeadingLapCount = 1
+                        }
+                    }
                 }
             };
 
@@ -56,6 +80,7 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedDriversLeadingLapsCount = GenerateLeadingLaps();
             expectedDriversLeadingLapsCount.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
+            expectedDriversLeadingLapsCount.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetDriversLeadingLapsCount(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateLeadingLaps());
 
             // Act
@@ -69,6 +94,13 @@ namespace F1Statistics.Library.Tests.Services
             {
                 Assert.AreEqual(expectedDriversLeadingLapsCount[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapCount, actual[i].LeadingLapCount);
+                Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear.Count, actual[i].LeadingLapsByYear.Count);
+
+                for (int j = 0; j < expectedDriversLeadingLapsCount[i].LeadingLapsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].Year, actual[i].LeadingLapsByYear[j].Year);
+                    Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapCount, actual[i].LeadingLapsByYear[j].LeadingLapCount);
+                }
             }
         }
 
@@ -95,6 +127,7 @@ namespace F1Statistics.Library.Tests.Services
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedConstructorsLeadingLapsCount = GenerateLeadingLaps();
             expectedConstructorsLeadingLapsCount.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
+            expectedConstructorsLeadingLapsCount.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsLeadingLapsCount(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateLeadingLaps());
 
             // Act
@@ -108,6 +141,13 @@ namespace F1Statistics.Library.Tests.Services
             {
                 Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapCount, actual[i].LeadingLapCount);
+                Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear.Count, actual[i].LeadingLapsByYear.Count);
+
+                for (int j = 0; j < expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].Year, actual[i].LeadingLapsByYear[j].Year);
+                    Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapCount, actual[i].LeadingLapsByYear[j].LeadingLapCount);
+                }
             }
         }
 

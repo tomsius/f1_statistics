@@ -59,14 +59,25 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
+                            var newLeadingLapsByYearModel = new LeadingLapsByYearModel { Year = year, LeadingLapCount = 1 };
+
                             if (!driversLeadingLapsCount.Where(driver => driver.Name == leadingDriver).Any())
                             {
-                                var newLeadingLapsModel = new LeadingLapsModel { Name = leadingDriver, LeadingLapCount = 1 };
+                                var newLeadingLapsModel = new LeadingLapsModel { Name = leadingDriver, LeadingLapsByYear = new List<LeadingLapsByYearModel> { newLeadingLapsByYearModel } };
                                 driversLeadingLapsCount.Add(newLeadingLapsModel);
                             }
                             else
                             {
-                                driversLeadingLapsCount.Where(driver => driver.Name == leadingDriver).First().LeadingLapCount++;
+                                var driver = driversLeadingLapsCount.Where(driver => driver.Name == leadingDriver).First();
+
+                                if (!driver.LeadingLapsByYear.Where(model => model.Year == year).Any())
+                                {
+                                    driver.LeadingLapsByYear.Add(newLeadingLapsByYearModel);
+                                }
+                                else
+                                {
+                                    driver.LeadingLapsByYear.Where(model => model.Year == year).First().LeadingLapCount++;
+                                }
                             }
                         }
                     });
@@ -111,14 +122,25 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
+                            var newLeadingLapsByYearModel = new LeadingLapsByYearModel { Year = year, LeadingLapCount = 1 };
+
                             if (!constructorsLeadingLapsCount.Where(constructor => constructor.Name == leadingConstructor).Any())
                             {
-                                var newLeadingLapsModel = new LeadingLapsModel { Name = leadingConstructor, LeadingLapCount = 1 };
+                                var newLeadingLapsModel = new LeadingLapsModel { Name = leadingConstructor, LeadingLapsByYear = new List<LeadingLapsByYearModel> { newLeadingLapsByYearModel } };
                                 constructorsLeadingLapsCount.Add(newLeadingLapsModel);
                             }
                             else
                             {
-                                constructorsLeadingLapsCount.Where(constructor => constructor.Name == leadingConstructor).First().LeadingLapCount++;
+                                var constructor = constructorsLeadingLapsCount.Where(constructor => constructor.Name == leadingConstructor).First();
+
+                                if (!constructor.LeadingLapsByYear.Where(model => model.Year == year).Any())
+                                {
+                                    constructor.LeadingLapsByYear.Add(newLeadingLapsByYearModel);
+                                }
+                                else
+                                {
+                                    constructor.LeadingLapsByYear.Where(model => model.Year == year).First().LeadingLapCount++;
+                                }
                             }
                         }
                     });

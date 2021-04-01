@@ -35,6 +35,7 @@ namespace F1Statistics.Library.Services
             }
 
             driversLeadingLaps.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
+            driversLeadingLaps.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversLeadingLaps;
         }
@@ -55,6 +56,7 @@ namespace F1Statistics.Library.Services
             }
 
             constructorsLeadingLaps.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
+            constructorsLeadingLaps.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsLeadingLaps;
         }
