@@ -35,6 +35,7 @@ namespace F1Statistics.Library.Services
             }
 
             driversPodiums.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+            driversPodiums.ForEach(model => model.PodiumsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversPodiums;
         }
@@ -55,6 +56,7 @@ namespace F1Statistics.Library.Services
             }
 
             constructorsPodiums.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+            constructorsPodiums.ForEach(model => model.PodiumsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsPodiums;
         }

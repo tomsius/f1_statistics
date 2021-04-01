@@ -35,14 +35,25 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
+                            var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumCount = 1 };
+
                             if (!driversPodiums.Where(driver => driver.Name == podiumFinisher).Any())
                             {
-                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumCount = 1 };
+                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel } };
                                 driversPodiums.Add(newPodiumsModel);
                             }
                             else
                             {
-                                driversPodiums.Where(driver => driver.Name == podiumFinisher).First().PodiumCount++;
+                                var driver = driversPodiums.Where(driver => driver.Name == podiumFinisher).First();
+
+                                if (!driver.PodiumsByYear.Where(model => model.Year == year).Any())
+                                {
+                                    driver.PodiumsByYear.Add(newPodiumsByYearModel);
+                                }
+                                else
+                                {
+                                    driver.PodiumsByYear.Where(model => model.Year == year).First().PodiumCount++;
+                                }
                             }
                         } 
                     }
@@ -73,16 +84,27 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
+                        var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumCount = 1 };
+
                         foreach (var uniqueConstructor in uniqueConstructors)
                         {
                             if (!constructorsPodiums.Where(constructor => constructor.Name == uniqueConstructor).Any())
                             {
-                                var newPodiumsModel = new PodiumsModel { Name = uniqueConstructor, PodiumCount = 1 };
+                                var newPodiumsModel = new PodiumsModel { Name = uniqueConstructor, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel } };
                                 constructorsPodiums.Add(newPodiumsModel);
                             }
                             else
                             {
-                                constructorsPodiums.Where(constructor => constructor.Name == uniqueConstructor).First().PodiumCount++;
+                                var constructor = constructorsPodiums.Where(constructor => constructor.Name == uniqueConstructor).First();
+
+                                if (!constructor.PodiumsByYear.Where(model => model.Year == year).Any())
+                                {
+                                    constructor.PodiumsByYear.Add(newPodiumsByYearModel);
+                                }
+                                else
+                                {
+                                    constructor.PodiumsByYear.Where(model => model.Year == year).First().PodiumCount++;
+                                }
                             }
                         }
                     }

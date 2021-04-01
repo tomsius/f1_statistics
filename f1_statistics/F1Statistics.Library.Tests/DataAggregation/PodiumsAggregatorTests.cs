@@ -178,32 +178,89 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 new PodiumsModel 
                 {
                     Name = "FirstName FirstFamily", 
-                    PodiumCount = 2 
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 1,
+                            PodiumCount = 1
+                        },
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    } 
                 },
                 new PodiumsModel 
                 {
-                    Name = "SecondName SecondFamily", 
-                    PodiumCount = 2
+                    Name = "SecondName SecondFamily",
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 1,
+                            PodiumCount = 1
+                        },
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "ThirdName ThirdFamily",
-                    PodiumCount = 2
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 1,
+                            PodiumCount = 1
+                        },
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "ForthName ForthFamily",
-                    PodiumCount = 1
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "FifthName FifthFamily",
-                    PodiumCount = 1
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "SixthName SixthFamily",
-                    PodiumCount = 1
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 }
             };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
@@ -256,33 +313,90 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new PodiumsModel
                 {
-                    Name = "FirstConstructor", 
-                    PodiumCount = 2 
+                    Name = "FirstConstructor",
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 1,
+                            PodiumCount = 1
+                        },
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "SecondConstructor",
-                    PodiumCount = 2 
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 1,
+                            PodiumCount = 1
+                        },
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "ThirdConstructor",
-                    PodiumCount = 2
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 1,
+                            PodiumCount = 1
+                        },
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "ForthConstructor",
-                    PodiumCount = 1
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "FifthConstructor",
-                    PodiumCount = 1
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 },
                 new PodiumsModel
                 {
                     Name = "SixthConstructor",
-                    PodiumCount = 1
+                    PodiumsByYear = new List<PodiumsByYearModel>
+                    {
+                        new PodiumsByYearModel
+                        {
+                            Year = 2,
+                            PodiumCount = 1
+                        }
+                    }
                 }
             };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
