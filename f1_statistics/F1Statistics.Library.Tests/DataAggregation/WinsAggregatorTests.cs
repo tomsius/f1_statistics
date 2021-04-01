@@ -131,7 +131,38 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinners = new List<WinsModel> { new WinsModel { Name = "FirstName FirstFamily", WinCount = 2 }, new WinsModel { Name = "SecondName SecondFamily", WinCount = 1 } };
+            var expectedWinners = new List<WinsModel> 
+            {
+                new WinsModel 
+                {
+                    Name = "FirstName FirstFamily", 
+                    WinsByYear = new List<WinsByYearModel>
+                    {
+                        new WinsByYearModel
+                        {
+                            Year = 1,
+                            WinCount = 1
+                        },
+                        new WinsByYearModel
+                        {
+                            Year = 2,
+                            WinCount = 1
+                        }
+                    }
+                },
+                new WinsModel 
+                {
+                    Name = "SecondName SecondFamily", 
+                    WinsByYear = new List<WinsByYearModel>
+                    {
+                        new WinsByYearModel
+                        {
+                            Year = 2,
+                            WinCount = 1
+                        }
+                    }
+                }
+            };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -140,6 +171,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetDriversWins(from, to);
                 actual.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+                actual.ForEach(model => model.WinsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
                 Assert.AreEqual(expectedWinners.Count, actual.Count);
@@ -148,6 +180,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
                     Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                    Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
+
+                    for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
+                        Assert.AreEqual(expectedWinners[i].WinsByYear[j].WinCount, actual[i].WinsByYear[j].WinCount);
+                    }
                 } 
             }
         }
@@ -178,7 +217,38 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinners = new List<AverageWinsModel> { new AverageWinsModel { Name = "FirstConstructor", WinCount = 2 }, new AverageWinsModel { Name = "SecondConstructor", WinCount = 1 } };
+            var expectedWinners = new List<WinsModel> 
+            {
+                new WinsModel 
+                {
+                    Name = "FirstConstructor", 
+                    WinsByYear = new List<WinsByYearModel>
+                    {
+                        new WinsByYearModel
+                        {
+                            Year = 1,
+                            WinCount = 1
+                        },
+                        new WinsByYearModel
+                        {
+                            Year = 2,
+                            WinCount = 1
+                        }
+                    } 
+                },
+                new WinsModel 
+                {
+                    Name = "SecondConstructor",
+                    WinsByYear = new List<WinsByYearModel>
+                    {
+                        new WinsByYearModel
+                        {
+                            Year = 2,
+                            WinCount = 1
+                        }
+                    }
+                }
+            };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -187,6 +257,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetConstructorsWins(from, to);
                 actual.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+                actual.ForEach(model => model.WinsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
                 Assert.AreEqual(expectedWinners.Count, actual.Count);
@@ -195,6 +266,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
                     Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                    Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
+
+                    for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
+                        Assert.AreEqual(expectedWinners[i].WinsByYear[j].WinCount, actual[i].WinsByYear[j].WinCount);
+                    }
                 } 
             }
         }

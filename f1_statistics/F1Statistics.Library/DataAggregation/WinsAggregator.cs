@@ -34,14 +34,25 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject) 
                     {
+                        var newWinsByYearModel = new WinsByYearModel { Year = year, WinCount = 1 };
+
                         if (!driversWins.Where(driver => driver.Name == winner).Any())
                         {
-                            var newWinsModel = new WinsModel { Name = winner, WinCount = 1 };
+                            var newWinsModel = new WinsModel { Name = winner, WinsByYear = new List<WinsByYearModel> { newWinsByYearModel } };
                             driversWins.Add(newWinsModel);
                         }
                         else
                         {
-                            driversWins.Where(driver => driver.Name == winner).First().WinCount++;
+                            var driver = driversWins.Where(driver => driver.Name == winner).First();
+
+                            if (!driver.WinsByYear.Where(model => model.Year == year).Any())
+                            {
+                                driver.WinsByYear.Add(newWinsByYearModel);
+                            }
+                            else
+                            {
+                                driver.WinsByYear.Where(model => model.Year == year).First().WinCount++;
+                            }
                         }
                     }
                 }
@@ -65,15 +76,26 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
+                        var newWinsByYearModel = new WinsByYearModel { Year = year, WinCount = 1 };
+
                         if (!constructorsWins.Where(constructor => constructor.Name == winner).Any())
                         {
-                            var newWinsModel = new WinsModel { Name = winner, WinCount = 1 };
+                            var newWinsModel = new WinsModel { Name = winner, WinsByYear = new List<WinsByYearModel> { newWinsByYearModel } };
                             constructorsWins.Add(newWinsModel);
                         }
                         else
                         {
-                            constructorsWins.Where(constructor => constructor.Name == winner).First().WinCount++;
-                        } 
+                            var constructor = constructorsWins.Where(constructor => constructor.Name == winner).First();
+
+                            if (!constructor.WinsByYear.Where(model => model.Year == year).Any())
+                            {
+                                constructor.WinsByYear.Add(newWinsByYearModel);
+                            }
+                            else
+                            {
+                                constructor.WinsByYear.Where(model => model.Year == year).First().WinCount++;
+                            }
+                        }
                     }
                 }
             });

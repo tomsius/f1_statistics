@@ -29,13 +29,37 @@ namespace F1Statistics.Tests.Controllers
             { 
                 new WinsModel 
                 { 
-                    Name = "First", 
-                    WinCount = 2 
+                    Name = "First",
+                    WinsByYear = new List<WinsByYearModel>
+                    {
+                        new WinsByYearModel
+                        {
+                            Year = 1,
+                            WinCount = 1
+                        },
+                        new WinsByYearModel
+                        {
+                            Year = 2,
+                            WinCount = 2
+                        }
+                    }
                 }, 
                 new WinsModel 
                 { 
-                    Name = "Second", 
-                    WinCount = 1 
+                    Name = "Second",
+                    WinsByYear = new List<WinsByYearModel>
+                    {
+                        new WinsByYearModel
+                        {
+                            Year = 1,
+                            WinCount = 2
+                        },
+                        new WinsByYearModel
+                        {
+                            Year = 2,
+                            WinCount = 1
+                        }
+                    }
                 } 
             };
 
@@ -203,6 +227,13 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
+
+                for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
+                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].WinCount, actual[i].WinsByYear[j].WinCount);
+                }
             }
         }
 
@@ -239,6 +270,13 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
+
+                for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
+                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].WinCount, actual[i].WinsByYear[j].WinCount);
+                }
             }
         }
 

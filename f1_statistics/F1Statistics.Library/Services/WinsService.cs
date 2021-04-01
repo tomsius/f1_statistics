@@ -36,6 +36,7 @@ namespace F1Statistics.Library.Services
             }
 
             driversWins.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            driversWins.ForEach(model => model.WinsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversWins;
         }
@@ -56,6 +57,7 @@ namespace F1Statistics.Library.Services
             }
 
             constructorsWins.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            constructorsWins.ForEach(model => model.WinsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsWins;
         }
