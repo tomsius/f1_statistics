@@ -135,6 +135,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     List<string> podiumFinishers = new List<string>(3);
+                    var circuitName = race.Circuit.circuitName;
 
                     for (int i = 0; i < 3; i++)
                     {
@@ -146,12 +147,12 @@ namespace F1Statistics.Library.DataAggregation
                     {
                         if (IsUniquePodiumFinishers(sameDriversPodiums, podiumFinishers))
                         {
-                            var newSamePodiumsModel = new SamePodiumsModel { PodiumFinishers = podiumFinishers, SamePodiumCount = 1 };
+                            var newSamePodiumsModel = new SamePodiumsModel { PodiumFinishers = podiumFinishers, SamePodiumCount = 1, Circuits = new List<string> { circuitName } };
                             sameDriversPodiums.Add(newSamePodiumsModel);
                         }
                         else
                         {
-                            IncrementSamePodiumCount(sameDriversPodiums, podiumFinishers);
+                            FillSamePodiumModel(sameDriversPodiums, podiumFinishers, circuitName);
                         }
                     }
                 }
@@ -185,13 +186,14 @@ namespace F1Statistics.Library.DataAggregation
             return podium.Count == 0;
         }
 
-        private void IncrementSamePodiumCount(List<SamePodiumsModel> samePodiums, List<string> podiumFinishers)
+        private void FillSamePodiumModel(List<SamePodiumsModel> samePodiums, List<string> podiumFinishers, string circuitName)
         {
             foreach (var podium in samePodiums)
             {
                 if (IsPodiumEqual(podium.PodiumFinishers, podiumFinishers))
                 {
                     podium.SamePodiumCount++;
+                    podium.Circuits.Add(circuitName);
                     break;
                 }
             }
@@ -209,6 +211,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     List<string> podiumFinishers = new List<string>(3);
+                    var circuitName = race.Circuit.circuitName;
 
                     for (int i = 0; i < 3; i++)
                     {
@@ -220,12 +223,12 @@ namespace F1Statistics.Library.DataAggregation
                     {
                         if (IsUniquePodiumFinishers(sameConstructorsPodiums, podiumFinishers))
                         {
-                            var newSamePodiumsModel = new SamePodiumsModel { PodiumFinishers = podiumFinishers, SamePodiumCount = 1 };
+                            var newSamePodiumsModel = new SamePodiumsModel { PodiumFinishers = podiumFinishers, SamePodiumCount = 1, Circuits = new List<string> { circuitName } };
                             sameConstructorsPodiums.Add(newSamePodiumsModel);
                         }
                         else
                         {
-                            IncrementSamePodiumCount(sameConstructorsPodiums, podiumFinishers);
+                            FillSamePodiumModel(sameConstructorsPodiums, podiumFinishers, circuitName);
                         }
                     }
                 }
