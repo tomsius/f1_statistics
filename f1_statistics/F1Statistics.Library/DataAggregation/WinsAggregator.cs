@@ -403,18 +403,20 @@ namespace F1Statistics.Library.DataAggregation
                     var winnerInformation = race.Results[0];
                     var gridPosition = int.Parse(winnerInformation.grid);
                     var winnerName = $"{winnerInformation.Driver.givenName} {winnerInformation.Driver.familyName}";
+                    var circuitName = race.Circuit.circuitName;
+                    var newWinByGridInformationModel = new WinByGridInformationModel { Name = winnerName, CircuitName = circuitName };
 
                     lock (lockObject)
                     {
                         if (!winnersByGridPosition.Where(grid => grid.GridPosition == gridPosition).Any())
                         {
-                            var winnersList = new List<string> { winnerName };
-                            var newWinsByGridPositionModel = new WinsByGridPositionModel { GridPosition = gridPosition, Winners = winnersList };
+                            var neWinInformation = new List<WinByGridInformationModel> { newWinByGridInformationModel };
+                            var newWinsByGridPositionModel = new WinsByGridPositionModel { GridPosition = gridPosition, WinInformation = neWinInformation };
                             winnersByGridPosition.Add(newWinsByGridPositionModel);
                         }
                         else
                         {
-                            winnersByGridPosition.Where(grid => grid.GridPosition == gridPosition).First().Winners.Add(winnerName);
+                            winnersByGridPosition.Where(grid => grid.GridPosition == gridPosition).First().WinInformation.Add(newWinByGridInformationModel);
                         }
                     }
                 }
