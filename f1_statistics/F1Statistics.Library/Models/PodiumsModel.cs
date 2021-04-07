@@ -9,6 +9,7 @@ namespace F1Statistics.Library.Models
     {
         public string Name { get; set; }
         public List<PodiumsByYearModel> PodiumsByYear { get; set; }
+        public List<PodiumInformationModel> PodiumInformation { get; set; }
         public int PodiumCount
         {
             get

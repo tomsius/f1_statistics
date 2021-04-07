@@ -29,9 +29,14 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
+                    var circuitName = race.Circuit.circuitName;
+
                     for (int i = 0; i < 3; i++)
                     {
                         var podiumFinisher = $"{race.Results[i].Driver.givenName} {race.Results[i].Driver.familyName}";
+                        var gridPosition = int.Parse(race.Results[i].grid);
+                        var podiumPosition = int.Parse(race.Results[i].position);
+                        var newPodiumInformationModel = new PodiumInformationModel { CircuitName = circuitName, PodiumPosition = podiumPosition, GridPosition = gridPosition };
 
                         lock (lockObject)
                         {
@@ -39,7 +44,7 @@ namespace F1Statistics.Library.DataAggregation
 
                             if (!driversPodiums.Where(driver => driver.Name == podiumFinisher).Any())
                             {
-                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel } };
+                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel }, PodiumInformation = new List<PodiumInformationModel> { newPodiumInformationModel } };
                                 driversPodiums.Add(newPodiumsModel);
                             }
                             else
@@ -54,6 +59,8 @@ namespace F1Statistics.Library.DataAggregation
                                 {
                                     driver.PodiumsByYear.Where(model => model.Year == year).First().PodiumCount++;
                                 }
+
+                                driver.PodiumInformation.Add(newPodiumInformationModel);
                             }
                         } 
                     }
@@ -74,28 +81,28 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    HashSet<string> uniqueConstructors = new HashSet<string>(3);
+                    var circuitName = race.Circuit.circuitName;
 
                     for (int i = 0; i < 3; i++)
                     {
                         var podiumFinisher = $"{race.Results[i].Constructor.name}";
-                        uniqueConstructors.Add(podiumFinisher); 
-                    }
+                        var gridPosition = int.Parse(race.Results[i].grid);
+                        var podiumPosition = int.Parse(race.Results[i].position);
+                        var newPodiumInformationModel = new PodiumInformationModel { CircuitName = circuitName, PodiumPosition = podiumPosition, GridPosition = gridPosition };
 
-                    lock (lockObject)
-                    {
-                        var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumCount = 1 };
 
-                        foreach (var uniqueConstructor in uniqueConstructors)
+                        lock (lockObject)
                         {
-                            if (!constructorsPodiums.Where(constructor => constructor.Name == uniqueConstructor).Any())
+                            var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumCount = 1 };
+                            
+                            if (!constructorsPodiums.Where(constructor => constructor.Name == podiumFinisher).Any())
                             {
-                                var newPodiumsModel = new PodiumsModel { Name = uniqueConstructor, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel } };
+                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel }, PodiumInformation = new List<PodiumInformationModel> { newPodiumInformationModel } };
                                 constructorsPodiums.Add(newPodiumsModel);
                             }
                             else
                             {
-                                var constructor = constructorsPodiums.Where(constructor => constructor.Name == uniqueConstructor).First();
+                                var constructor = constructorsPodiums.Where(constructor => constructor.Name == podiumFinisher).First();
 
                                 if (!constructor.PodiumsByYear.Where(model => model.Year == year).Any())
                                 {
@@ -105,6 +112,8 @@ namespace F1Statistics.Library.DataAggregation
                                 {
                                     constructor.PodiumsByYear.Where(model => model.Year == year).First().PodiumCount++;
                                 }
+
+                                constructor.PodiumInformation.Add(newPodiumInformationModel);
                             }
                         }
                     }
