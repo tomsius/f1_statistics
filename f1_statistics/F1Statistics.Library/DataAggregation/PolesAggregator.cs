@@ -30,6 +30,28 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var qualifying in qualifyings)
                 {
                     var poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
+                    var circuitName = qualifying.Circuit.circuitName;
+
+                    string poleSitterQualifyingTime;
+                    string secondDriverQualifyingTime;
+                    if (qualifying.QualifyingResults[0].Q3 != null && qualifying.QualifyingResults[1].Q3 != null)
+                    {
+                        poleSitterQualifyingTime = qualifying.QualifyingResults[0].Q3;
+                        secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q3;
+                    }
+                    else if (qualifying.QualifyingResults[0].Q2 != null && qualifying.QualifyingResults[1].Q2 != null)
+                    {
+                        poleSitterQualifyingTime = qualifying.QualifyingResults[0].Q2;
+                        secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q2;
+                    }
+                    else
+                    {
+                        poleSitterQualifyingTime = qualifying.QualifyingResults[0].Q1;
+                        secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q1;
+                    }
+
+                    var gapToSecond = GetTimeDifference(poleSitterQualifyingTime, secondDriverQualifyingTime);
+                    var newPoleInformationModel = new PoleInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond };
 
                     lock (lockObject)
                     {
@@ -37,7 +59,7 @@ namespace F1Statistics.Library.DataAggregation
 
                         if (!driversPoles.Where(driver => driver.Name == poleSitter).Any())
                         {
-                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel } };
+                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel }, PoleInformation = new List<PoleInformationModel> { newPoleInformationModel } };
                             driversPoles.Add(newPolesModel);
                         }
                         else
@@ -52,12 +74,48 @@ namespace F1Statistics.Library.DataAggregation
                             {
                                 driver.PolesByYear.Where(model => model.Year == year).First().PoleCount++;
                             }
+
+                            driver.PoleInformation.Add(newPoleInformationModel);
                         } 
                     }
                 }
             });
 
             return driversPoles;
+        }
+
+        // TODO - iskelti
+        private double GetTimeDifference(string poleSitterTime, string secondDriverTime)
+        {
+            var poleSitter = ConvertTimeToSeconds(poleSitterTime);
+            var secondDriver = ConvertTimeToSeconds(secondDriverTime);
+
+            var gap = Math.Round(secondDriver - poleSitter, 3);
+
+            return gap;
+        }
+
+        // TODO - iskelti
+        private double ConvertTimeToSeconds(string time)
+        {
+            int minutes = 0;
+            double seconds = 0;
+
+            if (time.Contains(':'))
+            {
+                var splitMinutesFromRest = time.Split(':');
+
+                int.TryParse(splitMinutesFromRest[0], out minutes);
+                double.TryParse(splitMinutesFromRest[1], out seconds);
+            }
+            else
+            {
+                double.TryParse(time, out seconds);
+            }
+
+            var timeInSeconds = Math.Round(minutes * 60 + seconds, 3);
+
+            return timeInSeconds;
         }
 
         public List<PolesModel> GetPoleSittersConstructors(int from, int to)
@@ -72,6 +130,28 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var qualifying in qualifyings)
                 {
                     var poleSitter = $"{qualifying.QualifyingResults[0].Constructor.name}";
+                    var circuitName = qualifying.Circuit.circuitName;
+
+                    string poleSitterQualifyingTime;
+                    string secondDriverQualifyingTime;
+                    if (qualifying.QualifyingResults[0].Q3 != null && qualifying.QualifyingResults[1].Q3 != null)
+                    {
+                        poleSitterQualifyingTime = qualifying.QualifyingResults[0].Q3;
+                        secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q3;
+                    }
+                    else if (qualifying.QualifyingResults[0].Q2 != null && qualifying.QualifyingResults[1].Q2 != null)
+                    {
+                        poleSitterQualifyingTime = qualifying.QualifyingResults[0].Q2;
+                        secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q2;
+                    }
+                    else
+                    {
+                        poleSitterQualifyingTime = qualifying.QualifyingResults[0].Q1;
+                        secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q1;
+                    }
+
+                    var gapToSecond = GetTimeDifference(poleSitterQualifyingTime, secondDriverQualifyingTime);
+                    var newPoleInformationModel = new PoleInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond };
 
                     lock (lockObject)
                     {
@@ -79,7 +159,7 @@ namespace F1Statistics.Library.DataAggregation
 
                         if (!constructorsPoles.Where(constructor => constructor.Name == poleSitter).Any())
                         {
-                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel } };
+                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel }, PoleInformation = new List<PoleInformationModel> { newPoleInformationModel } };
                             constructorsPoles.Add(newPolesModel);
                         }
                         else
@@ -94,6 +174,8 @@ namespace F1Statistics.Library.DataAggregation
                             {
                                 constructor.PolesByYear.Where(model => model.Year == year).First().PoleCount++;
                             }
+
+                            constructor.PoleInformation.Add(newPoleInformationModel);
                         } 
                     }
                 }

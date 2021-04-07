@@ -9,6 +9,7 @@ namespace F1Statistics.Library.Models
     {
         public string Name { get; set; }
         public List<PolesByYearModel> PolesByYear { get; set; }
+        public List<PoleInformationModel> PoleInformation { get; set; }
         public int PoleCount
         {
             get
