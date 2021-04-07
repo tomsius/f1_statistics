@@ -202,23 +202,7 @@ namespace F1Statistics.Library.Services
 
             winnersByGridPosition.Sort((x, y) => x.GridPosition.CompareTo(y.GridPosition));
 
-            FillMissingGridPositions(winnersByGridPosition);
-
             return winnersByGridPosition;
-        }
-
-        //TODO - iskelti kaip extension
-        private void FillMissingGridPositions(List<WinsByGridPositionModel> winnersByGridPosition)
-        {
-            for (int i = 0; i < winnersByGridPosition.Count; i++)
-            {
-                var expectedGridPosition = i + 1;
-                if (winnersByGridPosition[i].GridPosition != expectedGridPosition)
-                {
-                    var missingGrid = new WinsByGridPositionModel { GridPosition = expectedGridPosition, Winners = new List<string>() };
-                    winnersByGridPosition.Insert(i, missingGrid);
-                }
-            }
         }
     }
 }
