@@ -31,6 +31,9 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     var fastestDriver = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Driver).First();
                     var fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
+                    var circuitName = race.Circuit.circuitName;
+                    var gridPosition = int.Parse(race.Results[0].grid);
+                    var newFastestLapInformationModel = new FastestLapInformationModel { CircuitName = circuitName, GridPosition = gridPosition };
 
                     lock (lockObject)
                     {
@@ -38,7 +41,7 @@ namespace F1Statistics.Library.DataAggregation
 
                         if (!driversFastestLaps.Where(driver => driver.Name == fastestLapper).Any())
                         {
-                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel } };
+                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel }, FastestLapInformation = new List<FastestLapInformationModel> { newFastestLapInformationModel } };
                             driversFastestLaps.Add(newFastestLapModel);
                         }
                         else
@@ -53,6 +56,8 @@ namespace F1Statistics.Library.DataAggregation
                             {
                                 driver.FastestLapsByYear.Where(model => model.Year == year).First().FastestLapCount++;
                             }
+
+                            driver.FastestLapInformation.Add(newFastestLapInformationModel);
                         } 
                     }
                 }
@@ -74,6 +79,9 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
                     var fastestLapper = $"{fastestConstructor.name}";
+                    var circuitName = race.Circuit.circuitName;
+                    var gridPosition = int.Parse(race.Results[0].grid);
+                    var newFastestLapInformationModel = new FastestLapInformationModel { CircuitName = circuitName, GridPosition = gridPosition };
 
                     lock (lockObject)
                     {
@@ -81,7 +89,7 @@ namespace F1Statistics.Library.DataAggregation
 
                         if (!constructorsFastestLaps.Where(constructor => constructor.Name == fastestLapper).Any())
                         {
-                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel } };
+                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel }, FastestLapInformation = new List<FastestLapInformationModel> { newFastestLapInformationModel } };
                             constructorsFastestLaps.Add(newFastestLapModel);
                         }
                         else
@@ -96,6 +104,8 @@ namespace F1Statistics.Library.DataAggregation
                             {
                                 constructor.FastestLapsByYear.Where(model => model.Year == year).First().FastestLapCount++;
                             }
+
+                            constructor.FastestLapInformation.Add(newFastestLapInformationModel);
                         } 
                     }
                 }
