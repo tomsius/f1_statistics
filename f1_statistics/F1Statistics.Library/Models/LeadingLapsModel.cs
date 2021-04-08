@@ -9,11 +9,11 @@ namespace F1Statistics.Library.Models
     {
         public string Name { get; set; }
         public List<LeadingLapsByYearModel> LeadingLapsByYear { get; set; }
-        public int LeadingLapCount
+        public int TotalLeadingLapCount
         {
             get
             {
-                return LeadingLapsByYear.Sum(model => model.LeadingLapCount);
+                return LeadingLapsByYear.Sum(model => model.YearLeadingLapCount);
             }
         }
     }

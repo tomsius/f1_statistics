@@ -33,13 +33,16 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var rounds = _resultsDataAccess.GetResultsFrom(year).Count;
+                var races = _resultsDataAccess.GetResultsFrom(year);
+                var racesCount = races.Count;
 
-                Parallel.For(1, rounds + 1, round =>
+                Parallel.For(1, racesCount + 1, round =>
                 {
                     var laps = _lapsDataAccess.GetLapsFrom(year, round);
+                    var circuitName = races[round - 1].Circuit.circuitName;
+                    var newLeadingLapInformationModel = new LeadingLapInformationModel { CircuitName = circuitName };
 
-                    foreach(var lap in laps)
+                    foreach (var lap in laps)
                     {
                         var leadingDriverId = lap.Timings[0].driverId;
                         string leadingDriver;
@@ -59,7 +62,7 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
-                            var newLeadingLapsByYearModel = new LeadingLapsByYearModel { Year = year, LeadingLapCount = 1 };
+                            var newLeadingLapsByYearModel = new LeadingLapsByYearModel { Year = year, LeadingLapInformation = new List<LeadingLapInformationModel> { newLeadingLapInformationModel } };
 
                             if (!driversLeadingLapsCount.Where(driver => driver.Name == leadingDriver).Any())
                             {
@@ -76,7 +79,7 @@ namespace F1Statistics.Library.DataAggregation
                                 }
                                 else
                                 {
-                                    driver.LeadingLapsByYear.Where(model => model.Year == year).First().LeadingLapCount++;
+                                    driver.LeadingLapsByYear.Where(model => model.Year == year).First().LeadingLapInformation.Add(newLeadingLapInformationModel);
                                 }
                             }
                         }
@@ -96,13 +99,16 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var rounds = _resultsDataAccess.GetResultsFrom(year).Count;
+                var races = _resultsDataAccess.GetResultsFrom(year);
+                var racesCount = races.Count;
 
-                Parallel.For(1, rounds + 1, round =>
+                Parallel.For(1, racesCount + 1, round =>
                 {
                     var laps = _lapsDataAccess.GetLapsFrom(year, round);
+                    var circuitName = races[round - 1].Circuit.circuitName;
+                    var newLeadingLapInformationModel = new LeadingLapInformationModel { CircuitName = circuitName };
 
-                    foreach(var lap in laps)
+                    foreach (var lap in laps)
                     {
                         var leadingDriverId = lap.Timings[0].driverId;
                         string leadingConstructor;
@@ -122,7 +128,7 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
-                            var newLeadingLapsByYearModel = new LeadingLapsByYearModel { Year = year, LeadingLapCount = 1 };
+                            var newLeadingLapsByYearModel = new LeadingLapsByYearModel { Year = year, LeadingLapInformation = new List<LeadingLapInformationModel> { newLeadingLapInformationModel } };
 
                             if (!constructorsLeadingLapsCount.Where(constructor => constructor.Name == leadingConstructor).Any())
                             {
@@ -139,7 +145,7 @@ namespace F1Statistics.Library.DataAggregation
                                 }
                                 else
                                 {
-                                    constructor.LeadingLapsByYear.Where(model => model.Year == year).First().LeadingLapCount++;
+                                    constructor.LeadingLapsByYear.Where(model => model.Year == year).First().LeadingLapInformation.Add(newLeadingLapInformationModel);
                                 }
                             }
                         }

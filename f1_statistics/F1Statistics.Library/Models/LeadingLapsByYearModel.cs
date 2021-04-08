@@ -7,6 +7,13 @@ namespace F1Statistics.Library.Models
     public class LeadingLapsByYearModel
     {
         public int Year { get; set; }
-        public int LeadingLapCount { get; set; }
+        public List<LeadingLapInformationModel> LeadingLapInformation { get; set; }
+        public int YearLeadingLapCount
+        {
+            get
+            {
+                return LeadingLapInformation.Count;
+            }
+        }
     }
 }

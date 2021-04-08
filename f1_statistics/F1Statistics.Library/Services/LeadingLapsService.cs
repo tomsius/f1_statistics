@@ -34,7 +34,7 @@ namespace F1Statistics.Library.Services
                 driversLeadingLaps = _aggregator.GetDriversLeadingLapsCount(options.Season, options.Season);
             }
 
-            driversLeadingLaps.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
+            driversLeadingLaps.Sort((x, y) => y.TotalLeadingLapCount.CompareTo(x.TotalLeadingLapCount));
             driversLeadingLaps.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversLeadingLaps;
@@ -55,7 +55,7 @@ namespace F1Statistics.Library.Services
                 constructorsLeadingLaps = _aggregator.GetConstructorsLeadingLapsCount(options.Season, options.Season);
             }
 
-            constructorsLeadingLaps.Sort((x, y) => y.LeadingLapCount.CompareTo(x.LeadingLapCount));
+            constructorsLeadingLaps.Sort((x, y) => y.TotalLeadingLapCount.CompareTo(x.TotalLeadingLapCount));
             constructorsLeadingLaps.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsLeadingLaps;
