@@ -37,12 +37,12 @@ namespace F1Statistics.Tests.Controllers
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         },
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 2
+                            YearPodiumCount = 2
                         }
                     }
                 },
@@ -54,12 +54,12 @@ namespace F1Statistics.Tests.Controllers
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 2
+                            YearPodiumCount = 2
                         },
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 }
@@ -114,13 +114,13 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedDriversPodiumsCount.Count; i++)
             {
                 Assert.AreEqual(expectedDriversPodiumsCount[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                Assert.AreEqual(expectedDriversPodiumsCount[i].TotalPodiumCount, actual[i].TotalPodiumCount);
                 Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear.Count, actual[i].PodiumsByYear.Count);
 
                 for (int j = 0; j < expectedDriversPodiumsCount[i].PodiumsByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].Year, actual[i].PodiumsByYear[j].Year);
-                    Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumCount, actual[i].PodiumsByYear[j].PodiumCount);
+                    Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].YearPodiumCount, actual[i].PodiumsByYear[j].YearPodiumCount);
                 }
             }
         }
@@ -157,13 +157,13 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedConstructorsPodiumsCount.Count; i++)
             {
                 Assert.AreEqual(expectedConstructorsPodiumsCount[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                Assert.AreEqual(expectedConstructorsPodiumsCount[i].TotalPodiumCount, actual[i].TotalPodiumCount);
                 Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear.Count, actual[i].PodiumsByYear.Count);
 
                 for (int j = 0; j < expectedConstructorsPodiumsCount[i].PodiumsByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].Year, actual[i].PodiumsByYear[j].Year);
-                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumCount, actual[i].PodiumsByYear[j].PodiumCount);
+                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].YearPodiumCount, actual[i].PodiumsByYear[j].YearPodiumCount);
                 }
             }
         }

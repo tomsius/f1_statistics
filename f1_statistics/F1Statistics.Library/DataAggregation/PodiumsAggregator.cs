@@ -40,11 +40,11 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
-                            var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumCount = 1 };
+                            var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumInformation = new List<PodiumInformationModel> { newPodiumInformationModel } };
 
                             if (!driversPodiums.Where(driver => driver.Name == podiumFinisher).Any())
                             {
-                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel }, PodiumInformation = new List<PodiumInformationModel> { newPodiumInformationModel } };
+                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel } };
                                 driversPodiums.Add(newPodiumsModel);
                             }
                             else
@@ -57,10 +57,8 @@ namespace F1Statistics.Library.DataAggregation
                                 }
                                 else
                                 {
-                                    driver.PodiumsByYear.Where(model => model.Year == year).First().PodiumCount++;
+                                    driver.PodiumsByYear.Where(model => model.Year == year).First().PodiumInformation.Add(newPodiumInformationModel);
                                 }
-
-                                driver.PodiumInformation.Add(newPodiumInformationModel);
                             }
                         } 
                     }
@@ -93,11 +91,11 @@ namespace F1Statistics.Library.DataAggregation
 
                         lock (lockObject)
                         {
-                            var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumCount = 1 };
+                            var newPodiumsByYearModel = new PodiumsByYearModel { Year = year, PodiumInformation = new List<PodiumInformationModel> { newPodiumInformationModel } };
                             
                             if (!constructorsPodiums.Where(constructor => constructor.Name == podiumFinisher).Any())
                             {
-                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel }, PodiumInformation = new List<PodiumInformationModel> { newPodiumInformationModel } };
+                                var newPodiumsModel = new PodiumsModel { Name = podiumFinisher, PodiumsByYear = new List<PodiumsByYearModel> { newPodiumsByYearModel } };
                                 constructorsPodiums.Add(newPodiumsModel);
                             }
                             else
@@ -110,10 +108,8 @@ namespace F1Statistics.Library.DataAggregation
                                 }
                                 else
                                 {
-                                    constructor.PodiumsByYear.Where(model => model.Year == year).First().PodiumCount++;
+                                    constructor.PodiumsByYear.Where(model => model.Year == year).First().PodiumInformation.Add(newPodiumInformationModel);
                                 }
-
-                                constructor.PodiumInformation.Add(newPodiumInformationModel);
                             }
                         }
                     }

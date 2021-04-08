@@ -34,7 +34,7 @@ namespace F1Statistics.Library.Services
                 driversPodiums = _aggregator.GetDriversPodiums(options.Season, options.Season);
             }
 
-            driversPodiums.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+            driversPodiums.Sort((x, y) => y.TotalPodiumCount.CompareTo(x.TotalPodiumCount));
             driversPodiums.ForEach(model => model.PodiumsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversPodiums;
@@ -55,7 +55,7 @@ namespace F1Statistics.Library.Services
                 constructorsPodiums = _aggregator.GetConstructorsPodiums(options.Season, options.Season);
             }
 
-            constructorsPodiums.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+            constructorsPodiums.Sort((x, y) => y.TotalPodiumCount.CompareTo(x.TotalPodiumCount));
             constructorsPodiums.ForEach(model => model.PodiumsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsPodiums;

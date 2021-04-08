@@ -183,12 +183,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     } 
                 },
@@ -200,12 +200,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -217,12 +217,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -234,7 +234,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -246,7 +246,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -258,7 +258,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 }
@@ -270,7 +270,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetDriversPodiums(from, to);
-                actual.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+                actual.Sort((x, y) => y.TotalPodiumCount.CompareTo(x.TotalPodiumCount));
 
                 // Assert
                 Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count);
@@ -278,7 +278,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedDriversPodiumsCount.Count; i++)
                 {
                     Assert.AreEqual(expectedDriversPodiumsCount[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                    Assert.AreEqual(expectedDriversPodiumsCount[i].TotalPodiumCount, actual[i].TotalPodiumCount);
                 } 
             }
         }
@@ -319,12 +319,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -336,12 +336,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -353,12 +353,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -370,7 +370,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -382,7 +382,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 },
@@ -394,7 +394,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            PodiumCount = 1
+                            YearPodiumCount = 1
                         }
                     }
                 }
@@ -406,7 +406,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetConstructorsPodiums(from, to);
-                actual.Sort((x, y) => y.PodiumCount.CompareTo(x.PodiumCount));
+                actual.Sort((x, y) => y.TotalPodiumCount.CompareTo(x.TotalPodiumCount));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsPodiumsCount.Count, actual.Count);
@@ -414,7 +414,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedConstructorsPodiumsCount.Count; i++)
                 {
                     Assert.AreEqual(expectedConstructorsPodiumsCount[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumCount, actual[i].PodiumCount);
+                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].TotalPodiumCount, actual[i].TotalPodiumCount);
                 } 
             }
         }
