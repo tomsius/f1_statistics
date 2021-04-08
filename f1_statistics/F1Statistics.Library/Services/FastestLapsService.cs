@@ -48,7 +48,7 @@ namespace F1Statistics.Library.Services
                 driversFastestLaps = _aggregator.GetDriversFastestLaps(options.Season, options.Season);
             }
 
-            driversFastestLaps.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+            driversFastestLaps.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
             driversFastestLaps.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversFastestLaps;
@@ -83,7 +83,7 @@ namespace F1Statistics.Library.Services
                 constructorsFastestLaps = _aggregator.GetConstructorsFastestLaps(options.Season, options.Season);
             }
 
-            constructorsFastestLaps.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+            constructorsFastestLaps.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
             constructorsFastestLaps.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsFastestLaps;

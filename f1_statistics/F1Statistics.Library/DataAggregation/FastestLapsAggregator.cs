@@ -37,11 +37,11 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        var newFastestLapsByYearModel = new FastestLapsByYearModel { Year = year, FastestLapCount = 1 };
+                        var newFastestLapsByYearModel = new FastestLapsByYearModel { Year = year, FastestLapInformation = new List<FastestLapInformationModel> { newFastestLapInformationModel } };
 
                         if (!driversFastestLaps.Where(driver => driver.Name == fastestLapper).Any())
                         {
-                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel }, FastestLapInformation = new List<FastestLapInformationModel> { newFastestLapInformationModel } };
+                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel } };
                             driversFastestLaps.Add(newFastestLapModel);
                         }
                         else
@@ -54,10 +54,8 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                driver.FastestLapsByYear.Where(model => model.Year == year).First().FastestLapCount++;
+                                driver.FastestLapsByYear.Where(model => model.Year == year).First().FastestLapInformation.Add(newFastestLapInformationModel);
                             }
-
-                            driver.FastestLapInformation.Add(newFastestLapInformationModel);
                         } 
                     }
                 }
@@ -85,11 +83,11 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        var newFastestLapsByYearModel = new FastestLapsByYearModel { Year = year, FastestLapCount = 1 };
+                        var newFastestLapsByYearModel = new FastestLapsByYearModel { Year = year, FastestLapInformation = new List<FastestLapInformationModel> { newFastestLapInformationModel } };
 
                         if (!constructorsFastestLaps.Where(constructor => constructor.Name == fastestLapper).Any())
                         {
-                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel }, FastestLapInformation = new List<FastestLapInformationModel> { newFastestLapInformationModel } };
+                            var newFastestLapModel = new FastestLapModel { Name = fastestLapper, FastestLapsByYear = new List<FastestLapsByYearModel> { newFastestLapsByYearModel } };
                             constructorsFastestLaps.Add(newFastestLapModel);
                         }
                         else
@@ -102,10 +100,8 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                constructor.FastestLapsByYear.Where(model => model.Year == year).First().FastestLapCount++;
+                                constructor.FastestLapsByYear.Where(model => model.Year == year).First().FastestLapInformation.Add(newFastestLapInformationModel);
                             }
-
-                            constructor.FastestLapInformation.Add(newFastestLapInformationModel);
                         } 
                     }
                 }

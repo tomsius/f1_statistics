@@ -150,12 +150,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         }
                     }
                 },
@@ -167,7 +167,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         }
                     }
                 }
@@ -179,7 +179,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetDriversFastestLaps(from, to);
-                actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+                actual.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
                 actual.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
@@ -188,7 +188,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedFastestDrivers.Count; i++)
                 {
                     Assert.AreEqual(expectedFastestDrivers[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedFastestDrivers[i].FastestLapsCount, actual[i].FastestLapsCount);
+                    Assert.AreEqual(expectedFastestDrivers[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
                 } 
             }
         }
@@ -229,12 +229,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         }
                     }
                 },
@@ -246,7 +246,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         }
                     }
                 }
@@ -258,7 +258,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetConstructorsFastestLaps(from, to);
-                actual.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+                actual.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
                 actual.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
@@ -267,7 +267,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedFastestConstructors.Count; i++)
                 {
                     Assert.AreEqual(expectedFastestConstructors[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedFastestConstructors[i].FastestLapsCount, actual[i].FastestLapsCount);
+                    Assert.AreEqual(expectedFastestConstructors[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
                 } 
             }
         }

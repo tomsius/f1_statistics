@@ -9,12 +9,11 @@ namespace F1Statistics.Library.Models
     {
         public string Name { get; set; }
         public List<FastestLapsByYearModel> FastestLapsByYear { get; set; }
-        public List<FastestLapInformationModel> FastestLapInformation { get; set; }
-        public int FastestLapsCount
+        public int TotalFastestLapsCount
         {
             get
             {
-                return FastestLapsByYear.Sum(model => model.FastestLapCount);
+                return FastestLapsByYear.Sum(model => model.YearFastestLapCount);
             }
         }
     }

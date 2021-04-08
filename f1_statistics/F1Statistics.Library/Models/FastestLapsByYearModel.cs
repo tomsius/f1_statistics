@@ -7,6 +7,13 @@ namespace F1Statistics.Library.Models
     public class FastestLapsByYearModel
     {
         public int Year { get; set; }
-        public int FastestLapCount { get; set; }
+        public List<FastestLapInformationModel> FastestLapInformation { get; set; }
+        public int YearFastestLapCount 
+        { 
+            get
+            {
+                return FastestLapInformation.Count;
+            }
+        }
     }
 }

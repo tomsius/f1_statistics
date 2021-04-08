@@ -42,12 +42,12 @@ namespace F1Statistics.Library.Tests.Services
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            FastestLapCount = 2
+                            YearFastestLapCount = 2
                         }
                     }
                 },
@@ -59,12 +59,12 @@ namespace F1Statistics.Library.Tests.Services
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            FastestLapCount = 2
+                            YearFastestLapCount = 2
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            FastestLapCount = 1
+                            YearFastestLapCount = 1
                         }
                     }
                 }
@@ -109,7 +109,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedDriversFastestLappers = GenerateFastestLappers();
-            expectedDriversFastestLappers.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+            expectedDriversFastestLappers.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
             expectedDriversFastestLappers.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateFastestLappers());
 
@@ -123,13 +123,13 @@ namespace F1Statistics.Library.Tests.Services
             for (int i = 0; i < expectedDriversFastestLappers.Count; i++)
             {
                 Assert.AreEqual(expectedDriversFastestLappers[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsCount, actual[i].FastestLapsCount);
+                Assert.AreEqual(expectedDriversFastestLappers[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
                 Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear.Count, actual[i].FastestLapsByYear.Count);
 
                 for (int j = 0; j < expectedDriversFastestLappers[i].FastestLapsByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
-                    Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapCount, actual[i].FastestLapsByYear[j].FastestLapCount);
+                    Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].YearFastestLapCount, actual[i].FastestLapsByYear[j].YearFastestLapCount);
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedConstructorsFastestLappers = GenerateFastestLappers();
-            expectedConstructorsFastestLappers.Sort((x, y) => y.FastestLapsCount.CompareTo(x.FastestLapsCount));
+            expectedConstructorsFastestLappers.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
             expectedConstructorsFastestLappers.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateFastestLappers());
 
@@ -170,13 +170,13 @@ namespace F1Statistics.Library.Tests.Services
             for (int i = 0; i < expectedConstructorsFastestLappers.Count; i++)
             {
                 Assert.AreEqual(expectedConstructorsFastestLappers[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsCount, actual[i].FastestLapsCount);
+                Assert.AreEqual(expectedConstructorsFastestLappers[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
                 Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear.Count, actual[i].FastestLapsByYear.Count);
 
                 for (int j = 0; j < expectedConstructorsFastestLappers[i].FastestLapsByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
-                    Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapCount, actual[i].FastestLapsByYear[j].FastestLapCount);
+                    Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].YearFastestLapCount, actual[i].FastestLapsByYear[j].YearFastestLapCount);
                 }
             }
         }
