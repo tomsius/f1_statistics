@@ -6,7 +6,7 @@ namespace F1Statistics.Library.Models
 {
     public class WinByGridInformationModel
     {
-        public string Name { get; set; }
+        public string WinnerName { get; set; }
         public string CircuitName { get; set; }
     }
 }

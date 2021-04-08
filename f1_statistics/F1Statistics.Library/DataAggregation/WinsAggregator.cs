@@ -401,7 +401,7 @@ namespace F1Statistics.Library.DataAggregation
                     var gridPosition = int.Parse(winnerInformation.grid);
                     var winnerName = $"{winnerInformation.Driver.givenName} {winnerInformation.Driver.familyName}";
                     var circuitName = race.Circuit.circuitName;
-                    var newWinByGridInformationModel = new WinByGridInformationModel { Name = winnerName, CircuitName = circuitName };
+                    var newWinByGridInformationModel = new WinByGridInformationModel { WinnerName = winnerName, CircuitName = circuitName };
 
                     lock (lockObject)
                     {
