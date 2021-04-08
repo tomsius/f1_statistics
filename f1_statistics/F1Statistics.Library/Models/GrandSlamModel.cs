@@ -7,6 +7,7 @@ namespace F1Statistics.Library.Models
     public class GrandSlamModel
     {
         public string Name { get; set; }
+        public string Nationality { get; set; }
         public int GrandSlamCount { get; set; }
     }
 }
