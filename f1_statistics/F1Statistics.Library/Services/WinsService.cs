@@ -35,7 +35,7 @@ namespace F1Statistics.Library.Services
                 driversWins = _aggregator.GetDriversWins(options.Season, options.Season);
             }
 
-            driversWins.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            driversWins.Sort((x, y) => y.TotalWinCount.CompareTo(x.TotalWinCount));
             driversWins.ForEach(model => model.WinsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversWins;
@@ -56,7 +56,7 @@ namespace F1Statistics.Library.Services
                 constructorsWins = _aggregator.GetConstructorsWins(options.Season, options.Season);
             }
 
-            constructorsWins.Sort((x, y) => y.WinCount.CompareTo(x.WinCount));
+            constructorsWins.Sort((x, y) => y.TotalWinCount.CompareTo(x.TotalWinCount));
             constructorsWins.ForEach(model => model.WinsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorsWins;

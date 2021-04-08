@@ -7,6 +7,13 @@ namespace F1Statistics.Library.Models
     public class WinsByYearModel
     {
         public int Year { get; set; }
-        public int WinCount { get; set; }
+        public List<WinInformationModel> WinInformation { get; set; }
+        public int YearWinCount
+        {
+            get
+            {
+                return WinInformation.Count;
+            }
+        }
     }
 }

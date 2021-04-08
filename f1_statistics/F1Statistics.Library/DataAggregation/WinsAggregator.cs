@@ -38,11 +38,11 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject) 
                     {
-                        var newWinsByYearModel = new WinsByYearModel { Year = year, WinCount = 1 };
+                        var newWinsByYearModel = new WinsByYearModel { Year = year, WinInformation = new List<WinInformationModel> { newWinInformationModel } };
 
                         if (!driversWins.Where(driver => driver.Name == winner).Any())
                         {
-                            var newWinsModel = new WinsModel { Name = winner, WinsByYear = new List<WinsByYearModel> { newWinsByYearModel }, WinInformation = new List<WinInformationModel> { newWinInformationModel } };
+                            var newWinsModel = new WinsModel { Name = winner, WinsByYear = new List<WinsByYearModel> { newWinsByYearModel } };
                             driversWins.Add(newWinsModel);
                         }
                         else
@@ -55,10 +55,8 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                driver.WinsByYear.Where(model => model.Year == year).First().WinCount++;
+                                driver.WinsByYear.Where(model => model.Year == year).First().WinInformation.Add(newWinInformationModel);
                             }
-
-                            driver.WinInformation.Add(newWinInformationModel);
                         }
                     }
                 }
@@ -67,6 +65,7 @@ namespace F1Statistics.Library.DataAggregation
             return driversWins;
         }
 
+        // TODO - iskelti
         private double ConvertGapFromStringToDouble(string time)
         {
             if (time[time.Length - 1] == 's')
@@ -95,11 +94,11 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        var newWinsByYearModel = new WinsByYearModel { Year = year, WinCount = 1 };
+                        var newWinsByYearModel = new WinsByYearModel { Year = year, WinInformation = new List<WinInformationModel> { newWinInformationModel } };
 
                         if (!constructorsWins.Where(constructor => constructor.Name == winner).Any())
                         {
-                            var newWinsModel = new WinsModel { Name = winner, WinsByYear = new List<WinsByYearModel> { newWinsByYearModel }, WinInformation = new List<WinInformationModel> { newWinInformationModel } };
+                            var newWinsModel = new WinsModel { Name = winner, WinsByYear = new List<WinsByYearModel> { newWinsByYearModel } };
                             constructorsWins.Add(newWinsModel);
                         }
                         else
@@ -112,10 +111,8 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                constructor.WinsByYear.Where(model => model.Year == year).First().WinCount++;
+                                constructor.WinsByYear.Where(model => model.Year == year).First().WinInformation.Add(newWinInformationModel);
                             }
-
-                            constructor.WinInformation.Add(newWinInformationModel);
                         }
                     }
                 }

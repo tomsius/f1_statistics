@@ -226,13 +226,13 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedWinners.Count; i++)
             {
                 Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinners[i].TotalWinCount, actual[i].TotalWinCount);
                 Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
 
                 for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
-                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].WinCount, actual[i].WinsByYear[j].WinCount);
+                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].YearWinCount, actual[i].WinsByYear[j].YearWinCount);
                 }
             }
         }
@@ -269,13 +269,13 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedWinners.Count; i++)
             {
                 Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinners[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedWinners[i].TotalWinCount, actual[i].TotalWinCount);
                 Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
 
                 for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
-                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].WinCount, actual[i].WinsByYear[j].WinCount);
+                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].YearWinCount, actual[i].WinsByYear[j].YearWinCount);
                 }
             }
         }

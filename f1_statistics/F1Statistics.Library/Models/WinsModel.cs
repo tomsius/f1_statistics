@@ -9,12 +9,11 @@ namespace F1Statistics.Library.Models
     {
         public string Name { get; set; }
         public List<WinsByYearModel> WinsByYear { get; set; }
-        public List<WinInformationModel> WinInformation { get; set; }
-        public int WinCount
+        public int TotalWinCount
         {
             get 
             {
-                return WinsByYear.Sum(model => model.WinCount); 
+                return WinsByYear.Sum(model => model.YearWinCount); 
             }
         }
     }
