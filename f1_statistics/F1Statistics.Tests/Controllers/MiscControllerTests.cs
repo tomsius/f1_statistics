@@ -88,13 +88,11 @@ namespace F1Statistics.Tests.Controllers
             {
                 new DidNotFinishModel
                 {
-                    Name = "First",
-                    DidNotFinishCount = 5
+                    Name = "First"
                 },
                 new DidNotFinishModel
                 {
-                    Name = "Second",
-                    DidNotFinishCount = 3
+                    Name = "Second"
                 }
             };
 
