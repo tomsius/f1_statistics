@@ -55,11 +55,11 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        var newPolesByYearModel = new PolesByYearModel { Year = year, PoleCount = 1 };
+                        var newPolesByYearModel = new PolesByYearModel { Year = year, PoleInformation = new List<PoleInformationModel> { newPoleInformationModel } };
 
                         if (!driversPoles.Where(driver => driver.Name == poleSitter).Any())
                         {
-                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel }, PoleInformation = new List<PoleInformationModel> { newPoleInformationModel } };
+                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel } };
                             driversPoles.Add(newPolesModel);
                         }
                         else
@@ -72,10 +72,8 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                driver.PolesByYear.Where(model => model.Year == year).First().PoleCount++;
+                                driver.PolesByYear.Where(model => model.Year == year).First().PoleInformation.Add(newPoleInformationModel);
                             }
-
-                            driver.PoleInformation.Add(newPoleInformationModel);
                         } 
                     }
                 }
@@ -155,11 +153,11 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        var newPolesByYearModel = new PolesByYearModel { Year = year, PoleCount = 1 };
+                        var newPolesByYearModel = new PolesByYearModel { Year = year, PoleInformation = new List<PoleInformationModel> { newPoleInformationModel } };
 
                         if (!constructorsPoles.Where(constructor => constructor.Name == poleSitter).Any())
                         {
-                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel }, PoleInformation = new List<PoleInformationModel> { newPoleInformationModel } };
+                            var newPolesModel = new PolesModel { Name = poleSitter, PolesByYear = new List<PolesByYearModel> { newPolesByYearModel } };
                             constructorsPoles.Add(newPolesModel);
                         }
                         else
@@ -172,10 +170,8 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                constructor.PolesByYear.Where(model => model.Year == year).First().PoleCount++;
+                                constructor.PolesByYear.Where(model => model.Year == year).First().PoleInformation.Add(newPoleInformationModel);
                             }
-
-                            constructor.PoleInformation.Add(newPoleInformationModel);
                         } 
                     }
                 }

@@ -41,13 +41,11 @@ namespace F1Statistics.Library.Tests.Services
                     {
                         new PolesByYearModel
                         {
-                            Year = 1,
-                            PoleCount = 1
+                            Year = 1
                         },
                         new PolesByYearModel
                         {
-                            Year = 2,
-                            PoleCount = 2
+                            Year = 2
                         }
                     }
                 },
@@ -58,13 +56,11 @@ namespace F1Statistics.Library.Tests.Services
                     {
                         new PolesByYearModel
                         {
-                            Year = 1,
-                            PoleCount = 2
+                            Year = 1
                         },
                         new PolesByYearModel
                         {
-                            Year = 2,
-                            PoleCount = 1
+                            Year = 2
                         }
                     }
                 }
@@ -100,7 +96,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedPoleSittersDrivers = GeneratePoleSitters();
-            expectedPoleSittersDrivers.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            expectedPoleSittersDrivers.Sort((x, y) => y.TotalPoleCount.CompareTo(x.TotalPoleCount));
             expectedPoleSittersDrivers.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetPoleSittersDrivers(It.IsAny<int>(), It.IsAny<int>())).Returns(GeneratePoleSitters());
 
@@ -114,13 +110,13 @@ namespace F1Statistics.Library.Tests.Services
             for (int i = 0; i < expectedPoleSittersDrivers.Count; i++)
             {
                 Assert.AreEqual(expectedPoleSittersDrivers[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedPoleSittersDrivers[i].PoleCount, actual[i].PoleCount);
+                Assert.AreEqual(expectedPoleSittersDrivers[i].TotalPoleCount, actual[i].TotalPoleCount);
                 Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear.Count, actual[i].PolesByYear.Count);
 
                 for (int j = 0; j < expectedPoleSittersDrivers[i].PolesByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
-                    Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear[j].PoleCount, actual[i].PolesByYear[j].PoleCount);
+                    Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear[j].YearPoleCount, actual[i].PolesByYear[j].YearPoleCount);
                 }
             }
         }
@@ -147,7 +143,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedPoleSittersCoonstructors = GeneratePoleSitters();
-            expectedPoleSittersCoonstructors.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            expectedPoleSittersCoonstructors.Sort((x, y) => y.TotalPoleCount.CompareTo(x.TotalPoleCount));
             expectedPoleSittersCoonstructors.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetPoleSittersConstructors(It.IsAny<int>(), It.IsAny<int>())).Returns(GeneratePoleSitters());
 
@@ -161,13 +157,13 @@ namespace F1Statistics.Library.Tests.Services
             for (int i = 0; i < expectedPoleSittersCoonstructors.Count; i++)
             {
                 Assert.AreEqual(expectedPoleSittersCoonstructors[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedPoleSittersCoonstructors[i].PoleCount, actual[i].PoleCount);
+                Assert.AreEqual(expectedPoleSittersCoonstructors[i].TotalPoleCount, actual[i].TotalPoleCount);
                 Assert.AreEqual(expectedPoleSittersCoonstructors[i].PolesByYear.Count, actual[i].PolesByYear.Count);
 
                 for (int j = 0; j < expectedPoleSittersCoonstructors[i].PolesByYear.Count; j++)
                 {
                     Assert.AreEqual(expectedPoleSittersCoonstructors[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
-                    Assert.AreEqual(expectedPoleSittersCoonstructors[i].PolesByYear[j].PoleCount, actual[i].PolesByYear[j].PoleCount);
+                    Assert.AreEqual(expectedPoleSittersCoonstructors[i].PolesByYear[j].YearPoleCount, actual[i].PolesByYear[j].YearPoleCount);
                 }
             }
         }

@@ -34,7 +34,7 @@ namespace F1Statistics.Library.Services
                 driversPoles = _aggregator.GetPoleSittersDrivers(options.Season, options.Season);
             }
 
-            driversPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            driversPoles.Sort((x, y) => y.TotalPoleCount.CompareTo(x.TotalPoleCount));
             driversPoles.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return driversPoles;
@@ -55,7 +55,7 @@ namespace F1Statistics.Library.Services
                 constructorPoles = _aggregator.GetPoleSittersConstructors(options.Season, options.Season);
             }
 
-            constructorPoles.Sort((x, y) => y.PoleCount.CompareTo(x.PoleCount));
+            constructorPoles.Sort((x, y) => y.TotalPoleCount.CompareTo(x.TotalPoleCount));
             constructorPoles.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return constructorPoles;
