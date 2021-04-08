@@ -73,6 +73,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
                     var winnerName = $"{winner.givenName} {winner.familyName}";
+                    var winnerNationality = winner.nationality;
 
                     var fastestRank = races.Where(race => race.round == qualifyings[i].round).First().Results[0].FastestLap.rank;
 
@@ -82,7 +83,7 @@ namespace F1Statistics.Library.DataAggregation
                         {
                             if (!hatTricks.Where(driver => driver.Name == winnerName).Any())
                             {
-                                var newHatTrickModel = new HatTrickModel { Name = winnerName, HatTrickCount = 1 };
+                                var newHatTrickModel = new HatTrickModel { Name = winnerName, Nationality = winnerNationality, HatTrickCount = 1 };
                                 hatTricks.Add(newHatTrickModel); 
                             }
                             else
@@ -113,6 +114,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
                     var winnerName = $"{winner.givenName} {winner.familyName}";
+                    var winnerNationality = winner.nationality;
 
                     var fastestRank = races.Where(race => race.round == qualifyings[i].round).First().Results[0].FastestLap.rank;
 
@@ -137,7 +139,7 @@ namespace F1Statistics.Library.DataAggregation
                             {
                                 if (!grandSlams.Where(driver => driver.Name == winnerName).Any())
                                 {
-                                    var newHatTrickModel = new GrandSlamModel { Name = winnerName, GrandSlamCount = 1 };
+                                    var newHatTrickModel = new GrandSlamModel { Name = winnerName, Nationality = winnerNationality, GrandSlamCount = 1 };
                                     grandSlams.Add(newHatTrickModel);
                                 }
                                 else
@@ -164,6 +166,8 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
+                    var circuitName = race.Circuit.circuitName;
+
                     foreach (var result in race.Results)
                     {
                         var status = result.status;
@@ -171,17 +175,30 @@ namespace F1Statistics.Library.DataAggregation
                         if (status != FINISHED_STATUS && !status.Contains(LAPPED_STATUS))
                         {
                             var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+                            var lapsCompleted = int.Parse(result.laps);
+                            var newDidNotFinishInformationModel = new DidNotFinishInformationModel { CircuitName = circuitName, LapsCompleted = lapsCompleted };
 
                             lock (lockObject)
                             {
+                                var newDidNotFinishByYearModel = new DidNotFinishByYearModel { Year = year, DidNotFinishInformation = new List<DidNotFinishInformationModel> { newDidNotFinishInformationModel } };
+
                                 if (!nonFinishers.Where(driver => driver.Name == driverName).Any())
                                 {
-                                    var newDidNotFinishModel = new DidNotFinishModel { Name = driverName, DidNotFinishCount = 1 };
+                                    var newDidNotFinishModel = new DidNotFinishModel { Name = driverName, DidNotFinishByYear = new List<DidNotFinishByYearModel> { newDidNotFinishByYearModel } };
                                     nonFinishers.Add(newDidNotFinishModel); 
                                 }
                                 else
                                 {
-                                    nonFinishers.Where(driver => driver.Name == driverName).First().DidNotFinishCount++;
+                                    var driver = nonFinishers.Where(driver => driver.Name == driverName).First();
+
+                                    if (!driver.DidNotFinishByYear.Where(model => model.Year == year).Any())
+                                    {
+                                        driver.DidNotFinishByYear.Add(newDidNotFinishByYearModel);
+                                    }
+                                    else
+                                    {
+                                        driver.DidNotFinishByYear.Where(model => model.Year == year).First().DidNotFinishInformation.Add(newDidNotFinishInformationModel);
+                                    }
                                 }
                             }
                         }
@@ -524,6 +541,7 @@ namespace F1Statistics.Library.DataAggregation
             return driversLapTimes;
         }
 
+        // TODO - iskelti
         private double ConvertTimeToSeconds(string time)
         {
             int minutes = 0;

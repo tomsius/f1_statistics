@@ -93,13 +93,11 @@ namespace F1Statistics.Library.Tests.Services
             {
                 new DidNotFinishModel
                 {
-                    Name = "First",
-                    DidNotFinishCount = 5
+                    Name = "First"
                 },
                 new DidNotFinishModel
                 {
-                    Name = "Second",
-                    DidNotFinishCount = 3
+                    Name = "Second"
                 }
             };
 
@@ -536,7 +534,8 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedNonFinishers = GenerateNonFinishers();
-            expectedNonFinishers.Sort((x, y) => y.DidNotFinishCount.CompareTo(x.DidNotFinishCount));
+            expectedNonFinishers.Sort((x, y) => y.TotalDidNotFinishCount.CompareTo(x.TotalDidNotFinishCount));
+            expectedNonFinishers.ForEach(model => model.DidNotFinishByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetNonFinishers(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateNonFinishers());
 
             // Act
@@ -549,7 +548,7 @@ namespace F1Statistics.Library.Tests.Services
             for (int i = 0; i < expectedNonFinishers.Count; i++)
             {
                 Assert.AreEqual(expectedNonFinishers[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedNonFinishers[i].DidNotFinishCount, actual[i].DidNotFinishCount);
+                Assert.AreEqual(expectedNonFinishers[i].TotalDidNotFinishCount, actual[i].TotalDidNotFinishCount);
             }
         }
 

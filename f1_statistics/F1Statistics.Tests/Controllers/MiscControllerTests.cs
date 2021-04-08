@@ -533,7 +533,7 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedNonFinishgers.Count; i++)
             {
                 Assert.AreEqual(expectedNonFinishgers[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedNonFinishgers[i].DidNotFinishCount, actual[i].DidNotFinishCount);
+                Assert.AreEqual(expectedNonFinishgers[i].TotalDidNotFinishCount, actual[i].TotalDidNotFinishCount);
             }
         }
 

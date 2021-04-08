@@ -125,7 +125,8 @@ namespace F1Statistics.Library.Services
                 nonFinishers = _aggregator.GetNonFinishers(options.Season, options.Season);
             }
 
-            nonFinishers.Sort((x, y) => y.DidNotFinishCount.CompareTo(x.DidNotFinishCount));
+            nonFinishers.Sort((x, y) => y.TotalDidNotFinishCount.CompareTo(x.TotalDidNotFinishCount));
+            nonFinishers.ForEach(model => model.DidNotFinishByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
             return nonFinishers;
         }
@@ -194,7 +195,7 @@ namespace F1Statistics.Library.Services
             return driversFinishingPositions;
         }
 
-        //TODO - iskelti kaip extension
+        //TODO - galbut istrinti
         private void FillMissingFinishingPositions(List<DriverFinishingPositionsModel> driversFinishingPositions)
         {
             for (int i = 0; i < driversFinishingPositions.Count; i++)
@@ -247,7 +248,6 @@ namespace F1Statistics.Library.Services
                 constructorsPositionChanges = _aggregator.GetConstructorsStandingsChanges(options.Season, options.Season);
             }
 
-            //TODO - galbut iskelti rikiavimus i atskira klase kaip extension
             constructorsPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
             constructorsPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 

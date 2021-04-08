@@ -696,7 +696,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedGrandslams = new List<DidNotFinishModel> { new DidNotFinishModel { Name = "SecondName SecondFamily", DidNotFinishCount = 2 }, new DidNotFinishModel { Name = "FirstName FirstFamily", DidNotFinishCount = 1 } };
+            var expectedGrandslams = new List<DidNotFinishModel> { new DidNotFinishModel { Name = "SecondName SecondFamily" }, new DidNotFinishModel { Name = "FirstName FirstFamily" } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -704,7 +704,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetNonFinishers(from, to);
-                actual.Sort((x, y) => y.DidNotFinishCount.CompareTo(x.DidNotFinishCount));
+                actual.Sort((x, y) => y.TotalDidNotFinishCount.CompareTo(x.TotalDidNotFinishCount));
+                actual.ForEach(model => model.DidNotFinishByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
                 Assert.AreEqual(expectedGrandslams.Count, actual.Count);
@@ -712,7 +713,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedGrandslams.Count; i++)
                 {
                     Assert.AreEqual(expectedGrandslams[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedGrandslams[i].DidNotFinishCount, actual[i].DidNotFinishCount);
+                    Assert.AreEqual(expectedGrandslams[i].TotalDidNotFinishCount, actual[i].TotalDidNotFinishCount);
                 }
             }
         }
