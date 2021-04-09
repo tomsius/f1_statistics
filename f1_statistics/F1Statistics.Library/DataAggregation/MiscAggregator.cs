@@ -323,17 +323,23 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
+                    var circuitName = race.Circuit.circuitName;
+
                     foreach (var result in race.Results)
                     {
                         var driver = result.Driver;
                         var driverName = $"{driver.givenName} {driver.familyName}";
                         var driverFinishingPosition = int.Parse(result.position);
+                        var status = result.status;
+                        var finishedRace = (status != FINISHED_STATUS && !status.Contains(LAPPED_STATUS)) ? false : true;
+                        var newFinishingPositionInformationModel = new FinishingPositionInformationModel { CircuitName = circuitName, FinishedRace = finishedRace };
 
                         lock (lockObject)
                         {
+                            var newFinishingPositionModel = new FinishingPositionModel { FinishingPosition = driverFinishingPosition, FinishingPositionInformation = new List<FinishingPositionInformationModel> { newFinishingPositionInformationModel } };
+
                             if (!driversFinishingPositions.Where(driver => driver.Name == driverName).Any())
                             {
-                                var newFinishingPositionModel = new FinishingPositionModel { FinishingPosition = driverFinishingPosition, Count = 1 };
                                 var newFinishingPositionModelList = new List<FinishingPositionModel> { newFinishingPositionModel };
                                 var newDriverFinishingPositionsModel = new DriverFinishingPositionsModel { Name = driverName, FinishingPositions = newFinishingPositionModelList };
 
@@ -341,17 +347,15 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                var driverFinishingPositionsList = driversFinishingPositions.Where(driver => driver.Name == driverName).First().FinishingPositions;
+                                var driverFinishingPositions = driversFinishingPositions.Where(driver => driver.Name == driverName).First().FinishingPositions;
 
-                                if (!driverFinishingPositionsList.Where(positions => positions.FinishingPosition == driverFinishingPosition).Any())
+                                if (!driverFinishingPositions.Where(positions => positions.FinishingPosition == driverFinishingPosition).Any())
                                 {
-                                    var newFinishingPositionModel = new FinishingPositionModel { FinishingPosition = driverFinishingPosition, Count = 1 };
-
-                                    driverFinishingPositionsList.Add(newFinishingPositionModel);
+                                    driverFinishingPositions.Add(newFinishingPositionModel);
                                 }
                                 else
                                 {
-                                    driverFinishingPositionsList.Where(position => position.FinishingPosition == driverFinishingPosition).First().Count++;
+                                    driverFinishingPositions.Where(position => position.FinishingPosition == driverFinishingPosition).First().FinishingPositionInformation.Add(newFinishingPositionInformationModel);
                                 }
                             }
                         }

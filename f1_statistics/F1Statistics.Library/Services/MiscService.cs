@@ -205,7 +205,7 @@ namespace F1Statistics.Library.Services
                     var expectedFinishingPosition = j + 1;
                     if (driversFinishingPositions[i].FinishingPositions[j].FinishingPosition != expectedFinishingPosition)
                     {
-                        var missingFinishingPosition = new FinishingPositionModel { FinishingPosition = expectedFinishingPosition, Count = 0 };
+                        var missingFinishingPosition = new FinishingPositionModel { FinishingPosition = expectedFinishingPosition, FinishingPositionInformation = new List<FinishingPositionInformationModel>() };
                         driversFinishingPositions[i].FinishingPositions.Insert(j, missingFinishingPosition);
                     }
                 }
