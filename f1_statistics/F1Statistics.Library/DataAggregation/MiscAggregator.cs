@@ -281,16 +281,28 @@ namespace F1Statistics.Library.DataAggregation
 
                     if (firstOnGrid == secondOnGrid && firstOnGrid != null)
                     {
+                        var circuitName = qualifying.Circuit.circuitName;
+                        var newFrontRowInformationModel = new FrontRowInformationModel { CircuitName = circuitName, CircuitFrontRowCount = 1 };
+
                         lock (lockObject)
                         {
                             if (!constructorsWithFrontRow.Where(constructor => constructor.Name == firstOnGrid).Any())
                             {
-                                var newFrontRowModel = new FrontRowModel { Name = firstOnGrid, FrontRowCount = 1 };
+                                var newFrontRowModel = new FrontRowModel { Name = firstOnGrid, FrontRowInformation = new List<FrontRowInformationModel> { newFrontRowInformationModel } };
                                 constructorsWithFrontRow.Add(newFrontRowModel);
                             }
                             else
                             {
-                                constructorsWithFrontRow.Where(constructor => constructor.Name == firstOnGrid).First().FrontRowCount++;
+                                var frontRow = constructorsWithFrontRow.Where(constructor => constructor.Name == firstOnGrid).First();
+
+                                if (!frontRow.FrontRowInformation.Where(circuit => circuit.CircuitName == circuitName).Any())
+                                {
+                                    frontRow.FrontRowInformation.Add(newFrontRowInformationModel);
+                                }
+                                else
+                                {
+                                    frontRow.FrontRowInformation.Where(circuit => circuit.CircuitName == circuitName).First().CircuitFrontRowCount++;
+                                }
                             }
                         }
                     }

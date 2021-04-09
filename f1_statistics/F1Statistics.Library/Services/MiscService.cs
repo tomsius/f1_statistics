@@ -167,7 +167,7 @@ namespace F1Statistics.Library.Services
                 constructorsWithFrontRow = _aggregator.GetConstructorsFrontRows(options.Season, options.Season);
             }
 
-            constructorsWithFrontRow.Sort((x, y) => y.FrontRowCount.CompareTo(x.FrontRowCount));
+            constructorsWithFrontRow.Sort((x, y) => y.TotalFrontRowCount.CompareTo(x.TotalFrontRowCount));
 
             return constructorsWithFrontRow;
         }

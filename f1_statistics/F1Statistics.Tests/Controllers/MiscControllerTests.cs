@@ -153,12 +153,12 @@ namespace F1Statistics.Tests.Controllers
                 new FrontRowModel
                 {
                     Name = "First",
-                    FrontRowCount = 3
+                    TotalFrontRowCount = 3
                 },
                 new FrontRowModel
                 {
                     Name = "Second",
-                    FrontRowCount = 1
+                    TotalFrontRowCount = 1
                 }
             };
 
@@ -610,7 +610,7 @@ namespace F1Statistics.Tests.Controllers
             for (int i = 0; i < expectedConstructorsFrontRows.Count; i++)
             {
                 Assert.AreEqual(expectedConstructorsFrontRows[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowCount, actual[i].FrontRowCount);
+                Assert.AreEqual(expectedConstructorsFrontRows[i].TotalFrontRowCount, actual[i].TotalFrontRowCount);
             }
         }
 

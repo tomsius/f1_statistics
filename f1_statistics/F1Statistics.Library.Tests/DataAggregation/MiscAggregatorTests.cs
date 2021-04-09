@@ -848,12 +848,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 new FrontRowModel
                 {
                     Name = "First",
-                    FrontRowCount = 2
+                    TotalFrontRowCount = 2
                 },
                 new FrontRowModel
                 {
                     Name = "Second",
-                    FrontRowCount = 1
+                    TotalFrontRowCount = 1
                 }
             };
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
@@ -863,7 +863,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetConstructorsFrontRows(from, to);
-                actual.Sort((x, y) => y.FrontRowCount.CompareTo(x.FrontRowCount));
+                actual.Sort((x, y) => y.TotalFrontRowCount.CompareTo(x.TotalFrontRowCount));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsFrontRows.Count, actual.Count);
@@ -871,7 +871,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 for (int i = 0; i < expectedConstructorsFrontRows.Count; i++)
                 {
                     Assert.AreEqual(expectedConstructorsFrontRows[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowCount, actual[i].FrontRowCount);
+                    Assert.AreEqual(expectedConstructorsFrontRows[i].TotalFrontRowCount, actual[i].TotalFrontRowCount);
                 }
             }
         }
