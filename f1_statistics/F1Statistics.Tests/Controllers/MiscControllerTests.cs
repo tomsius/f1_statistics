@@ -105,38 +105,38 @@ namespace F1Statistics.Tests.Controllers
             {
                 new SeasonPositionChangesModel 
                 { 
-                    Season = 1,
+                    Year = 1,
                     PositionChanges = new List<DriverPositionChangeModel>
                     {
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            PositionChange = 10,
+                            TotalPositionChange = 10,
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            PositionChange = -10,
+                            TotalPositionChange = -10,
                             ChampionshipPosition = 2
                         }
                     }
                 },
                 new SeasonPositionChangesModel
                 {
-                    Season = 2,
+                    Year = 2,
                     PositionChanges = new List<DriverPositionChangeModel>
                     {
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            PositionChange = 20,
+                            TotalPositionChange = 20,
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            PositionChange = 0,
+                            TotalPositionChange = 0,
                             ChampionshipPosition = 2
                         }
                     }
@@ -566,13 +566,13 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedSeasonPositionChanges.Count; i++)
             {
-                Assert.AreEqual(expectedSeasonPositionChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedSeasonPositionChanges[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges.Count, actual[i].PositionChanges.Count);
 
                 for (int j = 0; j < expectedSeasonPositionChanges[i].PositionChanges.Count; j++)
                 {
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
-                    Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].PositionChange, actual[i].PositionChanges[j].PositionChange);
+                    Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].TotalPositionChange, actual[i].PositionChanges[j].TotalPositionChange);
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].ChampionshipPosition, actual[i].PositionChanges[j].ChampionshipPosition);
                 }
             }

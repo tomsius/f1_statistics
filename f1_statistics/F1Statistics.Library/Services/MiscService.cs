@@ -146,8 +146,8 @@ namespace F1Statistics.Library.Services
                 positionChanges = _aggregator.GetSeasonPositionChanges(options.Season, options.Season);
             }
 
-            positionChanges.ForEach(season => season.PositionChanges.Sort((x, y) => y.PositionChange.CompareTo(x.PositionChange)));
-            positionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            positionChanges.ForEach(season => season.PositionChanges.Sort((x, y) => y.TotalPositionChange.CompareTo(x.TotalPositionChange)));
+            positionChanges.Sort((x, y) => x.Year.CompareTo(y.Year));
 
             return positionChanges;
         }

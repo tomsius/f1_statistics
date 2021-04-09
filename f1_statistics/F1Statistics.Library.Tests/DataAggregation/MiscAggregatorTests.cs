@@ -748,38 +748,38 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new SeasonPositionChangesModel
                 {
-                    Season = 1,
+                    Year = 1,
                     PositionChanges = new List<DriverPositionChangeModel>
                     {
                         new DriverPositionChangeModel
                         {
                             Name = "FirstName FirstFamily",
-                            PositionChange = 0,
+                            TotalPositionChange = 0,
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "SecondName SecondFamily",
-                            PositionChange = -1,
+                            TotalPositionChange = -1,
                             ChampionshipPosition = 2
                         }
                     }
                 },
                 new SeasonPositionChangesModel
                 {
-                    Season = 2,
+                    Year = 2,
                     PositionChanges = new List<DriverPositionChangeModel>
                     {
                         new DriverPositionChangeModel
                         {
                             Name = "FirstName FirstFamily",
-                            PositionChange = 0,
+                            TotalPositionChange = 0,
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "SecondName SecondFamily",
-                            PositionChange = -3,
+                            TotalPositionChange = -3,
                             ChampionshipPosition = 2
                         }
                     }
@@ -794,21 +794,21 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetSeasonPositionChanges(from, to);
-                actual.ForEach(season => season.PositionChanges.Sort((x, y) => y.PositionChange.CompareTo(x.PositionChange)));
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.ForEach(season => season.PositionChanges.Sort((x, y) => y.TotalPositionChange.CompareTo(x.TotalPositionChange)));
+                actual.Sort((x, y) => x.Year.CompareTo(y.Year));
 
                 // Assert
                 Assert.AreEqual(expectedSeasonPositionChanges.Count, actual.Count);
 
                 for (int i = 0; i < expectedSeasonPositionChanges.Count; i++)
                 {
-                    Assert.AreEqual(expectedSeasonPositionChanges[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedSeasonPositionChanges[i].Year, actual[i].Year);
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges.Count, actual[i].PositionChanges.Count);
 
                     for (int j = 0; j < expectedSeasonPositionChanges[i].PositionChanges.Count; j++)
                     {
                         Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
-                        Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].PositionChange, actual[i].PositionChanges[j].PositionChange);
+                        Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].TotalPositionChange, actual[i].PositionChanges[j].TotalPositionChange);
                         Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].ChampionshipPosition, actual[i].PositionChanges[j].ChampionshipPosition);
                     }
                 }
@@ -821,7 +821,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedSeasonPositionChanges = new List<SeasonPositionChangesModel> { new SeasonPositionChangesModel { Season = 1 }, new SeasonPositionChangesModel { Season = 2 } };
+            var expectedSeasonPositionChanges = new List<SeasonPositionChangesModel> { new SeasonPositionChangesModel { Year = 1 }, new SeasonPositionChangesModel { Year = 2 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFrom(1)).Returns(new List<DriverStandingsDataResponse>());

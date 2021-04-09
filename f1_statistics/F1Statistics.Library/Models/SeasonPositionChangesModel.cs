@@ -6,7 +6,7 @@ namespace F1Statistics.Library.Models
 {
     public class SeasonPositionChangesModel
     {
-        public int Season { get; set; }
+        public int Year { get; set; }
         public List<DriverPositionChangeModel> PositionChanges { get; set; }
     }
 }

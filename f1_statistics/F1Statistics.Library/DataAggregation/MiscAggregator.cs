@@ -217,30 +217,32 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var seasonPositionChanges = new SeasonPositionChangesModel { Season = year, PositionChanges = new List<DriverPositionChangeModel>() };
+                var seasonPositionChanges = new SeasonPositionChangesModel { Year = year, PositionChanges = new List<DriverPositionChangeModel>() };
 
                 var races = _resultsDataAccess.GetResultsFrom(year);
                 var standings = _standingsDataAccess.GetDriverStandingsFrom(year);
 
                 foreach (var race in races)
                 {
+                    var circuitName = race.Circuit.circuitName;
+
                     foreach (var result in race.Results)
                     {
                         var driver = result.Driver;
                         var driverName = $"{driver.givenName} {driver.familyName}";
-
                         var gridPosition = int.Parse(result.grid);
                         var finishPosition = int.Parse(result.position);
                         var positionChange = gridPosition - finishPosition;
+                        var newDriverPositionChangeInformationModel = new DriverPositionChangeInformationModel { CircuitName = circuitName, RacePositionChange = positionChange };
 
                         if (!seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).Any())
                         {
-                            var newDriverPositionChangeModel = new DriverPositionChangeModel { Name = driverName, PositionChange = positionChange };
+                            var newDriverPositionChangeModel = new DriverPositionChangeModel { Name = driverName, DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel> { newDriverPositionChangeInformationModel } };
                             seasonPositionChanges.PositionChanges.Add(newDriverPositionChangeModel);
                         }
                         else
                         {
-                            seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).First().PositionChange += positionChange;
+                            seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).First().DriverPositionChangeInformation.Add(newDriverPositionChangeInformationModel);
                         }
                     }
                 }
