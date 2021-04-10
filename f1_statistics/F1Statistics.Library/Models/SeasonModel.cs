@@ -6,7 +6,7 @@ namespace F1Statistics.Library.Models
 {
     public class SeasonModel
     {
-        public int Season { get; set; }
+        public int Year { get; set; }
         public List<RaceModel> Races { get; set; }
     }
 }

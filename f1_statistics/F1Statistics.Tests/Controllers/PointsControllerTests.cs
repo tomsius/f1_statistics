@@ -31,7 +31,7 @@ namespace F1Statistics.Tests.Controllers
             {
                 new SeasonPointsModel
                 {
-                    Season = 1,
+                    Year = 1,
                     ScoredPoints = new List<PointsModel>
                     { 
                         new PointsModel 
@@ -48,7 +48,7 @@ namespace F1Statistics.Tests.Controllers
                 },
                 new SeasonPointsModel
                 {
-                    Season = 2,
+                    Year = 2,
                     ScoredPoints = new List<PointsModel>
                     {
                         new PointsModel
@@ -74,14 +74,14 @@ namespace F1Statistics.Tests.Controllers
             {
                 new SeasonWinnersPointsModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Winner = "First",
                     Points = 200,
                     RacesCount = 1
                 },
                 new SeasonWinnersPointsModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Winner = "Second",
                     Points = 400,
                     RacesCount = 1
@@ -97,7 +97,7 @@ namespace F1Statistics.Tests.Controllers
             {
                 new SeasonStandingsChangesModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -142,7 +142,7 @@ namespace F1Statistics.Tests.Controllers
                 },
                 new SeasonStandingsChangesModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -206,7 +206,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedPointsScorers.Count; i++)
             {
-                Assert.AreEqual(expectedPointsScorers[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedPointsScorers[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedPointsScorers[i].ScoredPoints.Count, actual[i].ScoredPoints.Count);
 
                 for (int j = 0; j < expectedPointsScorers[i].ScoredPoints.Count; j++)
@@ -250,7 +250,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedPointsScorers.Count; i++)
             {
-                Assert.AreEqual(expectedPointsScorers[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedPointsScorers[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedPointsScorers[i].ScoredPoints.Count, actual[i].ScoredPoints.Count);
 
                 for (int j = 0; j < expectedPointsScorers[i].ScoredPoints.Count; j++)
@@ -294,7 +294,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedDriverWinnersPoints.Count; i++)
             {
-                Assert.AreEqual(expectedDriverWinnersPoints[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedDriverWinnersPoints[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedDriverWinnersPoints[i].Points, actual[i].Points);
                 Assert.AreEqual(expectedDriverWinnersPoints[i].Winner, actual[i].Winner);
                 Assert.AreEqual(expectedDriverWinnersPoints[i].RacesCount, actual[i].RacesCount);
@@ -332,7 +332,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedConstructorsWinnersPoints.Count; i++)
             {
-                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedConstructorsWinnersPoints[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedConstructorsWinnersPoints[i].Points, actual[i].Points);
                 Assert.AreEqual(expectedConstructorsWinnersPoints[i].Winner, actual[i].Winner);
                 Assert.AreEqual(expectedConstructorsWinnersPoints[i].RacesCount, actual[i].RacesCount);
@@ -370,7 +370,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
             {
-                Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedDriversStandingsChanges[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedDriversStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                 for (int j = 0; j < expectedDriversStandingsChanges[i].Standings.Count; j++)
@@ -418,7 +418,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
             {
-                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                 for (int j = 0; j < expectedConstructorsStandingsChanges[i].Standings.Count; j++)

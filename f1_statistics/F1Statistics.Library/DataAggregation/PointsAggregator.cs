@@ -30,7 +30,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var standings = _standingsDataAccess.GetDriverStandingsFrom(year);
 
-                var newSeasonPointsModel = new SeasonPointsModel { Season = year, ScoredPoints = new List<PointsModel>() };
+                var newSeasonPointsModel = new SeasonPointsModel { Year = year, ScoredPoints = new List<PointsModel>() };
 
                 foreach (var standing in standings)
                 {
@@ -59,7 +59,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 var standings = _standingsDataAccess.GetConstructorStandingsFrom(year);
 
-                var newSeasonPointsModel = new SeasonPointsModel { Season = year, ScoredPoints = new List<PointsModel>() };
+                var newSeasonPointsModel = new SeasonPointsModel { Year = year, ScoredPoints = new List<PointsModel>() };
 
                 foreach (var standing in standings)
                 {
@@ -98,7 +98,7 @@ namespace F1Statistics.Library.DataAggregation
                 var winner = $"{standings[0].Driver.givenName} {standings[0].Driver.familyName}";
                 var points = int.Parse(standings[0].points);
 
-                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points, RacesCount = racesCount };
+                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Year = year, Winner = winner, Points = points, RacesCount = racesCount };
 
                 lock (lockAdd)
                 {
@@ -128,7 +128,7 @@ namespace F1Statistics.Library.DataAggregation
                 var winner = $"{standings[0].Constructor.name}";
                 var points = int.Parse(standings[0].points);
 
-                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Season = year, Winner = winner, Points = points, RacesCount = racesCount };
+                var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Year = year, Winner = winner, Points = points, RacesCount = racesCount };
 
                 lock (lockAdd)
                 {
@@ -146,7 +146,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Year = year, Standings = new List<StandingModel>() };
 
                 var results = _resultsDataAccess.GetResultsFrom(year);
                 var racesCount = results.Count;
@@ -189,7 +189,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Year = year, Standings = new List<StandingModel>() };
 
                 var results = _resultsDataAccess.GetResultsFrom(year);
                 var racesCount = results.Count;

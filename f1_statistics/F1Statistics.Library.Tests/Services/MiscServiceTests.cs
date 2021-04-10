@@ -214,7 +214,7 @@ namespace F1Statistics.Library.Tests.Services
             {
                 new SeasonStandingsChangesModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -259,7 +259,7 @@ namespace F1Statistics.Library.Tests.Services
                 },
                 new SeasonStandingsChangesModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -706,7 +706,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedDriversStandingsChanges = GenerateSeasonStandingsChanges();
-            expectedDriversStandingsChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            expectedDriversStandingsChanges.Sort((x, y) => x.Year.CompareTo(y.Year));
             expectedDriversStandingsChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
             _aggregator.Setup((aggregator) => aggregator.GetDriversStandingsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateSeasonStandingsChanges());
 
@@ -719,7 +719,7 @@ namespace F1Statistics.Library.Tests.Services
 
             for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
             {
-                Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedDriversStandingsChanges[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedDriversStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                 for (int j = 0; j < expectedDriversStandingsChanges[i].Standings.Count; j++)
@@ -758,7 +758,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedConstructorsStandingsChanges = GenerateSeasonStandingsChanges();
-            expectedConstructorsStandingsChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            expectedConstructorsStandingsChanges.Sort((x, y) => x.Year.CompareTo(y.Year));
             expectedConstructorsStandingsChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsStandingsChanges(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateSeasonStandingsChanges());
 
@@ -771,7 +771,7 @@ namespace F1Statistics.Library.Tests.Services
 
             for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
             {
-                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                 for (int j = 0; j < expectedConstructorsStandingsChanges[i].Standings.Count; j++)

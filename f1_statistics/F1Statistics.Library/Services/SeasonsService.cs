@@ -34,7 +34,7 @@ namespace F1Statistics.Library.Services
                 seasons = _aggregator.GetSeasonRaces(options.Season, options.Season);
             }
 
-            seasons.Sort((x, y) => x.Season.CompareTo(y.Season));
+            seasons.Sort((x, y) => x.Year.CompareTo(y.Year));
             seasons.ForEach(season => season.Races.Sort((x, y) => x.Round.CompareTo(y.Round)));
 
             return seasons;

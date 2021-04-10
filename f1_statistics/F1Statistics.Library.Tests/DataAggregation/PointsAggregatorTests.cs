@@ -301,7 +301,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new SeasonPointsModel
                 {
-                    Season = 1,
+                    Year = 1,
                     ScoredPoints = new List<PointsModel>
                     {
                         new PointsModel
@@ -318,7 +318,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 },
                 new SeasonPointsModel
                 {
-                    Season = 2,
+                    Year = 2,
                     ScoredPoints = new List<PointsModel>
                     {
                         new PointsModel
@@ -342,14 +342,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetDriversPointsPerSeason(from, to);
                 actual.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.Sort((x, y) => x.Year.CompareTo(y.Year));
 
                 // Assert
                 Assert.AreEqual(expectedDriversPoints.Count, actual.Count);
 
                 for (int i = 0; i < expectedDriversPoints.Count; i++)
                 {
-                    Assert.AreEqual(expectedDriversPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedDriversPoints[i].Year, actual[i].Year);
                     Assert.AreEqual(expectedDriversPoints[i].TotalPoints, actual[i].TotalPoints);
 
                     for (int j = 0; j < expectedDriversPoints[i].ScoredPoints.Count; j++)
@@ -391,7 +391,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new SeasonPointsModel
                 {
-                    Season = 1,
+                    Year = 1,
                     ScoredPoints = new List<PointsModel>
                     {
                         new PointsModel
@@ -408,7 +408,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 },
                 new SeasonPointsModel
                 {
-                    Season = 2,
+                    Year = 2,
                     ScoredPoints = new List<PointsModel>
                     {
                         new PointsModel
@@ -432,14 +432,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 // Act
                 var actual = _aggregator.GetConstructorsPointsPerSeason(from, to);
                 actual.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.Sort((x, y) => x.Year.CompareTo(y.Year));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsPoints.Count, actual.Count);
 
                 for (int i = 0; i < expectedConstructorsPoints.Count; i++)
                 {
-                    Assert.AreEqual(expectedConstructorsPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedConstructorsPoints[i].Year, actual[i].Year);
                     Assert.AreEqual(expectedConstructorsPoints[i].TotalPoints, actual[i].TotalPoints);
 
                     for (int j = 0; j < expectedConstructorsPoints[i].ScoredPoints.Count; j++)
@@ -481,14 +481,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new SeasonWinnersPointsModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Winner = "FirstName FirstFamily",
                     Points = 100,
                     RacesCount = 1
                 },
                 new SeasonWinnersPointsModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Winner = "FirstName FirstFamily",
                     Points = 200,
                     RacesCount = 2
@@ -503,14 +503,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetDriversWinnersPointsPerSeason(from, to);
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.Sort((x, y) => x.Year.CompareTo(y.Year));
 
                 // Assert
                 Assert.AreEqual(expectedDriversWinnersPoints.Count, actual.Count);
 
                 for (int i = 0; i < expectedDriversWinnersPoints.Count; i++)
                 {
-                    Assert.AreEqual(expectedDriversWinnersPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedDriversWinnersPoints[i].Year, actual[i].Year);
                     Assert.AreEqual(expectedDriversWinnersPoints[i].Winner, actual[i].Winner);
                     Assert.AreEqual(expectedDriversWinnersPoints[i].Points, actual[i].Points);
                     Assert.AreEqual(expectedDriversWinnersPoints[i].RacesCount, actual[i].RacesCount);
@@ -548,14 +548,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new SeasonWinnersPointsModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Winner = "First",
                     Points = 100,
                     RacesCount = 1
                 },
                 new SeasonWinnersPointsModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Winner = "First",
                     Points = 200,
                     RacesCount = 2
@@ -570,14 +570,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetConstructorsWinnersPointsPerSeason(from, to);
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.Sort((x, y) => x.Year.CompareTo(y.Year));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsWinnersPoints.Count, actual.Count);
 
                 for (int i = 0; i < expectedConstructorsWinnersPoints.Count; i++)
                 {
-                    Assert.AreEqual(expectedConstructorsWinnersPoints[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedConstructorsWinnersPoints[i].Year, actual[i].Year);
                     Assert.AreEqual(expectedConstructorsWinnersPoints[i].Winner, actual[i].Winner);
                     Assert.AreEqual(expectedConstructorsWinnersPoints[i].Points, actual[i].Points);
                     Assert.AreEqual(expectedConstructorsWinnersPoints[i].RacesCount, actual[i].RacesCount);
@@ -615,7 +615,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new SeasonStandingsChangesModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -648,7 +648,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 },
                 new SeasonStandingsChangesModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -702,7 +702,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetDriversPointsChanges(from, to);
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.Sort((x, y) => x.Year.CompareTo(y.Year));
                 actual.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
                 // Assert
@@ -710,7 +710,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
                 for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
                 {
-                    Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedDriversStandingsChanges[i].Year, actual[i].Year);
                     Assert.AreEqual(expectedDriversStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                     for (int j = 0; j < expectedDriversStandingsChanges[i].Standings.Count; j++)
@@ -735,7 +735,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
+            var expectedDriversStandingsChanges = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Year = 1 }, new SeasonStandingsChangesModel { Year = 2 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -759,7 +759,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new SeasonStandingsChangesModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -792,7 +792,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 },
                 new SeasonStandingsChangesModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -846,7 +846,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 // Act
                 var actual = _aggregator.GetConstructorsPointsChanges(from, to);
-                actual.Sort((x, y) => x.Season.CompareTo(y.Season));
+                actual.Sort((x, y) => x.Year.CompareTo(y.Year));
                 actual.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
                 // Assert
@@ -854,7 +854,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
                 for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
                 {
-                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
+                    Assert.AreEqual(expectedConstructorsStandingsChanges[i].Year, actual[i].Year);
                     Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                     for (int j = 0; j < expectedConstructorsStandingsChanges[i].Standings.Count; j++)
@@ -879,7 +879,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedDriversFinishingPositions = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Season = 1 }, new SeasonStandingsChangesModel { Season = 2 } };
+            var expectedDriversFinishingPositions = new List<SeasonStandingsChangesModel> { new SeasonStandingsChangesModel { Year = 1 }, new SeasonStandingsChangesModel { Year = 2 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 

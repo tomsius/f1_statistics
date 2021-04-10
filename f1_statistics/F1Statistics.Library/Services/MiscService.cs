@@ -227,7 +227,7 @@ namespace F1Statistics.Library.Services
                 driversPositionChanges = _aggregator.GetDriversStandingsChanges(options.Season, options.Season);
             }
 
-            driversPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            driversPositionChanges.Sort((x, y) => x.Year.CompareTo(y.Year));
             driversPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
             return driversPositionChanges;
@@ -248,7 +248,7 @@ namespace F1Statistics.Library.Services
                 constructorsPositionChanges = _aggregator.GetConstructorsStandingsChanges(options.Season, options.Season);
             }
 
-            constructorsPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            constructorsPositionChanges.Sort((x, y) => x.Year.CompareTo(y.Year));
             constructorsPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
             return constructorsPositionChanges;

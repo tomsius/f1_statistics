@@ -26,7 +26,7 @@ namespace F1Statistics.Library.DataAggregation
             Parallel.For(from, to + 1, year =>
             {
                 var races = _resultsDataAccess.GetResultsFrom(year);
-                var newSeasonModel = new SeasonModel { Season = year, Races = new List<RaceModel>() };
+                var newSeasonModel = new SeasonModel { Year = year, Races = new List<RaceModel>() };
 
                 foreach (var race in races)
                 {

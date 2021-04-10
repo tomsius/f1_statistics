@@ -209,7 +209,7 @@ namespace F1Statistics.Tests.Controllers
             {
                 new SeasonStandingsChangesModel
                 {
-                    Season = 1,
+                    Year = 1,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -254,7 +254,7 @@ namespace F1Statistics.Tests.Controllers
                 },
                 new SeasonStandingsChangesModel
                 {
-                    Season = 2,
+                    Year = 2,
                     Standings = new List<StandingModel>
                     {
                         new StandingModel
@@ -687,7 +687,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedDriversStandingsChanges.Count; i++)
             {
-                Assert.AreEqual(expectedDriversStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedDriversStandingsChanges[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedDriversStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                 for (int j = 0; j < expectedDriversStandingsChanges[i].Standings.Count; j++)
@@ -735,7 +735,7 @@ namespace F1Statistics.Tests.Controllers
 
             for (int i = 0; i < expectedConstructorsStandingsChanges.Count; i++)
             {
-                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Season, actual[i].Season);
+                Assert.AreEqual(expectedConstructorsStandingsChanges[i].Year, actual[i].Year);
                 Assert.AreEqual(expectedConstructorsStandingsChanges[i].Standings.Count, actual[i].Standings.Count);
 
                 for (int j = 0; j < expectedConstructorsStandingsChanges[i].Standings.Count; j++)

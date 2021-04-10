@@ -373,7 +373,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Year = year, Standings = new List<StandingModel>() };
 
                 var results = _resultsDataAccess.GetResultsFrom(year);
                 var racesCount = results.Count;
@@ -416,7 +416,7 @@ namespace F1Statistics.Library.DataAggregation
 
             for (int year = from; year <= to; year++)
             {
-                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Season = year, Standings = new List<StandingModel>() };
+                var newSeasonStandingsChangesModel = new SeasonStandingsChangesModel { Year = year, Standings = new List<StandingModel>() };
 
                 var results = _resultsDataAccess.GetResultsFrom(year);
                 var racesCount = results.Count;

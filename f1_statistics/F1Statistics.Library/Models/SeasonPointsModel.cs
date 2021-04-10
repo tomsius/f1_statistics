@@ -7,7 +7,7 @@ namespace F1Statistics.Library.Models
 {
     public class SeasonPointsModel
     {
-        public int Season { get; set; }
+        public int Year { get; set; }
         public List<PointsModel> ScoredPoints { get; set; }
         public double TotalPoints
         {

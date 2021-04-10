@@ -36,7 +36,7 @@ namespace F1Statistics.Library.Services
 
             driversPoints.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
 
-            driversPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
+            driversPoints.Sort((x, y) => x.Year.CompareTo(y.Year));
 
             return driversPoints;
         }
@@ -58,7 +58,7 @@ namespace F1Statistics.Library.Services
 
             constructorsPoints.ForEach(season => season.ScoredPoints.Sort((x, y) => y.Points.CompareTo(x.Points)));
 
-            constructorsPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
+            constructorsPoints.Sort((x, y) => x.Year.CompareTo(y.Year));
 
             return constructorsPoints;
         }
@@ -78,7 +78,7 @@ namespace F1Statistics.Library.Services
                 driversWinnersPoints = _aggregator.GetDriversWinnersPointsPerSeason(options.Season, options.Season);
             }
 
-            driversWinnersPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
+            driversWinnersPoints.Sort((x, y) => x.Year.CompareTo(y.Year));
 
             return driversWinnersPoints;
         }
@@ -98,7 +98,7 @@ namespace F1Statistics.Library.Services
                 constructorsWinnersPoints = _aggregator.GetConstructorsWinnersPointsPerSeason(options.Season, options.Season);
             }
 
-            constructorsWinnersPoints.Sort((x, y) => x.Season.CompareTo(y.Season));
+            constructorsWinnersPoints.Sort((x, y) => x.Year.CompareTo(y.Year));
 
             return constructorsWinnersPoints;
         }
@@ -118,7 +118,7 @@ namespace F1Statistics.Library.Services
                 driversPositionChanges = _aggregator.GetDriversPointsChanges(options.Season, options.Season);
             }
 
-            driversPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            driversPositionChanges.Sort((x, y) => x.Year.CompareTo(y.Year));
             driversPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
             return driversPositionChanges;
@@ -139,7 +139,7 @@ namespace F1Statistics.Library.Services
                 constructorsPositionChanges = _aggregator.GetConstructorsPointsChanges(options.Season, options.Season);
             }
 
-            constructorsPositionChanges.Sort((x, y) => x.Season.CompareTo(y.Season));
+            constructorsPositionChanges.Sort((x, y) => x.Year.CompareTo(y.Year));
             constructorsPositionChanges.ForEach(model => model.Standings.ForEach(standing => standing.Rounds.Sort((x, y) => x.Round.CompareTo(y.Round))));
 
             return constructorsPositionChanges;
