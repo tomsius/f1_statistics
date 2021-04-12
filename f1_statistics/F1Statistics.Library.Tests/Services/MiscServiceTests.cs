@@ -93,11 +93,53 @@ namespace F1Statistics.Library.Tests.Services
             {
                 new DidNotFinishModel
                 {
-                    Name = "First"
+                    Name = "First",
+                    DidNotFinishByYear = new List<DidNotFinishByYearModel>
+                    {
+                        new DidNotFinishByYearModel
+                        {
+                            Year = 1,
+                            DidNotFinishInformation = new List<DidNotFinishInformationModel>
+                            {
+                                new DidNotFinishInformationModel
+                                {
+                                    CircuitName = "First",
+                                    LapsCompleted = 10
+                                }
+                            }
+                        },
+                        new DidNotFinishByYearModel
+                        {
+                            Year = 2,
+                            DidNotFinishInformation = new List<DidNotFinishInformationModel>
+                            {
+                                new DidNotFinishInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    LapsCompleted = 0
+                                }
+                            }
+                        }
+                    }
                 },
                 new DidNotFinishModel
                 {
-                    Name = "Second"
+                    Name = "Second",
+                    DidNotFinishByYear = new List<DidNotFinishByYearModel>
+                    {
+                        new DidNotFinishByYearModel
+                        {
+                            Year = 1,
+                            DidNotFinishInformation = new List<DidNotFinishInformationModel>
+                            {
+                                new DidNotFinishInformationModel
+                                {
+                                    CircuitName = "Third",
+                                    LapsCompleted = 56
+                                }
+                            }
+                        }
+                    }
                 }
             };
 
@@ -116,13 +158,37 @@ namespace F1Statistics.Library.Tests.Services
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            TotalPositionChange = 10,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "First",
+                                    RacePositionChange = 2
+                                },
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    RacePositionChange = 8
+                                }
+                            },
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            TotalPositionChange = -10,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "First",
+                                    RacePositionChange = -2
+                                },
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    RacePositionChange = -8
+                                }
+                            },
                             ChampionshipPosition = 2
                         }
                     }
@@ -135,13 +201,37 @@ namespace F1Statistics.Library.Tests.Services
                         new DriverPositionChangeModel
                         {
                             Name = "First",
-                            TotalPositionChange = 20,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "First",
+                                    RacePositionChange = -2
+                                },
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    RacePositionChange = 22
+                                }
+                            },
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "Second",
-                            TotalPositionChange = 0,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "First",
+                                    RacePositionChange = -5
+                                },
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    RacePositionChange = 5
+                                }
+                            },
                             ChampionshipPosition = 2
                         }
                     }
@@ -158,12 +248,31 @@ namespace F1Statistics.Library.Tests.Services
                 new FrontRowModel
                 {
                     Name = "First",
-                    TotalFrontRowCount = 3
+                    FrontRowInformation = new List<FrontRowInformationModel>
+                    {
+                        new FrontRowInformationModel
+                        {
+                            CircuitName = "First",
+                            CircuitFrontRowCount = 2
+                        },
+                        new FrontRowInformationModel
+                        {
+                            CircuitName = "Second",
+                            CircuitFrontRowCount = 1
+                        }
+                    }
                 },
                 new FrontRowModel
                 {
                     Name = "Second",
-                    TotalFrontRowCount = 1
+                    FrontRowInformation = new List<FrontRowInformationModel>
+                    {
+                        new FrontRowInformationModel
+                        {
+                            CircuitName = "Third",
+                            CircuitFrontRowCount = 1
+                        }
+                    }
                 }
             };
 
@@ -182,12 +291,36 @@ namespace F1Statistics.Library.Tests.Services
                         new FinishingPositionModel
                         {
                             FinishingPosition = 1,
-                            Count = 10
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "First",
+                                    FinishedRace = true
+                                },
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    FinishedRace = false
+                                }
+                            }
                         },
                         new FinishingPositionModel
                         {
                             FinishingPosition = 2,
-                            Count = 5
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "First",
+                                    FinishedRace = false
+                                },
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    FinishedRace = true
+                                }
+                            }
                         }
                     }
                 },
@@ -199,7 +332,19 @@ namespace F1Statistics.Library.Tests.Services
                         new FinishingPositionModel
                         {
                             FinishingPosition = 1,
-                            Count = 2
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "First",
+                                    FinishedRace = true
+                                },
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    FinishedRace = true
+                                }
+                            }
                         }
                     }
                 }
@@ -458,6 +603,7 @@ namespace F1Statistics.Library.Tests.Services
             var expectedHatTricks = GenerateHatTricks();
             expectedHatTricks.Sort((x, y) => y.HatTrickCount.CompareTo(x.HatTrickCount));
             _aggregator.Setup((aggregator) => aggregator.GetHatTricks(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateHatTricks());
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
 
             // Act
             var actual = _service.AggregateHatTricks(options);
@@ -474,19 +620,25 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateHatTricks_ReturnEmptyList_IfThereAreNoDriversWithHatTricks()
+        public void AggregateHatTricks_ThrowsException_IfSeasonIsInvalid()
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
-            var expectedHatTricks = new List<HatTrickModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetHatTricks(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHatTricks);
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
 
-            // Act
-            var actual = _service.AggregateHatTricks(options);
+            try
+            {
+                // Act
+                var actual = _service.AggregateHatTricks(options);
 
-            // Assert
-            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
-            Assert.AreEqual(expectedHatTricks.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
 
         [TestMethod]
@@ -497,6 +649,7 @@ namespace F1Statistics.Library.Tests.Services
             var expectedGrandslams = GenerateGrandSlams();
             expectedGrandslams.Sort((x, y) => y.GrandSlamCount.CompareTo(x.GrandSlamCount));
             _aggregator.Setup((aggregator) => aggregator.GetGrandSlams(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateGrandSlams());
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
 
             // Act
             var actual = _service.AggregateGrandSlams(options);
@@ -513,19 +666,25 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateGrandSlams_ReturnEmptyList_IfThereAreNoDriversWithGrandSlams()
+        public void AggregateGrandSlams_ThrowsException_IfYearsAreInvalid()
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
-            var expectedGrandSlams = new List<GrandSlamModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetGrandSlams(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedGrandSlams);
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
 
-            // Act
-            var actual = _service.AggregateGrandSlams(options);
+            try
+            {
+                // Act
+                var actual = _service.AggregateGrandSlams(options);
 
-            // Assert
-            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
-            Assert.AreEqual(expectedGrandSlams.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
 
         [TestMethod]
@@ -549,6 +708,20 @@ namespace F1Statistics.Library.Tests.Services
             {
                 Assert.AreEqual(expectedNonFinishers[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedNonFinishers[i].TotalDidNotFinishCount, actual[i].TotalDidNotFinishCount);
+                Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear.Count, actual[i].DidNotFinishByYear.Count);
+
+                for (int j = 0; j < expectedNonFinishers[i].DidNotFinishByYear.Count; j++)
+                {
+                    Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].Year, actual[i].DidNotFinishByYear[j].Year);
+                    Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].YearDidNotFinishCount, actual[i].DidNotFinishByYear[j].YearDidNotFinishCount);
+                    Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation.Count, actual[i].DidNotFinishByYear[j].DidNotFinishInformation.Count);
+
+                    for (int k = 0; k < expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation[k].CircuitName, actual[i].DidNotFinishByYear[j].DidNotFinishInformation[k].CircuitName);
+                        Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation[k].LapsCompleted, actual[i].DidNotFinishByYear[j].DidNotFinishInformation[k].LapsCompleted);
+                    }
+                }
             }
         }
 
@@ -595,6 +768,13 @@ namespace F1Statistics.Library.Tests.Services
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].TotalPositionChange, actual[i].PositionChanges[j].TotalPositionChange);
                     Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].ChampionshipPosition, actual[i].PositionChanges[j].ChampionshipPosition);
+                    Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation.Count, actual[i].PositionChanges[j].DriverPositionChangeInformation.Count);
+
+                    for (int k = 0; k < expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation[k].CircuitName, actual[i].PositionChanges[j].DriverPositionChangeInformation[k].CircuitName);
+                        Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation[k].RacePositionChange, actual[i].PositionChanges[j].DriverPositionChangeInformation[k].RacePositionChange);
+                    }
                 }
             }
         }
@@ -635,6 +815,13 @@ namespace F1Statistics.Library.Tests.Services
             {
                 Assert.AreEqual(expectedConstructorsFrontRows[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedConstructorsFrontRows[i].TotalFrontRowCount, actual[i].TotalFrontRowCount);
+                Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowInformation.Count, actual[i].FrontRowInformation.Count);
+
+                for (int k = 0; k < expectedConstructorsFrontRows[i].FrontRowInformation.Count; k++)
+                {
+                    Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowInformation[k].CircuitName, actual[i].FrontRowInformation[k].CircuitName);
+                    Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowInformation[k].CircuitFrontRowCount, actual[i].FrontRowInformation[k].CircuitFrontRowCount);
+                }
             }
         }
 
@@ -680,6 +867,13 @@ namespace F1Statistics.Library.Tests.Services
                 {
                     Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPosition, actual[i].FinishingPositions[j].FinishingPosition);
                     Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].Count, actual[i].FinishingPositions[j].Count);
+                    Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation.Count, actual[i].FinishingPositions[j].FinishingPositionInformation.Count);
+
+                    for (int k = 0; k < expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation[k].CircuitName, actual[i].FinishingPositions[j].FinishingPositionInformation[k].CircuitName);
+                        Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation[k].FinishedRace, actual[i].FinishingPositions[j].FinishingPositionInformation[k].FinishedRace);
+                    }
                 }
             }
         }
@@ -814,6 +1008,7 @@ namespace F1Statistics.Library.Tests.Services
             expectedDriversPositionChangesDuringRace.Sort((x, y) => x.Name.CompareTo(y.Name));
             expectedDriversPositionChangesDuringRace.ForEach(driver => driver.Laps.Sort((x, y) => x.LapNumber.CompareTo(y.LapNumber)));
             _aggregator.Setup((aggregator) => aggregator.GetDriversPositionChangesDuringRace(season, race)).Returns(GenerateDriversPositionChangesDuringRace());
+            _validator.Setup((validator) => validator.IsLapTimesSeasonValid(season)).Returns(true);
 
             // Act
             var actual = _service.AggregateDriversPositionChangesDuringRace(season, race);
@@ -835,20 +1030,26 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateDriversPositionChangesDuringRace_ReturnEmptyList_IfThereAreNoDrivers()
+        public void AggregateDriversPositionChangesDuringRace_ThrowException_IfSeasonIsInvalid()
         {
             // Arrange
             var season = 1;
             var race = 1;
-            var defaultYear = 1996;
-            var expectedDriversPositionChangesDuringRace = new List<RacePositionChangesModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetDriversPositionChangesDuringRace(defaultYear, race)).Returns(expectedDriversPositionChangesDuringRace);
+            var expectedMessage = "Duomenys prieinami nuo 1996 metų.";
+            _validator.Setup((validator) => validator.IsLapTimesSeasonValid(season)).Returns(false);
 
-            // Act
-            var actual = _service.AggregateDriversPositionChangesDuringRace(season, race);
+            try
+            {
+                // Act
+                var actual = _service.AggregateDriversPositionChangesDuringRace(season, race);
 
-            // Assert
-            Assert.AreEqual(expectedDriversPositionChangesDuringRace.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
 
         [TestMethod]
@@ -861,6 +1062,7 @@ namespace F1Statistics.Library.Tests.Services
             expectedDriversLapTimes.Sort((x, y) => x.Name.CompareTo(y.Name));
             expectedDriversLapTimes.ForEach(model => model.Timings.Sort((x, y) => x.CompareTo(y)));
             _aggregator.Setup((aggregator) => aggregator.GetDriversLapTimes(season, race)).Returns(GenerateDriversLapTimes());
+            _validator.Setup((validator) => validator.IsLapTimesSeasonValid(season)).Returns(true);
 
             // Act
             var actual = _service.AggregateDriversLapTimes(season, race);
@@ -881,20 +1083,26 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateDriversLapTimes_ReturnEmptyList_IfThereAreNoDrivers()
+        public void AggregateDriversLapTimes_ThrowsException_IfSeasonIsInvalid()
         {
             // Arrange
-            var season = 1;
+            var season = 1995;
             var race = 1;
-            var defaultYear = 1996;
-            var expectedDriversLapTimes = new List<LapTimesModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetDriversLapTimes(defaultYear, race)).Returns(expectedDriversLapTimes);
+            var expectedMessage = "Duomenys prieinami nuo 1996 metų.";
+            _validator.Setup((validator) => validator.IsLapTimesSeasonValid(season)).Returns(false);
 
             // Act
-            var actual = _service.AggregateDriversLapTimes(season, race);
+            try
+            {
+                var actual = _service.AggregateDriversLapTimes(season, race);
 
-            // Assert
-            Assert.AreEqual(expectedDriversLapTimes.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
     }
 }

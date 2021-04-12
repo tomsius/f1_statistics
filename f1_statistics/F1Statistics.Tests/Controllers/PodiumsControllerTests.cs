@@ -37,12 +37,40 @@ namespace F1Statistics.Tests.Controllers
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "First",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                },
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    GridPosition = 2,
+                                    PodiumPosition = 2
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
-                            Year = 1,
-                            YearPodiumCount = 2
+                            Year = 2,
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "First",
+                                    GridPosition = 2,
+                                    PodiumPosition = 2
+                                },
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                }
+                            }
                         }
                     }
                 },
@@ -54,12 +82,40 @@ namespace F1Statistics.Tests.Controllers
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 2
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "First",
+                                    GridPosition = 2,
+                                    PodiumPosition = 2
+                                },
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
-                            Year = 1,
-                            YearPodiumCount = 1
+                            Year = 2,
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "First",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                },
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    GridPosition = 2,
+                                    PodiumPosition = 2
+                                }
+                            }
                         }
                     }
                 }
@@ -121,6 +177,14 @@ namespace F1Statistics.Tests.Controllers
                 {
                     Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].Year, actual[i].PodiumsByYear[j].Year);
                     Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].YearPodiumCount, actual[i].PodiumsByYear[j].YearPodiumCount);
+                    Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count, actual[i].PodiumsByYear[j].PodiumInformation.Count);
+
+                    for (int k = 0; k < expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].CircuitName, actual[i].PodiumsByYear[j].PodiumInformation[k].CircuitName);
+                        Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].GridPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].GridPosition);
+                        Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition);
+                    }
                 }
             }
         }
@@ -164,6 +228,14 @@ namespace F1Statistics.Tests.Controllers
                 {
                     Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].Year, actual[i].PodiumsByYear[j].Year);
                     Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].YearPodiumCount, actual[i].PodiumsByYear[j].YearPodiumCount);
+                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count, actual[i].PodiumsByYear[j].PodiumInformation.Count);
+
+                    for (int k = 0; k < expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].CircuitName, actual[i].PodiumsByYear[j].PodiumInformation[k].CircuitName);
+                        Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].GridPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].GridPosition);
+                        Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition);
+                    }
                 }
             }
         }

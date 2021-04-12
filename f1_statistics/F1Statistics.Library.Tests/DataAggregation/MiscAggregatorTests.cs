@@ -44,6 +44,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         round = "1",
                         raceName = "FirstRace",
                         Results = new List<ResultsDataResponse>
@@ -66,7 +70,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                laps = "10"
                             },
                             new ResultsDataResponse
                             {
@@ -86,7 +91,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                laps = "1"
                             }
                         }
                     }
@@ -95,6 +101,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         round = "1",
                         raceName = "SecondRace",
                         Results = new List<ResultsDataResponse>
@@ -117,7 +127,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                laps = "50"
                             },
                             new ResultsDataResponse
                             {
@@ -137,12 +148,17 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                laps = "0"
                             }
                         }
                     },
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        },
                         round = "2",
                         raceName = "ThirdRace",
                         Results = new List<ResultsDataResponse>
@@ -165,7 +181,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SecondConstructor"
-                                }
+                                },
+                                laps = "15"
                             },
                             new ResultsDataResponse
                             {
@@ -185,7 +202,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SecondConstructor"
-                                }
+                                },
+                                laps = "15"
                             }
                         }
                     }
@@ -203,6 +221,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         round = "1",
                         QualifyingResults = new List<QualifyingResultsDataResponse>
                         {
@@ -235,6 +257,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         round = "1",
                         QualifyingResults = new List<QualifyingResultsDataResponse>
                         {
@@ -264,6 +290,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     },
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        },
                         round = "2",
                         QualifyingResults = new List<QualifyingResultsDataResponse>
                         {
@@ -696,11 +726,63 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedGrandslams = new List<DidNotFinishModel> { new DidNotFinishModel { Name = "SecondName SecondFamily" }, new DidNotFinishModel { Name = "FirstName FirstFamily" } };
+            var expectedNonFinishers = new List<DidNotFinishModel> 
+            {
+                new DidNotFinishModel 
+                {
+                    Name = "SecondName SecondFamily",
+                    DidNotFinishByYear = new List<DidNotFinishByYearModel>
+                    {
+                        new DidNotFinishByYearModel
+                        {
+                            Year = 1,
+                            DidNotFinishInformation = new List<DidNotFinishInformationModel>
+                            {
+                                new DidNotFinishInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    LapsCompleted = 1
+                                }
+                            }
+                        },
+                        new DidNotFinishByYearModel
+                        {
+                            Year = 2,
+                            DidNotFinishInformation = new List<DidNotFinishInformationModel>
+                            {
+                                new DidNotFinishInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    LapsCompleted = 0
+                                }
+                            }
+                        }
+                    }
+                },
+                new DidNotFinishModel 
+                {
+                    Name = "FirstName FirstFamily",
+                    DidNotFinishByYear = new List<DidNotFinishByYearModel>
+                    {
+                        new DidNotFinishByYearModel
+                        {
+                            Year = 2,
+                            DidNotFinishInformation = new List<DidNotFinishInformationModel>
+                            {
+                                new DidNotFinishInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    LapsCompleted = 15
+                                }
+                            }
+                        }
+                    }
+                }
+            };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetNonFinishers(from, to);
@@ -708,12 +790,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.ForEach(model => model.DidNotFinishByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
-                Assert.AreEqual(expectedGrandslams.Count, actual.Count);
+                Assert.AreEqual(expectedNonFinishers.Count, actual.Count);
 
-                for (int i = 0; i < expectedGrandslams.Count; i++)
+                for (int i = 0; i < expectedNonFinishers.Count; i++)
                 {
-                    Assert.AreEqual(expectedGrandslams[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedGrandslams[i].TotalDidNotFinishCount, actual[i].TotalDidNotFinishCount);
+                    Assert.AreEqual(expectedNonFinishers[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedNonFinishers[i].TotalDidNotFinishCount, actual[i].TotalDidNotFinishCount);
+                    Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear.Count, actual[i].DidNotFinishByYear.Count);
+
+                    for (int j = 0; j < expectedNonFinishers[i].DidNotFinishByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].Year, actual[i].DidNotFinishByYear[j].Year);
+                        Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].YearDidNotFinishCount, actual[i].DidNotFinishByYear[j].YearDidNotFinishCount);
+                        Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation.Count, actual[i].DidNotFinishByYear[j].DidNotFinishInformation.Count);
+
+                        for (int k = 0; k < expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation[k].CircuitName, actual[i].DidNotFinishByYear[j].DidNotFinishInformation[k].CircuitName);
+                            Assert.AreEqual(expectedNonFinishers[i].DidNotFinishByYear[j].DidNotFinishInformation[k].LapsCompleted, actual[i].DidNotFinishByYear[j].DidNotFinishInformation[k].LapsCompleted);
+                        }
+                    }
                 }
             }
         }
@@ -724,7 +820,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedGrandslams = new List<DidNotFinishModel>();
+            var expectedNonFinishers = new List<DidNotFinishModel>();
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -734,7 +830,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetNonFinishers(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedGrandslams.Count, actual.Count);
+                Assert.AreEqual(expectedNonFinishers.Count, actual.Count);
             }
         }
 
@@ -754,13 +850,27 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new DriverPositionChangeModel
                         {
                             Name = "FirstName FirstFamily",
-                            TotalPositionChange = 0,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    RacePositionChange = 0
+                                }
+                            },
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "SecondName SecondFamily",
-                            TotalPositionChange = -1,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    RacePositionChange = -1
+                                }
+                            },
                             ChampionshipPosition = 2
                         }
                     }
@@ -773,13 +883,37 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new DriverPositionChangeModel
                         {
                             Name = "FirstName FirstFamily",
-                            TotalPositionChange = 0,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    RacePositionChange = 0
+                                },
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    RacePositionChange = 0
+                                }
+                            },
                             ChampionshipPosition = 1
                         },
                         new DriverPositionChangeModel
                         {
                             Name = "SecondName SecondFamily",
-                            TotalPositionChange = -3,
+                            DriverPositionChangeInformation = new List<DriverPositionChangeInformationModel>
+                            {
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    RacePositionChange = -3
+                                },
+                                new DriverPositionChangeInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    RacePositionChange = 0
+                                }
+                            },
                             ChampionshipPosition = 2
                         }
                     }
@@ -790,12 +924,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFrom(1)).Returns(GenerateDriversStandings()[0]);
             _standingsDataAccess.Setup((standingsDataAccess) => standingsDataAccess.GetDriverStandingsFrom(2)).Returns(GenerateDriversStandings()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetSeasonPositionChanges(from, to);
-                actual.ForEach(season => season.PositionChanges.Sort((x, y) => y.TotalPositionChange.CompareTo(x.TotalPositionChange)));
                 actual.Sort((x, y) => x.Year.CompareTo(y.Year));
+                actual.ForEach(season => season.PositionChanges.Sort((x, y) => y.TotalPositionChange.CompareTo(x.TotalPositionChange)));
+                actual.ForEach(season => season.PositionChanges.ForEach(information => information.DriverPositionChangeInformation.Sort((x, y) => x.CircuitName.CompareTo(y.CircuitName))));
 
                 // Assert
                 Assert.AreEqual(expectedSeasonPositionChanges.Count, actual.Count);
@@ -810,6 +945,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].Name, actual[i].PositionChanges[j].Name);
                         Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].TotalPositionChange, actual[i].PositionChanges[j].TotalPositionChange);
                         Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].ChampionshipPosition, actual[i].PositionChanges[j].ChampionshipPosition);
+                        Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation.Count, actual[i].PositionChanges[j].DriverPositionChangeInformation.Count);
+
+                        for (int k = 0; k < expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation[k].CircuitName, actual[i].PositionChanges[j].DriverPositionChangeInformation[k].CircuitName);
+                            Assert.AreEqual(expectedSeasonPositionChanges[i].PositionChanges[j].DriverPositionChangeInformation[k].RacePositionChange, actual[i].PositionChanges[j].DriverPositionChangeInformation[k].RacePositionChange);
+                        }
                     }
                 }
             }
@@ -848,18 +990,32 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 new FrontRowModel
                 {
                     Name = "First",
-                    TotalFrontRowCount = 2
+                    FrontRowInformation = new List<FrontRowInformationModel>
+                    {
+                        new FrontRowInformationModel
+                        {
+                            CircuitName = "FirstCircuit",
+                            CircuitFrontRowCount = 2
+                        }
+                    }
                 },
                 new FrontRowModel
                 {
                     Name = "Second",
-                    TotalFrontRowCount = 1
+                    FrontRowInformation = new List<FrontRowInformationModel>
+                    {
+                        new FrontRowInformationModel
+                        {
+                            CircuitName = "SecondCircuit",
+                            CircuitFrontRowCount = 1
+                        }
+                    }
                 }
             };
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetConstructorsFrontRows(from, to);
@@ -872,6 +1028,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Assert.AreEqual(expectedConstructorsFrontRows[i].Name, actual[i].Name);
                     Assert.AreEqual(expectedConstructorsFrontRows[i].TotalFrontRowCount, actual[i].TotalFrontRowCount);
+                    Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowInformation.Count, actual[i].FrontRowInformation.Count);
+
+                    for (int k = 0; k < expectedConstructorsFrontRows[i].FrontRowInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowInformation[k].CircuitName, actual[i].FrontRowInformation[k].CircuitName);
+                        Assert.AreEqual(expectedConstructorsFrontRows[i].FrontRowInformation[k].CircuitFrontRowCount, actual[i].FrontRowInformation[k].CircuitFrontRowCount);
+                    }
                 }
             }
         }
@@ -912,12 +1075,31 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FinishingPositionModel
                         {
                             FinishingPosition = 1,
-                            Count = 2
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    FinishedRace = true
+                                },
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    FinishedRace = true
+                                }
+                            }
                         },
                         new FinishingPositionModel
                         {
                             FinishingPosition = 2,
-                            Count = 1
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    FinishedRace = false
+                                }
+                            }
                         }
                     }
                 },
@@ -929,17 +1111,38 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FinishingPositionModel
                         {
                             FinishingPosition = 1,
-                            Count = 1
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    FinishedRace = true
+                                }
+                            }
                         },
                         new FinishingPositionModel
                         {
                             FinishingPosition = 3,
-                            Count = 1
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    FinishedRace = false
+                                }
+                            }
                         },
                         new FinishingPositionModel
                         {
                             FinishingPosition = 5,
-                            Count = 1
+                            FinishingPositionInformation = new List<FinishingPositionInformationModel>
+                            {
+                                new FinishingPositionInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    FinishedRace = false
+                                }
+                            }
                         }
                     }
                 }
@@ -947,7 +1150,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetDriversFinishingPositions(from, to);
@@ -966,6 +1169,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPosition, actual[i].FinishingPositions[j].FinishingPosition);
                         Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].Count, actual[i].FinishingPositions[j].Count);
+                        Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation.Count, actual[i].FinishingPositions[j].FinishingPositionInformation.Count);
+
+                        for (int k = 0; k < expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation[k].CircuitName, actual[i].FinishingPositions[j].FinishingPositionInformation[k].CircuitName);
+                            Assert.AreEqual(expectedDriversFinishingPositions[i].FinishingPositions[j].FinishingPositionInformation[k].FinishedRace, actual[i].FinishingPositions[j].FinishingPositionInformation[k].FinishedRace);
+                        }
                     }
                 }
             }

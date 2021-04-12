@@ -53,15 +53,51 @@ namespace F1Statistics.Library.Tests.DataAggregation
             {
                 new List<RacesDataResponse>
                 {
-                    new RacesDataResponse(),
-                    new RacesDataResponse(),
-                    new RacesDataResponse()
+                    new RacesDataResponse
+                    { 
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        }
+                    },
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        }
+                    },
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "ThirdCircuit"
+                        }
+                    }
                 },
                 new List<RacesDataResponse>
                 {
-                    new RacesDataResponse(),
-                    new RacesDataResponse(),
-                    new RacesDataResponse()
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        }
+                    },
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        }
+                    },
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "ThirdCircuit"
+                        }
+                    }
                 }
             };
 
@@ -132,12 +168,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new LeadingLapsByYearModel
                         {
                             Year = 1,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                }
+                            }
                         },
                         new LeadingLapsByYearModel
                         {
                             Year = 2,
-                            YearLeadingLapCount = 2
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit"
+                                },
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit"
+                                }
+                            }
                         }
                     }
                 },
@@ -149,12 +201,24 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new LeadingLapsByYearModel
                         {
                             Year = 1,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit"
+                                }
+                            }
                         },
                         new LeadingLapsByYearModel
                         {
                             Year = 2,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit"
+                                }
+                            }
                         }
                     }
                 },
@@ -166,7 +230,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new LeadingLapsByYearModel
                         {
                             Year = 1,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit"
+                                }
+                            }
                         }
                     }
                 }
@@ -174,12 +244,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetDriversLeadingLapsCount(from, to);
                 actual.Sort((x, y) => y.TotalLeadingLapCount.CompareTo(x.TotalLeadingLapCount));
                 actual.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
+                actual.ForEach(model => model.LeadingLapsByYear.ForEach(year => year.LeadingLapInformation.Sort((x, y) => x.CircuitName.CompareTo(y.CircuitName))));
 
                 // Assert
                 Assert.AreEqual(expectedDriversLeadingLapsCount.Count, actual.Count);
@@ -194,6 +265,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].Year, actual[i].LeadingLapsByYear[j].Year);
                         Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].YearLeadingLapCount, actual[i].LeadingLapsByYear[j].YearLeadingLapCount);
+                        Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapInformation.Count, actual[i].LeadingLapsByYear[j].LeadingLapInformation.Count);
+
+                        for (int k = 0; k < expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedDriversLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapInformation[k].CircuitName, actual[i].LeadingLapsByYear[j].LeadingLapInformation[k].CircuitName);
+                        }
                     }
                 }
             }
@@ -235,12 +312,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new LeadingLapsByYearModel
                         {
                             Year = 1,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                }
+                            }
                         },
                         new LeadingLapsByYearModel
                         {
                             Year = 2,
-                            YearLeadingLapCount = 2
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit"
+                                },
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit"
+                                }
+                            }
                         }
                     }
                 },
@@ -252,12 +345,24 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new LeadingLapsByYearModel
                         {
                             Year = 1,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit"
+                                }
+                            }
                         },
                         new LeadingLapsByYearModel
                         {
                             Year = 2,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit"
+                                }
+                            }
                         }
                     }
                 },
@@ -269,7 +374,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new LeadingLapsByYearModel
                         {
                             Year = 1,
-                            YearLeadingLapCount = 1
+                            LeadingLapInformation = new List<LeadingLapInformationModel>
+                            {
+                                new LeadingLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit"
+                                }
+                            }
                         }
                     }
                 }
@@ -277,12 +388,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetConstructorsLeadingLapsCount(from, to);
                 actual.Sort((x, y) => y.TotalLeadingLapCount.CompareTo(x.TotalLeadingLapCount));
                 actual.ForEach(model => model.LeadingLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
+                actual.ForEach(model => model.LeadingLapsByYear.ForEach(year => year.LeadingLapInformation.Sort((x, y) => x.CircuitName.CompareTo(y.CircuitName))));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsLeadingLapsCount.Count, actual.Count);
@@ -297,6 +409,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].Year, actual[i].LeadingLapsByYear[j].Year);
                         Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].YearLeadingLapCount, actual[i].LeadingLapsByYear[j].YearLeadingLapCount);
+                        Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapInformation.Count, actual[i].LeadingLapsByYear[j].LeadingLapInformation.Count);
+
+                        for (int k = 0; k < expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedConstructorsLeadingLapsCount[i].LeadingLapsByYear[j].LeadingLapInformation[k].CircuitName, actual[i].LeadingLapsByYear[j].LeadingLapInformation[k].CircuitName);
+                        }
                     }
                 }
             }

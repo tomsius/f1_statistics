@@ -37,12 +37,36 @@ namespace F1Statistics.Tests.Controllers
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 2
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
+                                    GridPosition = 3
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ForthCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -54,12 +78,36 @@ namespace F1Statistics.Tests.Controllers
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            YearFastestLapCount = 2
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
+                                    GridPosition = 3
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ForthCircuit",
+                                    GridPosition = 4
+                                }
+                            }
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         }
                     }
                 }
@@ -107,7 +155,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateDriversFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedDriversFastestLappers);
 
             // Act
-            var actual = _controller.GetDriversFastestLaps(options);
+            var actual = _controller.GetDriversFastestLaps(options).Value;
 
             // Assert
             Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
@@ -122,6 +170,13 @@ namespace F1Statistics.Tests.Controllers
                 {
                     Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
                     Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].YearFastestLapCount, actual[i].FastestLapsByYear[j].YearFastestLapCount);
+                    Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count, actual[i].FastestLapsByYear[j].FastestLapInformation.Count);
+
+                    for (int k = 0; k < expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName, actual[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName);
+                        Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition, actual[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition);
+                    }
                 }
             }
         }
@@ -135,7 +190,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateDriversFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedDriversFastestLappers);
 
             // Act
-            var actual = _controller.GetDriversFastestLaps(options);
+            var actual = _controller.GetDriversFastestLaps(options).Value;
 
             // Assert
             Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
@@ -150,7 +205,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateConstructorsFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedConstructorsFastestLappers);
 
             // Act
-            var actual = _controller.GetConstructorsFastestLaps(options);
+            var actual = _controller.GetConstructorsFastestLaps(options).Value;
 
             // Assert
             Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
@@ -165,6 +220,13 @@ namespace F1Statistics.Tests.Controllers
                 {
                     Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
                     Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].YearFastestLapCount, actual[i].FastestLapsByYear[j].YearFastestLapCount);
+                    Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count, actual[i].FastestLapsByYear[j].FastestLapInformation.Count);
+
+                    for (int k = 0; k < expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName, actual[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName);
+                        Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition, actual[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition);
+                    }
                 }
             }
         }
@@ -178,7 +240,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateConstructorsFastestLaps(It.IsAny<OptionsModel>())).Returns(expectedConstructorsFastestLappers);
 
             // Act
-            var actual = _controller.GetConstructorsFastestLaps(options);
+            var actual = _controller.GetConstructorsFastestLaps(options).Value;
 
             // Assert
             Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
@@ -193,7 +255,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueDriversFastestLapsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestDrivers);
 
             // Act
-            var actual = _controller.GetUniqueDriversFastestLapsPerSeason(options);
+            var actual = _controller.GetUniqueDriversFastestLapsPerSeason(options).Value;
 
             // Assert
             Assert.AreEqual(expectedUniqueFastestDrivers.Count, actual.Count);
@@ -215,7 +277,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueDriversFastestLapsPerSeason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestDrivers);
 
             // Act
-            var actual = _controller.GetUniqueDriversFastestLapsPerSeason(options);
+            var actual = _controller.GetUniqueDriversFastestLapsPerSeason(options).Value;
 
             // Assert
             Assert.AreEqual(expectedUniqueFastestDrivers.Count, actual.Count);
@@ -230,7 +292,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestConstructors);
 
             // Act
-            var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options);
+            var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options).Value;
 
             // Assert
             Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
@@ -252,7 +314,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestConstructors);
 
             // Act
-            var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options);
+            var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options).Value;
 
             // Assert
             Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);

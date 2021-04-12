@@ -34,6 +34,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -46,7 +50,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                grid = "1",
+                                position = "1"
                             },
                             new ResultsDataResponse
                             {
@@ -58,7 +64,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SecondConstructor"
-                                }
+                                },
+                                grid = "2",
+                                position = "2"
                             },
                             new ResultsDataResponse
                             {
@@ -70,7 +78,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "ThirdConstructor"
-                                }
+                                },
+                                grid = "3",
+                                position = "3"
                             }
                         }
                     }
@@ -79,6 +89,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -91,7 +105,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                grid = "3",
+                                position = "1"
                             },
                             new ResultsDataResponse
                             {
@@ -103,7 +119,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SecondConstructor"
-                                }
+                                },
+                                grid = "2",
+                                position = "3"
                             },
                             new ResultsDataResponse
                             {
@@ -115,12 +133,18 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "ThirdConstructor"
-                                }
+                                },
+                                grid = "3",
+                                position = "2"
                             }
                         }
                     },
                     new RacesDataResponse
                     {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -133,7 +157,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "ForthConstructor"
-                                }
+                                },
+                                grid = "2",
+                                position = "3"
                             },
                             new ResultsDataResponse
                             {
@@ -145,7 +171,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FifthConstructor"
-                                }
+                                },
+                                grid = "3",
+                                position = "2"
                             },
                             new ResultsDataResponse
                             {
@@ -157,7 +185,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SixthConstructor"
-                                }
+                                },
+                                grid = "1",
+                                position = "1"
                             }
                         }
                     }
@@ -183,12 +213,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 1
+                                }
+                            }
                         }
                     } 
                 },
@@ -200,12 +246,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 2,
+                                    PodiumPosition = 2
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 2,
+                                    PodiumPosition = 3
+                                }
+                            }
                         }
                     }
                 },
@@ -217,12 +279,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 3
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -234,10 +312,19 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2,
+                                    PodiumPosition = 3
+                                }
+                            }
                         }
                     }
                 },
+
                 new PodiumsModel
                 {
                     Name = "FifthName FifthFamily",
@@ -246,7 +333,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -258,7 +353,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                }
+                            }
                         }
                     }
                 }
@@ -266,11 +369,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetDriversPodiums(from, to);
                 actual.Sort((x, y) => y.TotalPodiumCount.CompareTo(x.TotalPodiumCount));
+                actual.ForEach(model => model.PodiumsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
                 Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count);
@@ -279,6 +383,21 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Assert.AreEqual(expectedDriversPodiumsCount[i].Name, actual[i].Name);
                     Assert.AreEqual(expectedDriversPodiumsCount[i].TotalPodiumCount, actual[i].TotalPodiumCount);
+                    Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear.Count, actual[i].PodiumsByYear.Count);
+
+                    for (int j = 0; j < expectedDriversPodiumsCount[i].PodiumsByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].Year, actual[i].PodiumsByYear[j].Year);
+                        Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].YearPodiumCount, actual[i].PodiumsByYear[j].YearPodiumCount);
+                        Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count, actual[i].PodiumsByYear[j].PodiumInformation.Count);
+
+                        for (int k = 0; k < expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].CircuitName, actual[i].PodiumsByYear[j].PodiumInformation[k].CircuitName);
+                            Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].GridPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].GridPosition);
+                            Assert.AreEqual(expectedDriversPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition);
+                        }
+                    }
                 } 
             }
         }
@@ -319,12 +438,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 1
+                                }
+                            }
                         }
                     }
                 },
@@ -336,12 +471,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 2,
+                                    PodiumPosition = 2
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 2,
+                                    PodiumPosition = 3
+                                }
+                            }
                         }
                     }
                 },
@@ -353,12 +504,28 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 1,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 3
+                                }
+                            }
                         },
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -370,7 +537,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2,
+                                    PodiumPosition = 3
+                                }
+                            }
                         }
                     }
                 },
@@ -382,7 +557,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 3,
+                                    PodiumPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -394,7 +577,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new PodiumsByYearModel
                         {
                             Year = 2,
-                            YearPodiumCount = 1
+                            PodiumInformation = new List<PodiumInformationModel>
+                            {
+                                new PodiumInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 1,
+                                    PodiumPosition = 1
+                                }
+                            }
                         }
                     }
                 }
@@ -402,11 +593,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetConstructorsPodiums(from, to);
                 actual.Sort((x, y) => y.TotalPodiumCount.CompareTo(x.TotalPodiumCount));
+                actual.ForEach(model => model.PodiumsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsPodiumsCount.Count, actual.Count);
@@ -415,6 +607,21 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 {
                     Assert.AreEqual(expectedConstructorsPodiumsCount[i].Name, actual[i].Name);
                     Assert.AreEqual(expectedConstructorsPodiumsCount[i].TotalPodiumCount, actual[i].TotalPodiumCount);
+                    Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear.Count, actual[i].PodiumsByYear.Count);
+
+                    for (int j = 0; j < expectedConstructorsPodiumsCount[i].PodiumsByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].Year, actual[i].PodiumsByYear[j].Year);
+                        Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].YearPodiumCount, actual[i].PodiumsByYear[j].YearPodiumCount);
+                        Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count, actual[i].PodiumsByYear[j].PodiumInformation.Count);
+
+                        for (int k = 0; k < expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].CircuitName, actual[i].PodiumsByYear[j].PodiumInformation[k].CircuitName);
+                            Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].GridPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].GridPosition);
+                            Assert.AreEqual(expectedConstructorsPodiumsCount[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition, actual[i].PodiumsByYear[j].PodiumInformation[k].PodiumPosition);
+                        }
+                    }
                 } 
             }
         }

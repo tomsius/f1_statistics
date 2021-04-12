@@ -35,12 +35,34 @@ namespace F1Statistics.Tests.Controllers
                         new WinsByYearModel
                         {
                             Year = 1,
-                            WinCount = 1
+                            WinInformation = new List<WinInformationModel>
+                            {
+                                new WinInformationModel
+                                {
+                                    CircuitName = "First",
+                                    GridPosition = 1,
+                                    GapToSecond = 1.5
+                                }
+                            }
                         },
                         new WinsByYearModel
                         {
                             Year = 2,
-                            WinCount = 2
+                            WinInformation = new List<WinInformationModel>
+                            {
+                                new WinInformationModel
+                                {
+                                    CircuitName = "First",
+                                    GridPosition = 2,
+                                    GapToSecond = 0.3
+                                },
+                                new WinInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    GridPosition = 3,
+                                    GapToSecond = 2.5
+                                }
+                            }
                         }
                     }
                 }, 
@@ -52,12 +74,34 @@ namespace F1Statistics.Tests.Controllers
                         new WinsByYearModel
                         {
                             Year = 1,
-                            WinCount = 2
+                            WinInformation = new List<WinInformationModel>
+                            {
+                                new WinInformationModel
+                                {
+                                    CircuitName = "Second",
+                                    GridPosition = 3,
+                                    GapToSecond = 0.7
+                                },
+                                new WinInformationModel
+                                {
+                                    CircuitName = "Third",
+                                    GridPosition = 4,
+                                    GapToSecond = 0.8
+                                }
+                            }
                         },
                         new WinsByYearModel
                         {
                             Year = 2,
-                            WinCount = 1
+                            WinInformation = new List<WinInformationModel>
+                            {
+                                new WinInformationModel
+                                {
+                                    CircuitName = "First",
+                                    GridPosition = 1,
+                                    GapToSecond = 1
+                                }
+                            }
                         }
                     }
                 } 
@@ -184,24 +228,40 @@ namespace F1Statistics.Tests.Controllers
                 new WinsByGridPositionModel
                 {
                     GridPosition = 1,
-                    Winners = new List<string>
+                    WinInformation = new List<WinByGridInformationModel>
                     {
-                        "First",
-                        "Second"
+                        new WinByGridInformationModel
+                        {
+                            CircuitName = "First",
+                            WinnerName = "FirstName FirstFamily"
+                        },
+                        new WinByGridInformationModel
+                        {
+                            CircuitName = "Second",
+                            WinnerName = "FirstName FirstFamily"
+                        }
                     }
                 },
                 new WinsByGridPositionModel
                 {
                     GridPosition = 2,
-                    Winners = new List<string>()
+                    WinInformation = new List<WinByGridInformationModel>()
                 },
                 new WinsByGridPositionModel
                 {
                     GridPosition = 3,
-                    Winners = new List<string>
+                    WinInformation = new List<WinByGridInformationModel>
                     {
-                        "First",
-                        "Third"
+                        new WinByGridInformationModel
+                        {
+                            CircuitName = "First",
+                            WinnerName = "SecondName SecondFamily"
+                        },
+                        new WinByGridInformationModel
+                        {
+                            CircuitName = "Second",
+                            WinnerName = "SecondName SecondFamily"
+                        }
                     }
                 }
             };
@@ -214,25 +274,33 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = GenerateWinners();
-            _service.Setup((service) => service.AggregateDriversWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedDriversWinners = GenerateWinners();
+            _service.Setup((service) => service.AggregateDriversWins(It.IsAny<OptionsModel>())).Returns(expectedDriversWinners);
 
             // Act
             var actual = _controller.GetDriversWins(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedDriversWinners.Count, actual.Count);
 
-            for (int i = 0; i < expectedWinners.Count; i++)
+            for (int i = 0; i < expectedDriversWinners.Count; i++)
             {
-                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinners[i].TotalWinCount, actual[i].TotalWinCount);
-                Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
+                Assert.AreEqual(expectedDriversWinners[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedDriversWinners[i].TotalWinCount, actual[i].TotalWinCount);
+                Assert.AreEqual(expectedDriversWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
 
-                for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
+                for (int j = 0; j < expectedDriversWinners[i].WinsByYear.Count; j++)
                 {
-                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
-                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].YearWinCount, actual[i].WinsByYear[j].YearWinCount);
+                    Assert.AreEqual(expectedDriversWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
+                    Assert.AreEqual(expectedDriversWinners[i].WinsByYear[j].YearWinCount, actual[i].WinsByYear[j].YearWinCount);
+                    Assert.AreEqual(expectedDriversWinners[i].WinsByYear[j].WinInformation.Count, actual[i].WinsByYear[j].WinInformation.Count);
+
+                    for (int k = 0; k < expectedDriversWinners[i].WinsByYear[j].WinInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedDriversWinners[i].WinsByYear[j].WinInformation[k].CircuitName, actual[i].WinsByYear[j].WinInformation[k].CircuitName);
+                        Assert.AreEqual(expectedDriversWinners[i].WinsByYear[j].WinInformation[k].GapToSecond, actual[i].WinsByYear[j].WinInformation[k].GapToSecond);
+                        Assert.AreEqual(expectedDriversWinners[i].WinsByYear[j].WinInformation[k].GridPosition, actual[i].WinsByYear[j].WinInformation[k].GridPosition);
+                    }
                 }
             }
         }
@@ -242,14 +310,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = new List<WinsModel>();
-            _service.Setup((service) => service.AggregateDriversWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedDriversWinners = new List<WinsModel>();
+            _service.Setup((service) => service.AggregateDriversWins(It.IsAny<OptionsModel>())).Returns(expectedDriversWinners);
 
             // Act
             var actual = _controller.GetDriversWins(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedDriversWinners.Count, actual.Count);
         }
 
         [TestMethod]
@@ -257,25 +325,33 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = GenerateWinners();
-            _service.Setup((service) => service.AggregateConstructorsWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedConstructorWinners = GenerateWinners();
+            _service.Setup((service) => service.AggregateConstructorsWins(It.IsAny<OptionsModel>())).Returns(expectedConstructorWinners);
 
             // Act
             var actual = _controller.GetConstructorsWins(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedConstructorWinners.Count, actual.Count);
 
-            for (int i = 0; i < expectedWinners.Count; i++)
+            for (int i = 0; i < expectedConstructorWinners.Count; i++)
             {
-                Assert.AreEqual(expectedWinners[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinners[i].TotalWinCount, actual[i].TotalWinCount);
-                Assert.AreEqual(expectedWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
+                Assert.AreEqual(expectedConstructorWinners[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedConstructorWinners[i].TotalWinCount, actual[i].TotalWinCount);
+                Assert.AreEqual(expectedConstructorWinners[i].WinsByYear.Count, actual[i].WinsByYear.Count);
 
-                for (int j = 0; j < expectedWinners[i].WinsByYear.Count; j++)
+                for (int j = 0; j < expectedConstructorWinners[i].WinsByYear.Count; j++)
                 {
-                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
-                    Assert.AreEqual(expectedWinners[i].WinsByYear[j].YearWinCount, actual[i].WinsByYear[j].YearWinCount);
+                    Assert.AreEqual(expectedConstructorWinners[i].WinsByYear[j].Year, actual[i].WinsByYear[j].Year);
+                    Assert.AreEqual(expectedConstructorWinners[i].WinsByYear[j].YearWinCount, actual[i].WinsByYear[j].YearWinCount);
+                    Assert.AreEqual(expectedConstructorWinners[i].WinsByYear[j].WinInformation.Count, actual[i].WinsByYear[j].WinInformation.Count);
+
+                    for (int k = 0; k < expectedConstructorWinners[i].WinsByYear[j].WinInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedConstructorWinners[i].WinsByYear[j].WinInformation[k].CircuitName, actual[i].WinsByYear[j].WinInformation[k].CircuitName);
+                        Assert.AreEqual(expectedConstructorWinners[i].WinsByYear[j].WinInformation[k].GapToSecond, actual[i].WinsByYear[j].WinInformation[k].GapToSecond);
+                        Assert.AreEqual(expectedConstructorWinners[i].WinsByYear[j].WinInformation[k].GridPosition, actual[i].WinsByYear[j].WinInformation[k].GridPosition);
+                    }
                 }
             }
         }
@@ -285,36 +361,36 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = new List<WinsModel>();
-            _service.Setup((service) => service.AggregateConstructorsWins(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedConstructorWinners = new List<WinsModel>();
+            _service.Setup((service) => service.AggregateConstructorsWins(It.IsAny<OptionsModel>())).Returns(expectedConstructorWinners);
 
             // Act
             var actual = _controller.GetConstructorsWins(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedConstructorWinners.Count, actual.Count);
         }
 
         [TestMethod]
-        public void GetDriversWinPercent_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyDrivers()
+        public void GetDriversWinPercent_ReturnAggregatedWinnersWithWinPercentageList_IfThereAreAnyDrivers()
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinnersWithAverageWins = GenerateWinnersWithAverageWins();
-            _service.Setup((service) => service.AggregateDriversWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
+            var expectedDriversWinPercent = GenerateWinnersWithAverageWins();
+            _service.Setup((service) => service.AggregateDriversWinPercent(It.IsAny<OptionsModel>())).Returns(expectedDriversWinPercent);
 
             // Act
             var actual = _controller.GetDriversWinPercent(options);
 
             // Assert
-            Assert.AreEqual(expectedWinnersWithAverageWins.Count, actual.Count);
+            Assert.AreEqual(expectedDriversWinPercent.Count, actual.Count);
 
-            for (int i = 0; i < expectedWinnersWithAverageWins.Count; i++)
+            for (int i = 0; i < expectedDriversWinPercent.Count; i++)
             {
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].WinCount, actual[i].WinCount);
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].ParticipationCount, actual[i].ParticipationCount);
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].AverageWins, actual[i].AverageWins);
+                Assert.AreEqual(expectedDriversWinPercent[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedDriversWinPercent[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedDriversWinPercent[i].ParticipationCount, actual[i].ParticipationCount);
+                Assert.AreEqual(expectedDriversWinPercent[i].AverageWins, actual[i].AverageWins);
             }
         }
 
@@ -323,36 +399,36 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = new List<AverageWinsModel>();
-            _service.Setup((service) => service.AggregateDriversWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedDriversWinPercent = new List<AverageWinsModel>();
+            _service.Setup((service) => service.AggregateDriversWinPercent(It.IsAny<OptionsModel>())).Returns(expectedDriversWinPercent);
 
             // Act
             var actual = _controller.GetDriversWinPercent(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedDriversWinPercent.Count, actual.Count);
         }
 
         [TestMethod]
-        public void GetConstructorsWinPercent_ReturnAggregatedWinnersListWithAverageWins_IfThereAreAnyConstructors()
+        public void GetConstructorsWinPercent_ReturnAggregatedWinnersWithWinPercentageList_IfThereAreAnyConstructors()
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinnersWithAverageWins = GenerateWinnersWithAverageWins();
-            _service.Setup((service) => service.AggregateConstructorsWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinnersWithAverageWins);
+            var expectedConstructorWinPercent = GenerateWinnersWithAverageWins();
+            _service.Setup((service) => service.AggregateConstructorsWinPercent(It.IsAny<OptionsModel>())).Returns(expectedConstructorWinPercent);
 
             // Act
             var actual = _controller.GetConstructorsWinPercent(options);
 
             // Assert
-            Assert.AreEqual(expectedWinnersWithAverageWins.Count, actual.Count);
+            Assert.AreEqual(expectedConstructorWinPercent.Count, actual.Count);
 
-            for (int i = 0; i < expectedWinnersWithAverageWins.Count; i++)
+            for (int i = 0; i < expectedConstructorWinPercent.Count; i++)
             {
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].Name, actual[i].Name);
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].WinCount, actual[i].WinCount);
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].ParticipationCount, actual[i].ParticipationCount);
-                Assert.AreEqual(expectedWinnersWithAverageWins[i].AverageWins, actual[i].AverageWins);
+                Assert.AreEqual(expectedConstructorWinPercent[i].Name, actual[i].Name);
+                Assert.AreEqual(expectedConstructorWinPercent[i].WinCount, actual[i].WinCount);
+                Assert.AreEqual(expectedConstructorWinPercent[i].ParticipationCount, actual[i].ParticipationCount);
+                Assert.AreEqual(expectedConstructorWinPercent[i].AverageWins, actual[i].AverageWins);
             }
         }
 
@@ -361,14 +437,14 @@ namespace F1Statistics.Tests.Controllers
         {
             // Arrange
             var options = new OptionsModel();
-            var expectedWinners = new List<AverageWinsModel>();
-            _service.Setup((service) => service.AggregateConstructorsWinPercent(It.IsAny<OptionsModel>())).Returns(expectedWinners);
+            var expectedConstructorWinPercent = new List<AverageWinsModel>();
+            _service.Setup((service) => service.AggregateConstructorsWinPercent(It.IsAny<OptionsModel>())).Returns(expectedConstructorWinPercent);
 
             // Act
             var actual = _controller.GetConstructorsWinPercent(options);
 
             // Assert
-            Assert.AreEqual(expectedWinners.Count, actual.Count);
+            Assert.AreEqual(expectedConstructorWinPercent.Count, actual.Count);
         }
 
         [TestMethod]
@@ -540,11 +616,12 @@ namespace F1Statistics.Tests.Controllers
             {
                 Assert.AreEqual(expectedWinnersByGridPosition[i].GridPosition, actual[i].GridPosition);
                 Assert.AreEqual(expectedWinnersByGridPosition[i].WinCount, actual[i].WinCount);
-                Assert.AreEqual(expectedWinnersByGridPosition[i].Winners.Count, actual[i].Winners.Count);
+                Assert.AreEqual(expectedWinnersByGridPosition[i].WinInformation.Count, actual[i].WinInformation.Count);
 
-                for (int j = 0; j < expectedWinnersByGridPosition[i].Winners.Count; j++)
+                for (int j = 0; j < expectedWinnersByGridPosition[i].WinInformation.Count; j++)
                 {
-                    Assert.AreEqual(expectedWinnersByGridPosition[i].Winners[j], actual[i].Winners[j]);
+                    Assert.AreEqual(expectedWinnersByGridPosition[i].WinInformation[j].CircuitName, actual[i].WinInformation[j].CircuitName);
+                    Assert.AreEqual(expectedWinnersByGridPosition[i].WinInformation[j].WinnerName, actual[i].WinInformation[j].WinnerName);
                 }
             }
         }

@@ -42,12 +42,36 @@ namespace F1Statistics.Library.Tests.Services
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 2
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
+                                    GridPosition = 3
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ForthCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -59,12 +83,36 @@ namespace F1Statistics.Library.Tests.Services
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            YearFastestLapCount = 2
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
+                                    GridPosition = 3
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ForthCircuit",
+                                    GridPosition = 4
+                                }
+                            }
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         }
                     }
                 }
@@ -107,11 +155,12 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateDriversFastestLaps_ReturnSortedAggregatedFastestDriversList_IfThereAreAnyDrivers()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { YearFrom = 2004, YearTo = 2005 };
             var expectedDriversFastestLappers = GenerateFastestLappers();
             expectedDriversFastestLappers.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
             expectedDriversFastestLappers.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateFastestLappers());
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
 
             // Act
             var actual = _service.AggregateDriversFastestLaps(options);
@@ -130,6 +179,13 @@ namespace F1Statistics.Library.Tests.Services
                 {
                     Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
                     Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].YearFastestLapCount, actual[i].FastestLapsByYear[j].YearFastestLapCount);
+                    Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count, actual[i].FastestLapsByYear[j].FastestLapInformation.Count);
+
+                    for (int k = 0; k < expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count; k++)
+                    {
+                        Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName, actual[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName);
+                        Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition, actual[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition);
+                    }
                 }
             }
         }
@@ -139,26 +195,33 @@ namespace F1Statistics.Library.Tests.Services
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
-            var expectedDriversFastestLappers = new List<FastestLapModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDriversFastestLappers);
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
 
-            // Act
-            var actual = _service.AggregateDriversFastestLaps(options);
+            try
+            {
+                // Act
+                var actual = _service.AggregateDriversFastestLaps(options);
 
-            // Assert
-            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
-            Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
 
         [TestMethod]
         public void AggregateConstructorsFastestLaps_ReturnSortedAggregatedFastestConstructorsList_IfThereAreAnyConstructors()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { YearFrom = 2004, YearTo = 2005 };
             var expectedConstructorsFastestLappers = GenerateFastestLappers();
             expectedConstructorsFastestLappers.Sort((x, y) => y.TotalFastestLapsCount.CompareTo(x.TotalFastestLapsCount));
             expectedConstructorsFastestLappers.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
             _aggregator.Setup((aggregator) => aggregator.GetConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateFastestLappers());
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
 
             // Act
             var actual = _service.AggregateConstructorsFastestLaps(options);
@@ -186,24 +249,31 @@ namespace F1Statistics.Library.Tests.Services
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
-            var expectedConstructorsFastestLappers = new List<FastestLapModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedConstructorsFastestLappers);
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
 
-            // Act
-            var actual = _service.AggregateConstructorsFastestLaps(options);
+            try
+            {
+                // Act
+                var actual = _service.AggregateConstructorsFastestLaps(options);
 
-            // Assert
-            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
-            Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
 
         [TestMethod]
         public void AggregateUniqueDriversFastestLapsPerSeason_ReturnAggregatedUniqueSeasonDriversFastestLappersList_IfThereAreAnyDrivers()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { YearFrom = 2004, YearTo = 2005 };
             var expectedUniqueDriversFastestLappers = GenerateUniqueSeasonFastestLappers();
             _aggregator.Setup((aggregator) => aggregator.GetUniqueDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueDriversFastestLappers);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
 
             // Act
             var actual = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
@@ -225,24 +295,31 @@ namespace F1Statistics.Library.Tests.Services
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
-            var expectedUniqueDriversFastestLappers = new List<UniqueSeasonFastestLapModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetUniqueDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueDriversFastestLappers);
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
 
-            // Act
-            var actual = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
+            try
+            {
+                // Act
+                var actual = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
 
-            // Assert
-            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
-            Assert.AreEqual(expectedUniqueDriversFastestLappers.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
 
         [TestMethod]
         public void AggregateUniqueConstructorsFastestLapsPerseason_ReturnAggregatedUniqueSeasonConstructorsFastestLappersList_IfThereAreAnyConstructors()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { YearFrom = 2004, YearTo = 2005 };
             var expectedUniqueConstructorsFastestLappers = GenerateUniqueSeasonFastestLappers();
             _aggregator.Setup((aggregator) => aggregator.GetUniqueConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueConstructorsFastestLappers);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
 
             // Act
             var actual = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
@@ -264,15 +341,21 @@ namespace F1Statistics.Library.Tests.Services
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
-            var expectedUniqueConstructorsFastestLappers = new List<UniqueSeasonFastestLapModel>();
-            _aggregator.Setup((aggregator) => aggregator.GetUniqueConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueConstructorsFastestLappers);
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
 
-            // Act
-            var actual = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
+            try
+            {
+                // Act
+                var actual = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
 
-            // Assert
-            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
-            Assert.AreEqual(expectedUniqueConstructorsFastestLappers.Count, actual.Count);
+                // Assert
+                Assert.Fail("Exception has to be thrown.");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual(expectedMessage, ex.Message);
+            }
         }
     }
 }

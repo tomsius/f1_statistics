@@ -53,7 +53,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "1"
-                                }
+                                },
+                                grid = "1"
                             },
                             new ResultsDataResponse
                             {
@@ -98,7 +99,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "1"
-                                }
+                                },
+                                grid = "2"
                             }
                         }
                     },
@@ -124,7 +126,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 FastestLap = new FastestLapDataResponse
                                 {
                                     rank = "1"
-                                }
+                                },
+                                grid = "3"
                             }
                         }
                     }
@@ -140,7 +143,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedFastestDrivers = new List<FastestLapModel> 
+            var expectedDriversFastestLappers = new List<FastestLapModel> 
             {
                 new FastestLapModel 
                 {
@@ -150,12 +153,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1
+                                }
+                            }
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -167,7 +184,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
+                                    GridPosition = 3
+                                }
+                            }
                         }
                     }
                 }
@@ -175,7 +199,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetDriversFastestLaps(from, to);
@@ -183,12 +207,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
-                Assert.AreEqual(expectedFastestDrivers.Count, actual.Count);
+                Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
 
-                for (int i = 0; i < expectedFastestDrivers.Count; i++)
+                for (int i = 0; i < expectedDriversFastestLappers.Count; i++)
                 {
-                    Assert.AreEqual(expectedFastestDrivers[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedFastestDrivers[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
+                    Assert.AreEqual(expectedDriversFastestLappers[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedDriversFastestLappers[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
+                    Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear.Count, actual[i].FastestLapsByYear.Count);
+
+                    for (int j = 0; j < expectedDriversFastestLappers[i].FastestLapsByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
+                        Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].YearFastestLapCount, actual[i].FastestLapsByYear[j].YearFastestLapCount);
+                        Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count, actual[i].FastestLapsByYear[j].FastestLapInformation.Count);
+
+                        for (int k = 0; k < expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName, actual[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName);
+                            Assert.AreEqual(expectedDriversFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition, actual[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition);
+                        }
+                    }
                 } 
             }
         }
@@ -199,7 +237,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedFastestDrivers = new List<FastestLapModel>();
+            var expectedDriversFastestLappers = new List<FastestLapModel>();
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -209,7 +247,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetDriversFastestLaps(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedFastestDrivers.Count, actual.Count); 
+                Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count); 
             }
         }
 
@@ -219,7 +257,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedFastestConstructors = new List<FastestLapModel> 
+            var expectedConstructorsFastestLappers = new List<FastestLapModel> 
             {
                 new FastestLapModel 
                 {
@@ -229,12 +267,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 1,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 1
+                                }
+                            }
                         },
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GridPosition = 2
+                                }
+                            }
                         }
                     }
                 },
@@ -246,7 +298,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new FastestLapsByYearModel
                         {
                             Year = 2,
-                            YearFastestLapCount = 1
+                            FastestLapInformation = new List<FastestLapInformationModel>
+                            {
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
+                                    GridPosition = 3
+                                }
+                            }
                         }
                     }
                 }
@@ -254,7 +313,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetConstructorsFastestLaps(from, to);
@@ -262,12 +321,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.ForEach(model => model.FastestLapsByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
-                Assert.AreEqual(expectedFastestConstructors.Count, actual.Count);
+                Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
 
-                for (int i = 0; i < expectedFastestConstructors.Count; i++)
+                for (int i = 0; i < expectedConstructorsFastestLappers.Count; i++)
                 {
-                    Assert.AreEqual(expectedFastestConstructors[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedFastestConstructors[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
+                    Assert.AreEqual(expectedConstructorsFastestLappers[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedConstructorsFastestLappers[i].TotalFastestLapsCount, actual[i].TotalFastestLapsCount);
+                    Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear.Count, actual[i].FastestLapsByYear.Count);
+
+                    for (int j = 0; j < expectedConstructorsFastestLappers[i].FastestLapsByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].Year, actual[i].FastestLapsByYear[j].Year);
+                        Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].YearFastestLapCount, actual[i].FastestLapsByYear[j].YearFastestLapCount);
+                        Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count, actual[i].FastestLapsByYear[j].FastestLapInformation.Count);
+
+                        for (int k = 0; k < expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName, actual[i].FastestLapsByYear[j].FastestLapInformation[k].CircuitName);
+                            Assert.AreEqual(expectedConstructorsFastestLappers[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition, actual[i].FastestLapsByYear[j].FastestLapInformation[k].GridPosition);
+                        }
+                    }
                 } 
             }
         }
@@ -278,7 +351,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedFastestConstructors = new List<FastestLapModel>();
+            var expectedConstructorsFastestLappers = new List<FastestLapModel>();
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(new List<RacesDataResponse>());
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -288,7 +361,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetConstructorsFastestLaps(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedFastestConstructors.Count, actual.Count); 
+                Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count); 
             }
         }
 

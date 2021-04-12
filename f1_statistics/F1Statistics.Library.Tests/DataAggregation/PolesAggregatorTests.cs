@@ -35,6 +35,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     new RacesDataResponse
                     {
                         round = "1",
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -72,7 +76,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                Q3 = "1:03.555"
                             },
                             new QualifyingResultsDataResponse
                             {
@@ -84,7 +89,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SecondConstructor"
-                                }
+                                },
+                                Q3 = "1:04.755"
                             }
                         }
                     }
@@ -94,6 +100,10 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     new RacesDataResponse
                     {
                         round = "1",
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -121,13 +131,31 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "FirstConstructor"
-                                }
+                                },
+                                Q3 = "59.754"
+                            },
+                            new QualifyingResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "SecondFamily",
+                                    givenName = "SecondName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "SecondConstructor"
+                                },
+                                Q3 = "1:2.754"
                             }
                         }
                     },
                     new RacesDataResponse
                     {
                         round = "2",
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        },
                         Results = new List<ResultsDataResponse>
                         {
                             new ResultsDataResponse
@@ -155,7 +183,21 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SecondConstructor"
-                                }
+                                },
+                                Q3 = "2:20.755"
+                            },
+                            new QualifyingResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "FirstFamily",
+                                    givenName = "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
+                                },
+                                Q3 = "2:22.731"
                             }
                         }
                     }
@@ -171,7 +213,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedPoleSittersDrivers = new List<PolesModel> 
+            var expectedDriversPoleSitters = new List<PolesModel> 
             {
                 new PolesModel 
                 {
@@ -180,11 +222,27 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         new PolesByYearModel
                         {
-                            Year = 1
+                            Year = 1,
+                            PoleInformation = new List<PoleInformationModel>
+                            {
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GapToSecond = 1.2
+                                }
+                            }
                         },
                         new PolesByYearModel
                         {
-                            Year = 2
+                            Year = 2,
+                            PoleInformation = new List<PoleInformationModel>
+                            {
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GapToSecond = 3
+                                }
+                            }
                         }
                     }
                 },
@@ -195,7 +253,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         new PolesByYearModel
                         {
-                            Year = 2
+                            Year = 2,
+                            PoleInformation = new List<PoleInformationModel>
+                            {
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GapToSecond = 1.976
+                                }
+                            }
                         }
                     }
                 }
@@ -203,7 +269,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetPoleSittersDrivers(from, to);
@@ -211,18 +277,25 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
-                Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count);
+                Assert.AreEqual(expectedDriversPoleSitters.Count, actual.Count);
 
-                for (int i = 0; i < expectedPoleSittersDrivers.Count; i++)
+                for (int i = 0; i < expectedDriversPoleSitters.Count; i++)
                 {
-                    Assert.AreEqual(expectedPoleSittersDrivers[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedPoleSittersDrivers[i].TotalPoleCount, actual[i].TotalPoleCount);
-                    Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear.Count, actual[i].PolesByYear.Count);
+                    Assert.AreEqual(expectedDriversPoleSitters[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedDriversPoleSitters[i].TotalPoleCount, actual[i].TotalPoleCount);
+                    Assert.AreEqual(expectedDriversPoleSitters[i].PolesByYear.Count, actual[i].PolesByYear.Count);
 
-                    for (int j = 0; j < expectedPoleSittersDrivers[i].PolesByYear.Count; j++)
+                    for (int j = 0; j < expectedDriversPoleSitters[i].PolesByYear.Count; j++)
                     {
-                        Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
-                        Assert.AreEqual(expectedPoleSittersDrivers[i].PolesByYear[j].YearPoleCount, actual[i].PolesByYear[j].YearPoleCount);
+                        Assert.AreEqual(expectedDriversPoleSitters[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
+                        Assert.AreEqual(expectedDriversPoleSitters[i].PolesByYear[j].YearPoleCount, actual[i].PolesByYear[j].YearPoleCount);
+                        Assert.AreEqual(expectedDriversPoleSitters[i].PolesByYear[j].PoleInformation.Count, actual[i].PolesByYear[j].PoleInformation.Count);
+
+                        for (int k = 0; k < expectedDriversPoleSitters[i].PolesByYear[j].PoleInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedDriversPoleSitters[i].PolesByYear[j].PoleInformation[k].CircuitName, actual[i].PolesByYear[j].PoleInformation[k].CircuitName);
+                            Assert.AreEqual(expectedDriversPoleSitters[i].PolesByYear[j].PoleInformation[k].GapToSecond, actual[i].PolesByYear[j].PoleInformation[k].GapToSecond);
+                        }
                     }
                 } 
             }
@@ -234,7 +307,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedPoleSittersDrivers = new List<PolesModel>();
+            var expectedDriversPoleSitters = new List<PolesModel>();
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -244,7 +317,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetPoleSittersDrivers(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count); 
+                Assert.AreEqual(expectedDriversPoleSitters.Count, actual.Count); 
             }
         }
 
@@ -254,7 +327,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedPoleSittersConstructors = new List<PolesModel> 
+            var expectedConstructorsPoleSitters = new List<PolesModel> 
             {
                 new PolesModel 
                 {
@@ -263,11 +336,27 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         new PolesByYearModel
                         {
-                            Year = 1
+                            Year = 1,
+                            PoleInformation = new List<PoleInformationModel>
+                            {
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GapToSecond = 1.2
+                                }
+                            }
                         },
                         new PolesByYearModel
                         {
-                            Year = 2
+                            Year = 2,
+                            PoleInformation = new List<PoleInformationModel>
+                            {
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GapToSecond = 3
+                                }
+                            }
                         }
                     }
                 },
@@ -278,7 +367,15 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     {
                         new PolesByYearModel
                         {
-                            Year = 2
+                            Year = 2,
+                            PoleInformation = new List<PoleInformationModel>
+                            {
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    GapToSecond = 1.976
+                                }
+                            }
                         }
                     }
                 }
@@ -286,7 +383,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetPoleSittersConstructors(from, to);
@@ -294,12 +391,26 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 actual.ForEach(model => model.PolesByYear.Sort((x, y) => x.Year.CompareTo(y.Year)));
 
                 // Assert
-                Assert.AreEqual(expectedPoleSittersConstructors.Count, actual.Count);
+                Assert.AreEqual(expectedConstructorsPoleSitters.Count, actual.Count);
 
-                for (int i = 0; i < expectedPoleSittersConstructors.Count; i++)
+                for (int i = 0; i < expectedConstructorsPoleSitters.Count; i++)
                 {
-                    Assert.AreEqual(expectedPoleSittersConstructors[i].Name, actual[i].Name);
-                    Assert.AreEqual(expectedPoleSittersConstructors[i].TotalPoleCount, actual[i].TotalPoleCount);
+                    Assert.AreEqual(expectedConstructorsPoleSitters[i].Name, actual[i].Name);
+                    Assert.AreEqual(expectedConstructorsPoleSitters[i].TotalPoleCount, actual[i].TotalPoleCount);
+                    Assert.AreEqual(expectedConstructorsPoleSitters[i].PolesByYear.Count, actual[i].PolesByYear.Count);
+
+                    for (int j = 0; j < expectedConstructorsPoleSitters[i].PolesByYear.Count; j++)
+                    {
+                        Assert.AreEqual(expectedConstructorsPoleSitters[i].PolesByYear[j].Year, actual[i].PolesByYear[j].Year);
+                        Assert.AreEqual(expectedConstructorsPoleSitters[i].PolesByYear[j].YearPoleCount, actual[i].PolesByYear[j].YearPoleCount);
+                        Assert.AreEqual(expectedConstructorsPoleSitters[i].PolesByYear[j].PoleInformation.Count, actual[i].PolesByYear[j].PoleInformation.Count);
+
+                        for (int k = 0; k < expectedConstructorsPoleSitters[i].PolesByYear[j].PoleInformation.Count; k++)
+                        {
+                            Assert.AreEqual(expectedConstructorsPoleSitters[i].PolesByYear[j].PoleInformation[k].CircuitName, actual[i].PolesByYear[j].PoleInformation[k].CircuitName);
+                            Assert.AreEqual(expectedConstructorsPoleSitters[i].PolesByYear[j].PoleInformation[k].GapToSecond, actual[i].PolesByYear[j].PoleInformation[k].GapToSecond);
+                        }
+                    }
                 } 
             }
         }
@@ -310,7 +421,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedPoleSittersConstructors = new List<PolesModel>();
+            var expectedConstructorsPoleSitters = new List<PolesModel>();
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
@@ -320,7 +431,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 var actual = _aggregator.GetPoleSittersConstructors(from, to);
 
                 // Assert
-                Assert.AreEqual(expectedPoleSittersConstructors.Count, actual.Count); 
+                Assert.AreEqual(expectedConstructorsPoleSitters.Count, actual.Count); 
             }
         }
 
