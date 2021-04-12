@@ -118,7 +118,6 @@ namespace F1Statistics.Library.Services
             }
 
             circuitsWinners.ForEach(circuit => circuit.Winners = circuit.Winners.Where(winner => winner.WinCount > 0).ToList());
-
             circuitsWinners.ForEach(circuit => circuit.Winners.Sort((x, y) => y.WinCount.CompareTo(x.WinCount)));
             circuitsWinners.Sort((x, y) => x.Name.CompareTo(y.Name));
 
