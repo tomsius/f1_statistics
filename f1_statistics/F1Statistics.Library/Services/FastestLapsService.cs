@@ -21,20 +21,11 @@ namespace F1Statistics.Library.Services
 
         public List<FastestLapModel> AggregateDriversFastestLaps(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
-            if (options.Season < 2004 && options.Season != 0)
+            if (!_validator.AreFastestLapYearsValid(options))
             {
-                options.Season = 2004;
-            }
-            else if (options.YearFrom < 2004 && options.YearFrom != 0)
-            {
-                options.YearFrom = 2004;
-
-                if (options.YearTo < 2004)
-                {
-                    options.YearTo = 2004;
-                }
+                throw new ArgumentException("Duomenys prieinami nuo 2004 metų.");
             }
 
             List<FastestLapModel> driversFastestLaps;
@@ -56,20 +47,11 @@ namespace F1Statistics.Library.Services
 
         public List<FastestLapModel> AggregateConstructorsFastestLaps(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
-            if (options.Season < 2004 && options.Season != 0)
+            if (!_validator.AreFastestLapYearsValid(options))
             {
-                options.Season = 2004;
-            }
-            else if (options.YearFrom < 2004 && options.YearFrom != 0)
-            {
-                options.YearFrom = 2004;
-
-                if (options.YearTo < 2004)
-                {
-                    options.YearTo = 2004;
-                }
+                throw new ArgumentException("Duomenys prieinami nuo 2004 metų.");
             }
 
             List<FastestLapModel> constructorsFastestLaps;
@@ -91,20 +73,11 @@ namespace F1Statistics.Library.Services
 
         public List<UniqueSeasonFastestLapModel> AggregateUniqueDriversFastestLapsPerSeason(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
-            if (options.Season < 2004 && options.Season != 0)
+            if (!_validator.AreFastestLapYearsValid(options))
             {
-                options.Season = 2004;
-            }
-            else if (options.YearFrom < 2004 && options.YearFrom != 0)
-            {
-                options.YearFrom = 2004;
-
-                if (options.YearTo < 2004)
-                {
-                    options.YearTo = 2004;
-                }
+                throw new ArgumentException("Duomenys prieinami nuo 2004 metų.");
             }
 
             List<UniqueSeasonFastestLapModel> uniqueDriversFastestLaps;
@@ -125,20 +98,11 @@ namespace F1Statistics.Library.Services
 
         public List<UniqueSeasonFastestLapModel> AggregateUniqueConstructorsFastestLapsPerseason(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
-            if (options.Season < 2004 && options.Season != 0)
+            if (!_validator.AreFastestLapYearsValid(options))
             {
-                options.Season = 2004;
-            }
-            else if (options.YearFrom < 2004 && options.YearFrom != 0)
-            {
-                options.YearFrom = 2004;
-
-                if (options.YearTo < 2004)
-                {
-                    options.YearTo = 2004;
-                }
+                throw new ArgumentException("Duomenys prieinami nuo 2004 metų.");
             }
 
             List<UniqueSeasonFastestLapModel> uniqueConstructorsFastestLaps;

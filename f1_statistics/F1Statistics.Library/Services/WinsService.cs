@@ -22,7 +22,7 @@ namespace F1Statistics.Library.Services
 
         public List<WinsModel> AggregateDriversWins(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<WinsModel> driversWins;
 
@@ -43,7 +43,7 @@ namespace F1Statistics.Library.Services
 
         public List<WinsModel> AggregateConstructorsWins(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<WinsModel> constructorsWins;
 
@@ -64,7 +64,7 @@ namespace F1Statistics.Library.Services
 
         public List<AverageWinsModel> AggregateDriversWinPercent(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<AverageWinsModel> driversAverageWins;
 
@@ -84,7 +84,7 @@ namespace F1Statistics.Library.Services
 
         public List<AverageWinsModel> AggregateConstructorsWinPercent(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<AverageWinsModel> constructorsAverageWins;
 
@@ -104,7 +104,7 @@ namespace F1Statistics.Library.Services
 
         public List<CircuitWinsModel> AggregateCircuitsWinners(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<CircuitWinsModel> circuitsWinners;
 
@@ -127,7 +127,7 @@ namespace F1Statistics.Library.Services
 
         public List<UniqueSeasonWinnersModel> AggregateUniqueSeasonDriverWinners(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<UniqueSeasonWinnersModel> uniqueSeasonWinners;
 
@@ -147,7 +147,7 @@ namespace F1Statistics.Library.Services
 
         public List<UniqueSeasonWinnersModel> AggregateUniqueSeasonConstructorWinners(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<UniqueSeasonWinnersModel> uniqueSeasonWinners;
 
@@ -167,7 +167,7 @@ namespace F1Statistics.Library.Services
 
         public List<WinnersFromPoleModel> AggregateWinnersFromPole(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<WinnersFromPoleModel> winsFromPole;
 
@@ -187,7 +187,7 @@ namespace F1Statistics.Library.Services
 
         public List<WinsByGridPositionModel> AggregateWinnersByGridPosition(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<WinsByGridPositionModel> winnersByGridPosition;
 

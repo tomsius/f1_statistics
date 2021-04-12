@@ -21,7 +21,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonPointsModel> AggregateDriversPointsPerSeason(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonPointsModel> driversPoints;
 
@@ -43,7 +43,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonPointsModel> AggregateConstructorsPointsPerSeason(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonPointsModel> constructorsPoints;
 
@@ -65,7 +65,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonWinnersPointsModel> AggregateDriversWinnersPointsPerSeason(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonWinnersPointsModel> driversWinnersPoints;
 
@@ -85,7 +85,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonWinnersPointsModel> AggregateConstructorsWinnersPointsPerSeason(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonWinnersPointsModel> constructorsWinnersPoints;
 
@@ -105,7 +105,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonStandingsChangesModel> AggregateDriversPointsChanges(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonStandingsChangesModel> driversPositionChanges;
 
@@ -126,7 +126,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonStandingsChangesModel> AggregateConstructorsPointsChanges(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonStandingsChangesModel> constructorsPositionChanges;
 

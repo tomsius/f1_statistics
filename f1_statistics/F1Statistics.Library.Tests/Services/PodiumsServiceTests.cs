@@ -25,7 +25,7 @@ namespace F1Statistics.Library.Tests.Services
             _validator = new Mock<IOptionsValidator>();
             _aggregator = new Mock<IPodiumsAggregator>();
 
-            _validator.Setup((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
+            _validator.Setup((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
 
             _service = new PodiumsService(_validator.Object, _aggregator.Object);
         }
@@ -116,7 +116,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count);
 
             for (int i = 0; i < expectedDriversPodiumsCount.Count; i++)
@@ -145,7 +145,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversPodiumsCount.Count, actual.Count);
         }
 
@@ -163,7 +163,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsPodiumsCount.Count, actual.Count);
 
             for (int i = 0; i < expectedConstructorsPodiumsCount.Count; i++)
@@ -192,7 +192,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsPodiumsCount.Count, actual.Count);
         }
 
@@ -210,7 +210,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateSameDriverPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedSameDriversPodiums.Count, actual.Count);
 
             for (int i = 0; i < expectedSameDriversPodiums.Count; i++)
@@ -237,7 +237,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateSameDriverPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedSameDriversPodiums.Count, actual.Count);
         }
 
@@ -255,7 +255,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateSameConstructorsPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedSameConstructorsPodiums.Count, actual.Count);
 
             for (int i = 0; i < expectedSameConstructorsPodiums.Count; i++)
@@ -282,7 +282,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateSameConstructorsPodiums(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsPodiums.Count, actual.Count);
         }
     }

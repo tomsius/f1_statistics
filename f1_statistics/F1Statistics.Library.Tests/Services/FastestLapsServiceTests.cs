@@ -25,7 +25,7 @@ namespace F1Statistics.Library.Tests.Services
             _validator = new Mock<IOptionsValidator>();
             _aggregator = new Mock<IFastestLapsAggregator>();
 
-            _validator.Setup((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
+            _validator.Setup((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
 
             _service = new FastestLapsService(_validator.Object, _aggregator.Object);
         }
@@ -117,7 +117,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversFastestLaps(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
 
             for (int i = 0; i < expectedDriversFastestLappers.Count; i++)
@@ -146,7 +146,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversFastestLaps(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
         }
 
@@ -164,7 +164,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsFastestLaps(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
 
             for (int i = 0; i < expectedConstructorsFastestLappers.Count; i++)
@@ -193,7 +193,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsFastestLaps(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
         }
 
@@ -209,7 +209,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueDriversFastestLappers.Count, actual.Count);
 
             for (int i = 0; i < expectedUniqueDriversFastestLappers.Count; i++)
@@ -232,7 +232,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueDriversFastestLappers.Count, actual.Count);
         }
 
@@ -248,7 +248,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueConstructorsFastestLappers.Count, actual.Count);
 
             for (int i = 0; i < expectedUniqueConstructorsFastestLappers.Count; i++)
@@ -271,7 +271,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueConstructorsFastestLappers.Count, actual.Count);
         }
     }

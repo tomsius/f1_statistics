@@ -10,6 +10,8 @@ namespace F1Statistics.Library.Validators
     public class OptionsValidator : IOptionsValidator
     {
         private const int FIRST_SEASON = 1950;
+        private const int MINIMUM_FASTEST_LAPS_DATA_YEAR = 2004;
+        private const int MINIMUM_LAP_TIMES_DATA_YEAR = 1996;
 
         private IConfiguration _configuration;
 
@@ -18,7 +20,7 @@ namespace F1Statistics.Library.Validators
             _configuration = configuration;
         }
 
-        public void ValidateOptionsModel(OptionsModel options)
+        public void NormalizeOptionsModel(OptionsModel options)
         {
             if (AreBothYearsGiven(options) && IsSeasonGiven(options))
             {
@@ -35,14 +37,24 @@ namespace F1Statistics.Library.Validators
             }
         }
 
-        private bool AreYearsGiven(OptionsModel options)
+        private bool AreBothYearsGiven(OptionsModel options)
         {
-            return !IsYearValid(options.Season);
+            return IsYearValid(options.YearFrom) && IsYearValid(options.YearTo);
         }
 
         private bool IsYearValid(int year)
         {
             return year != 0;
+        }
+
+        private bool IsSeasonGiven(OptionsModel options)
+        {
+            return IsYearValid(options.Season);
+        }
+
+        private bool AreYearsGiven(OptionsModel options)
+        {
+            return !IsYearValid(options.Season);
         }
 
         private void CheckYears(OptionsModel options)
@@ -54,11 +66,6 @@ namespace F1Statistics.Library.Validators
 
             SwapYearsIfNeeded(options);
             SetDefaultYearsIfNeeded(options);
-        }
-
-        private bool AreBothYearsGiven(OptionsModel options)
-        {
-            return IsYearValid(options.YearFrom) && IsYearValid(options.YearTo);
         }
 
         private void FillMissingYear(OptionsModel options)
@@ -152,11 +159,6 @@ namespace F1Statistics.Library.Validators
             }
         }
 
-        private bool IsSeasonGiven(OptionsModel options)
-        {
-            return IsYearValid(options.Season);
-        }
-
         private void CheckSeason(OptionsModel options)
         {
             if (!IsSeasonValid(options))
@@ -180,6 +182,29 @@ namespace F1Statistics.Library.Validators
             {
                 throw new ArgumentException("DefaultSeason setting has to be an integer value.");
             }
+        }
+
+        public bool AreFastestLapYearsValid(OptionsModel options)
+        {
+            if (options.Season < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.Season != 0)
+            {
+                return false;
+            }
+            else if (options.YearFrom < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.YearFrom != 0)
+            {
+                return false;
+            }
+            else if (options.YearTo < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.YearTo != 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsLapTimesSeasonValid(int season)
+        {
+            return season >= MINIMUM_LAP_TIMES_DATA_YEAR;
         }
     }
 }

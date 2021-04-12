@@ -25,7 +25,7 @@ namespace F1Statistics.Library.Tests.Services
             _validator = new Mock<IOptionsValidator>();
             _aggregator = new Mock<INationalitiesAggregator>();
 
-            _validator.Setup((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
+            _validator.Setup((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
 
             _service = new NationalitiesService(_validator.Object, _aggregator.Object);
         }
@@ -96,7 +96,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversNationalities(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversNationalities.Count, actual.Count);
 
             for (int i = 0; i < expectedDriversNationalities.Count; i++)
@@ -123,7 +123,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversNationalities(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversNationalities.Count, actual.Count);
         }
 
@@ -141,7 +141,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateNationalitiesRaceWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedNationalitiesRaceWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedNationalitiesRaceWinners.Count; i++)
@@ -168,7 +168,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateNationalitiesRaceWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedNationalitiesRaceWinners.Count, actual.Count);
         }
 
@@ -186,7 +186,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateNationalitiesSeasonWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedNationalitiesSeasonWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedNationalitiesSeasonWinners.Count; i++)
@@ -213,7 +213,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateNationalitiesSeasonWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedNationalitiesSeasonWinners.Count, actual.Count);
         }
     }

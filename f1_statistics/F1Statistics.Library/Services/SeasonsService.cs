@@ -21,7 +21,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonModel> AggregateSeasonRaces(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonModel> seasons;
 

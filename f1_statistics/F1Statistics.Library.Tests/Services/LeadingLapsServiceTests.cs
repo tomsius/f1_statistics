@@ -25,7 +25,7 @@ namespace F1Statistics.Library.Tests.Services
             _validator = new Mock<IOptionsValidator>();
             _aggregator = new Mock<ILeadingLapsAggregator>();
 
-            _validator.Setup((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
+            _validator.Setup((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
 
             _service = new LeadingLapsService(_validator.Object, _aggregator.Object);
         }
@@ -87,7 +87,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversLeadingLapsCount(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversLeadingLapsCount.Count, actual.Count);
 
             for (int i = 0; i < expectedDriversLeadingLapsCount.Count; i++)
@@ -116,7 +116,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversLeadingLapsCount(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedDriversLeadingLapsCount.Count, actual.Count);
         }
 
@@ -134,7 +134,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsLeadingLapsCount(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsLeadingLapsCount.Count, actual.Count);
 
             for (int i = 0; i < expectedConstructorsLeadingLapsCount.Count; i++)
@@ -163,7 +163,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsLeadingLapsCount(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedConstructorsLeadingLapsCount.Count, actual.Count);
         }
     }

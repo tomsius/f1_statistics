@@ -48,7 +48,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 0;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);
@@ -69,7 +69,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 2000;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);
@@ -90,7 +90,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 0;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);
@@ -111,7 +111,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 0;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);
@@ -132,7 +132,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 0;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);
@@ -153,7 +153,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 0;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);
@@ -174,7 +174,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 2020;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);
@@ -195,7 +195,7 @@ namespace F1Statistics.Library.Tests.Validators
             var expectedSeason = 2020;
 
             // Act
-            _validator.ValidateOptionsModel(optionsModel);
+            _validator.NormalizeOptionsModel(optionsModel);
 
             // Assert
             Assert.AreEqual(expectedYearFrom, optionsModel.YearFrom);

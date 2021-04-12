@@ -22,7 +22,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonRacesModel> AggregateRaceCountPerSeason(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonRacesModel> seasonRaces;
 
@@ -42,21 +42,11 @@ namespace F1Statistics.Library.Services
 
         public List<HatTrickModel> AggregateHatTricks(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
-            //TODO - iskelti i options validator
-            if (options.Season < 2004 && options.Season != 0)
+            if (!_validator.AreFastestLapYearsValid(options))
             {
-                options.Season = 2004;
-            }
-            else if (options.YearFrom < 2004 && options.YearFrom != 0)
-            {
-                options.YearFrom = 2004;
-
-                if (options.YearTo < 2004)
-                {
-                    options.YearTo = 2004;
-                }
+                throw new ArgumentException("Duomenys prieinami nuo 2004 metų.");
             }
 
             List<HatTrickModel> hatTricks;
@@ -77,21 +67,11 @@ namespace F1Statistics.Library.Services
 
         public List<GrandSlamModel> AggregateGrandSlams(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
-            //TODO - iskelti i options validator
-            if (options.Season < 2004 && options.Season != 0)
+            if (!_validator.AreFastestLapYearsValid(options))
             {
-                options.Season = 2004;
-            }
-            else if (options.YearFrom < 2004 && options.YearFrom != 0)
-            {
-                options.YearFrom = 2004;
-
-                if (options.YearTo < 2004)
-                {
-                    options.YearTo = 2004;
-                }
+                throw new ArgumentException("Duomenys prieinami nuo 2004 metų.");
             }
 
             List<GrandSlamModel> hatTricks;
@@ -112,7 +92,7 @@ namespace F1Statistics.Library.Services
 
         public List<DidNotFinishModel> AggregateNonFinishers(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<DidNotFinishModel> nonFinishers;
 
@@ -133,7 +113,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonPositionChangesModel> AggregateSeasonPositionChanges(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonPositionChangesModel> positionChanges;
 
@@ -154,7 +134,7 @@ namespace F1Statistics.Library.Services
 
         public List<FrontRowModel> AggregateConstructorsFrontRows(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<FrontRowModel> constructorsWithFrontRow;
 
@@ -174,7 +154,7 @@ namespace F1Statistics.Library.Services
 
         public List<DriverFinishingPositionsModel> AggregateDriversFinishingPositions(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<DriverFinishingPositionsModel> driversFinishingPositions;
 
@@ -195,7 +175,6 @@ namespace F1Statistics.Library.Services
             return driversFinishingPositions;
         }
 
-        //TODO - galbut istrinti
         private void FillMissingFinishingPositions(List<DriverFinishingPositionsModel> driversFinishingPositions)
         {
             for (int i = 0; i < driversFinishingPositions.Count; i++)
@@ -214,7 +193,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonStandingsChangesModel> AggregateDriversStandingsChanges(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonStandingsChangesModel> driversPositionChanges;
 
@@ -235,7 +214,7 @@ namespace F1Statistics.Library.Services
 
         public List<SeasonStandingsChangesModel> AggregateConstructorsStandingsChanges(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SeasonStandingsChangesModel> constructorsPositionChanges;
 
@@ -254,12 +233,11 @@ namespace F1Statistics.Library.Services
             return constructorsPositionChanges;
         }
 
-        // TODO - iskelti kaip konstanta, naudoti default metus is settings, galbut is vis iskelti i atskira validatoriu visus tikrinimus
         public List<RacePositionChangesModel> AggregateDriversPositionChangesDuringRace(int season, int race)
         {
-            if (season < 1996)
+            if (!_validator.IsLapTimesSeasonValid(season))
             {
-                season = 1996;
+                throw new ArgumentException("Duomenys prieinami nuo 1996 metų.");
             }
 
             var driversPositionChangesDuringRace = _aggregator.GetDriversPositionChangesDuringRace(season, race);
@@ -272,9 +250,9 @@ namespace F1Statistics.Library.Services
 
         public List<LapTimesModel> AggregateDriversLapTimes(int season, int race)
         {
-            if (season < 1996)
+            if (!_validator.IsLapTimesSeasonValid(season))
             {
-                season = 1996;
+                throw new ArgumentException("Duomenys prieinami nuo 1996 metų.");
             }
 
             var driversLapTimes = _aggregator.GetDriversLapTimes(season, race);

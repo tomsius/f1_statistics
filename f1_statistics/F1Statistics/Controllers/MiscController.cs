@@ -30,19 +30,33 @@ namespace F1Statistics.Controllers
         }
 
         [HttpPost("hattricks")]
-        public List<HatTrickModel> GetHatTricks(OptionsModel options)
+        public ActionResult<List<HatTrickModel>> GetHatTricks(OptionsModel options)
         {
-            var data = _service.AggregateHatTricks(options);
+            try
+            {
+                var data = _service.AggregateHatTricks(options);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("grandslams")]
-        public List<GrandSlamModel> GetGrandSlams(OptionsModel options)
+        public ActionResult<List<GrandSlamModel>> GetGrandSlams(OptionsModel options)
         {
-            var data = _service.AggregateGrandSlams(options);
+            try
+            {
+                var data = _service.AggregateGrandSlams(options);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("dnfs")]
@@ -94,19 +108,33 @@ namespace F1Statistics.Controllers
         }
 
         [HttpPost("{season}/{race}/positionchangesduringrace")]
-        public List<RacePositionChangesModel> GetDriversPositionChangesDuringRace(int season, int race)
+        public ActionResult<List<RacePositionChangesModel>> GetDriversPositionChangesDuringRace(int season, int race)
         {
-            var data = _service.AggregateDriversPositionChangesDuringRace(season, race);
+            try
+            {
+                var data = _service.AggregateDriversPositionChangesDuringRace(season, race);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("{season}/{race}/laptimes")]
-        public List<LapTimesModel> GetDriversLapTimes(int season, int race)
+        public ActionResult<List<LapTimesModel>> GetDriversLapTimes(int season, int race)
         {
-            var data = _service.AggregateDriversLapTimes(season, race);
+            try
+            {
+                var data = _service.AggregateDriversLapTimes(season, race);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

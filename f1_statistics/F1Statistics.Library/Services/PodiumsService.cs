@@ -21,7 +21,7 @@ namespace F1Statistics.Library.Services
 
         public List<PodiumsModel> AggregateDriversPodiums(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<PodiumsModel> driversPodiums;
 
@@ -42,7 +42,7 @@ namespace F1Statistics.Library.Services
 
         public List<PodiumsModel> AggregateConstructorsPodiums(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<PodiumsModel> constructorsPodiums;
 
@@ -63,7 +63,7 @@ namespace F1Statistics.Library.Services
 
         public List<SamePodiumsModel> AggregateSameDriverPodiums(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SamePodiumsModel> sameDriversPodiums;
 
@@ -85,7 +85,7 @@ namespace F1Statistics.Library.Services
 
         public List<SamePodiumsModel> AggregateSameConstructorsPodiums(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<SamePodiumsModel> sameConstructorsPodiums;
 

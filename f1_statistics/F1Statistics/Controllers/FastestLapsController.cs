@@ -21,35 +21,63 @@ namespace F1Statistics.Controllers
         }
 
         [HttpPost("drivers")]
-        public List<FastestLapModel> GetDriversFastestLaps(OptionsModel options)
+        public ActionResult<List<FastestLapModel>> GetDriversFastestLaps(OptionsModel options)
         {
-            var data = _service.AggregateDriversFastestLaps(options);
+            try
+            {
+                var data = _service.AggregateDriversFastestLaps(options);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("constructors")]
-        public List<FastestLapModel> GetConstructorsFastestLaps(OptionsModel options)
+        public ActionResult<List<FastestLapModel>> GetConstructorsFastestLaps(OptionsModel options)
         {
-            var data = _service.AggregateConstructorsFastestLaps(options);
+            try
+            {
+                var data = _service.AggregateConstructorsFastestLaps(options);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("drivers/uniqueperseason")]
-        public List<UniqueSeasonFastestLapModel> GetUniqueDriversFastestLapsPerSeason(OptionsModel options)
+        public ActionResult<List<UniqueSeasonFastestLapModel>> GetUniqueDriversFastestLapsPerSeason(OptionsModel options)
         {
-            var data = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
+            try
+            {
+                var data = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("constructors/uniqueperseason")]
-        public List<UniqueSeasonFastestLapModel> GetUniqueConstructorsFastestLapsPerseason(OptionsModel options)
+        public ActionResult<List<UniqueSeasonFastestLapModel>> GetUniqueConstructorsFastestLapsPerseason(OptionsModel options)
         {
-            var data = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
+            try
+            {
+                var data = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
 
-            return data;
+                return data;
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

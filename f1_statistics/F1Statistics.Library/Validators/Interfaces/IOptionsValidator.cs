@@ -4,6 +4,8 @@ namespace F1Statistics.Library.Validators.Interfaces
 {
     public interface IOptionsValidator
     {
-        void ValidateOptionsModel(OptionsModel options);
+        bool AreFastestLapYearsValid(OptionsModel options);
+        bool IsLapTimesSeasonValid(int season);
+        void NormalizeOptionsModel(OptionsModel options);
     }
 }

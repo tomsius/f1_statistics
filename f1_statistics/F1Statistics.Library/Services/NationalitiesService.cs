@@ -21,7 +21,7 @@ namespace F1Statistics.Library.Services
 
         public List<NationalityDriversModel> AggregateDriversNationalities(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<NationalityDriversModel> driversNationalities;
 
@@ -50,7 +50,7 @@ namespace F1Statistics.Library.Services
 
         public List<NationalityWinsModel> AggregateNationalitiesRaceWins(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<NationalityWinsModel> nationalitiesRaceWins;
 
@@ -79,7 +79,7 @@ namespace F1Statistics.Library.Services
 
         public List<NationalityWinsModel> AggregateNationalitiesSeasonWins(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<NationalityWinsModel> nationalitiesSeasonWins;
 

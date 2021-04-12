@@ -24,7 +24,7 @@ namespace F1Statistics.Library.Tests.Services
             _validator = new Mock<IOptionsValidator>();
             _aggregator = new Mock<IWinsAggregator>();
 
-            _validator.Setup((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
+            _validator.Setup((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
 
             _service = new WinsService(_validator.Object, _aggregator.Object);
         }
@@ -229,7 +229,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedWinners.Count; i++)
@@ -258,7 +258,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
         }
 
@@ -276,7 +276,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedWinners.Count; i++)
@@ -305,7 +305,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsWins(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
         }
 
@@ -322,7 +322,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversWinPercent(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedWinners.Count; i++)
@@ -346,7 +346,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateDriversWinPercent(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
         }
 
@@ -363,7 +363,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsWinPercent(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedWinners.Count; i++)
@@ -387,7 +387,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateConstructorsWinPercent(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinners.Count, actual.Count);
         }
 
@@ -406,7 +406,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateCircuitsWinners(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedCircuitWinners.Count; i++)
@@ -433,7 +433,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateCircuitsWinners(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedCircuitWinners.Count, actual.Count);
         }
 
@@ -449,7 +449,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonDriverWinners(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
@@ -472,7 +472,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonDriverWinners(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
         }
 
@@ -488,7 +488,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonConstructorWinners(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
 
             for (int i = 0; i < expectedUniqueWinners.Count; i++)
@@ -511,7 +511,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonConstructorWinners(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniqueWinners.Count, actual.Count);
         }
 
@@ -527,7 +527,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateWinnersFromPole(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
 
             for (int i = 0; i < expectedWinnersFromPole.Count; i++)
@@ -550,7 +550,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateWinnersFromPole(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinnersFromPole.Count, actual.Count);
         }
 
@@ -568,7 +568,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateWinnersByGridPosition(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinnersByGridPosition.Count, actual.Count);
 
             for (int i = 0; i < expectedWinnersByGridPosition.Count; i++)
@@ -596,7 +596,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateWinnersByGridPosition(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedWinnersByGridPosition.Count, actual.Count);
         }
     }

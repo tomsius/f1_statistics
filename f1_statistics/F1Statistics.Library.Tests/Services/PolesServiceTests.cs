@@ -25,7 +25,7 @@ namespace F1Statistics.Library.Tests.Services
             _validator = new Mock<IOptionsValidator>();
             _aggregator = new Mock<IPolesAggregator>();
 
-            _validator.Setup((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
+            _validator.Setup((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>())).Verifiable();
 
             _service = new PolesService(_validator.Object, _aggregator.Object);
         }
@@ -104,7 +104,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregatePoleSittersDrivers(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count);
 
             for (int i = 0; i < expectedPoleSittersDrivers.Count; i++)
@@ -133,7 +133,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregatePoleSittersDrivers(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedPoleSittersDrivers.Count, actual.Count);
         }
 
@@ -151,7 +151,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregatePoleSittersConstructors(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedPoleSittersCoonstructors.Count, actual.Count);
 
             for (int i = 0; i < expectedPoleSittersCoonstructors.Count; i++)
@@ -180,7 +180,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregatePoleSittersConstructors(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedPoleSittersCoonstructors.Count, actual.Count);
         }
 
@@ -196,7 +196,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonPoleSittersDrivers(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
 
             for (int i = 0; i < expectedUniquePoleSittersDrivers.Count; i++)
@@ -219,7 +219,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonPoleSittersDrivers(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
         }
 
@@ -235,7 +235,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonPoleSittersConstructors(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
 
             for (int i = 0; i < expectedUniquePoleSittersDrivers.Count; i++)
@@ -258,7 +258,7 @@ namespace F1Statistics.Library.Tests.Services
             var actual = _service.AggregateUniqueSeasonPoleSittersConstructors(options);
 
             // Assert
-            _validator.Verify((validator) => validator.ValidateOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
             Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
         }
     }

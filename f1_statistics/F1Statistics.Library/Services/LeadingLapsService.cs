@@ -21,7 +21,7 @@ namespace F1Statistics.Library.Services
 
         public List<LeadingLapsModel> AggregateDriversLeadingLapsCount(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<LeadingLapsModel> driversLeadingLaps;
 
@@ -42,7 +42,7 @@ namespace F1Statistics.Library.Services
 
         public List<LeadingLapsModel> AggregateConstructorsLeadingLapsCount(OptionsModel options)
         {
-            _validator.ValidateOptionsModel(options);
+            _validator.NormalizeOptionsModel(options);
 
             List<LeadingLapsModel> constructorsLeadingLaps;
 
