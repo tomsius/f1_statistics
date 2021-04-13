@@ -190,7 +190,6 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     podium.SamePodiumCount++;
                     podium.Circuits.Add(circuitName);
-                    break;
                 }
             }
         }

@@ -72,6 +72,7 @@ namespace F1Statistics.Library.DataAggregation
             {
                 time = time.Substring(0, time.Length - 1);
             }
+
             return double.Parse(time);
         }
 
