@@ -60,7 +60,7 @@ namespace F1Statistics.Tests.Controllers
                                 },
                                 new LeadingLapInformationModel
                                 {
-                                    CircuitName = "ForthCircuit"
+                                    CircuitName = "FourthCircuit"
                                 }
                             }
                         }
@@ -82,7 +82,7 @@ namespace F1Statistics.Tests.Controllers
                                 },
                                 new LeadingLapInformationModel
                                 {
-                                    CircuitName = "ForthCircuit"
+                                    CircuitName = "FourthCircuit"
                                 }
                             }
                         },

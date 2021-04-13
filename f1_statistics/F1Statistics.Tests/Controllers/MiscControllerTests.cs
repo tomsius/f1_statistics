@@ -1,6 +1,7 @@
 ﻿using F1Statistics.Controllers;
 using F1Statistics.Library.Models;
 using F1Statistics.Library.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -624,6 +625,23 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
+        public void GetHatTricks_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateHatTricks(It.IsAny<OptionsModel>())).Throws(new ArgumentException("Duomenys prieinami nuo 2004 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult)_controller.GetHatTricks(options).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
+        }
+
+        [TestMethod]
         public void GetGrandSlams_ReturnAggregatedGrandSlamsList_IfThereAreAnyDriversWithGrandSlams()
         {
             // Arrange
@@ -657,6 +675,23 @@ namespace F1Statistics.Tests.Controllers
 
             // Assert
             Assert.AreEqual(expectedGrandSlams.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetGrandSlams_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateGrandSlams(It.IsAny<OptionsModel>())).Throws(new ArgumentException("Duomenys prieinami nuo 2004 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult)_controller.GetGrandSlams(options).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
         }
 
         [TestMethod]
@@ -992,6 +1027,24 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
+        public void GetDriversPositionChangesDuringRace_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var season = 1;
+            var race = 1;
+            var expectedMessage = "Duomenys prieinami nuo 1996 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateDriversPositionChangesDuringRace(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentException("Duomenys prieinami nuo 1996 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult)_controller.GetDriversPositionChangesDuringRace(season, race).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
+        }
+
+        [TestMethod]
         public void GetDriversLapTimes_ReturnAggregatedDriversLapTimesList_IfThereAreAnyDrivers()
         {
             // Arrange
@@ -1032,6 +1085,24 @@ namespace F1Statistics.Tests.Controllers
 
             // Assert
             Assert.AreEqual(expectedDriversLapTimes.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetDriversLapTimes_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var season = 1;
+            var race = 1;
+            var expectedMessage = "Duomenys prieinami nuo 1996 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateDriversLapTimes(It.IsAny<int>(), It.IsAny<int>())).Throws(new ArgumentException("Duomenys prieinami nuo 1996 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult)_controller.GetDriversLapTimes(season, race).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
         }
     }
 }

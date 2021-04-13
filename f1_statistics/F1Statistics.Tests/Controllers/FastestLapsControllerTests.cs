@@ -1,6 +1,7 @@
 ﻿using F1Statistics.Controllers;
 using F1Statistics.Library.Models;
 using F1Statistics.Library.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -63,7 +64,7 @@ namespace F1Statistics.Tests.Controllers
                                 },
                                 new FastestLapInformationModel
                                 {
-                                    CircuitName = "ForthCircuit",
+                                    CircuitName = "FourthCircuit",
                                     GridPosition = 2
                                 }
                             }
@@ -87,7 +88,7 @@ namespace F1Statistics.Tests.Controllers
                                 },
                                 new FastestLapInformationModel
                                 {
-                                    CircuitName = "ForthCircuit",
+                                    CircuitName = "FourthCircuit",
                                     GridPosition = 4
                                 }
                             }
@@ -197,6 +198,23 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
+        public void GetDriversFastestLaps_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateDriversFastestLaps(It.IsAny<OptionsModel>())).Throws(new ArgumentException("Duomenys prieinami nuo 2004 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult) _controller.GetDriversFastestLaps(options).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
+        }
+
+        [TestMethod]
         public void GetConstructorsFastestLaps_ReturnAggregatedConstructorsFastestLappersList_IfThereAreAnyConstructors()
         {
             // Arrange
@@ -247,6 +265,23 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
+        public void GetConstructorsFastestLaps_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateConstructorsFastestLaps(It.IsAny<OptionsModel>())).Throws(new ArgumentException("Duomenys prieinami nuo 2004 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult)_controller.GetConstructorsFastestLaps(options).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
+        }
+
+        [TestMethod]
         public void GetUniqueDriversFastestLapsPerSeason_ReturnAggregatedUniqueDriversFastestLappersPerSeasonList_IfThereAreAnyDrivers()
         {
             // Arrange
@@ -284,6 +319,23 @@ namespace F1Statistics.Tests.Controllers
         }
 
         [TestMethod]
+        public void GetUniqueDriversFastestLapsPerSeason_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateUniqueDriversFastestLapsPerSeason(It.IsAny<OptionsModel>())).Throws(new ArgumentException("Duomenys prieinami nuo 2004 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult)_controller.GetUniqueDriversFastestLapsPerSeason(options).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
+        }
+
+        [TestMethod]
         public void GetUniqueConstructorsFastestLapsPerseason_ReturnAggregatedUniqueSeasonWinnersList_IfThereAreAnyConstructors()
         {
             // Arrange
@@ -318,6 +370,23 @@ namespace F1Statistics.Tests.Controllers
 
             // Assert
             Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void GetUniqueConstructorsFastestLapsPerseason_ReturnBadRequest_IfExceptionIsRaised()
+        {
+            // Arrange
+            var options = new OptionsModel();
+            var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
+            var expectedStatusCode = 400;
+            _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Throws(new ArgumentException("Duomenys prieinami nuo 2004 metų."));
+
+            // Act
+            var actual = (BadRequestObjectResult)_controller.GetUniqueConstructorsFastestLapsPerseason(options).Result;
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.Value);
+            Assert.AreEqual(expectedStatusCode, actual.StatusCode);
         }
     }
 }

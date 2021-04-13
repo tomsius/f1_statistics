@@ -186,15 +186,15 @@ namespace F1Statistics.Library.Validators
 
         public bool AreFastestLapYearsValid(OptionsModel options)
         {
-            if (options.Season < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.Season != 0)
+            if (options.Season < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.Season > 0)
             {
                 return false;
             }
-            else if (options.YearFrom < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.YearFrom != 0)
+            else if (options.YearFrom < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.YearFrom > 0)
             {
                 return false;
             }
-            else if (options.YearTo < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.YearTo != 0)
+            else if (options.YearTo < MINIMUM_FASTEST_LAPS_DATA_YEAR && options.YearTo > 0)
             {
                 return false;
             }

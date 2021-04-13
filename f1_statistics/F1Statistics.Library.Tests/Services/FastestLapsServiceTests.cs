@@ -68,7 +68,7 @@ namespace F1Statistics.Library.Tests.Services
                                 },
                                 new FastestLapInformationModel
                                 {
-                                    CircuitName = "ForthCircuit",
+                                    CircuitName = "FourthCircuit",
                                     GridPosition = 2
                                 }
                             }
@@ -92,7 +92,7 @@ namespace F1Statistics.Library.Tests.Services
                                 },
                                 new FastestLapInformationModel
                                 {
-                                    CircuitName = "ForthCircuit",
+                                    CircuitName = "FourthCircuit",
                                     GridPosition = 4
                                 }
                             }
@@ -194,6 +194,23 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateDriversFastestLaps_ReturnEmptyList_IfThereAreNoDrivers()
         {
             // Arrange
+            var options = new OptionsModel { Season = 2005 };
+            var expectedDriversFastestLappers = new List<FastestLapModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedDriversFastestLappers);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
+
+            // Act
+            var actual = _service.AggregateDriversFastestLaps(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedDriversFastestLappers.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateDriversFastestLaps_RaiseException_IfYearsAreInvalid()
+        {
+            // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
             _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
@@ -248,6 +265,23 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateConstructorsFastestLaps_ReturnEmptyList_IfThereAreNoConstructors()
         {
             // Arrange
+            var options = new OptionsModel { Season = 2005 };
+            var expectedConstructorsFastestLappers = new List<FastestLapModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedConstructorsFastestLappers);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
+
+            // Act
+            var actual = _service.AggregateConstructorsFastestLaps(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedConstructorsFastestLappers.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateConstructorsFastestLaps_RaiseException_IfUearsAreInvalid()
+        {
+            // Arrange
             var options = new OptionsModel { Season = 2000 };
             var expectedMessage = "Duomenys prieinami nuo 2004 metų.";
             _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(false);
@@ -291,7 +325,24 @@ namespace F1Statistics.Library.Tests.Services
         }
 
         [TestMethod]
-        public void AggregateUniqueDriversFastestLapsPerSeason_ReturnEmptyList_IfThereAreNoDrivers()
+        public void AggregateUniqueDriversFastestLapsPerSeason_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2005 };
+            var expectedUniqueDriversFastestLappers = new List<UniqueSeasonFastestLapModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetUniqueDriversFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueDriversFastestLappers);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
+
+            // Act
+            var actual = _service.AggregateUniqueDriversFastestLapsPerSeason(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedUniqueDriversFastestLappers.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateUniqueDriversFastestLapsPerSeason_RaiseException_IfYearsAreInvalid()
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };
@@ -338,6 +389,23 @@ namespace F1Statistics.Library.Tests.Services
 
         [TestMethod]
         public void AggregateUniqueConstructorsFastestLapsPerseason_ReturnEmptyList_IfThereAreNoConstructors()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2005 };
+            var expectedUniqueConstructorsFastestLappers = new List<UniqueSeasonFastestLapModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetUniqueConstructorsFastestLaps(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedUniqueConstructorsFastestLappers);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
+
+            // Act
+            var actual = _service.AggregateUniqueConstructorsFastestLapsPerseason(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedUniqueConstructorsFastestLappers.Count, actual.Count);
+        }
+
+        [TestMethod]
+        public void AggregateUniqueConstructorsFastestLapsPerseason_RaiseException_IfYearsAreInvalid()
         {
             // Arrange
             var options = new OptionsModel { Season = 2000 };

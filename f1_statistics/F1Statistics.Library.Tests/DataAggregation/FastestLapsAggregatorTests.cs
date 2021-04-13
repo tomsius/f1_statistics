@@ -130,6 +130,33 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 grid = "3"
                             }
                         }
+                    },
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
+                        Results = new List<ResultsDataResponse>
+                        {
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "FirstFamily",
+                                    givenName = "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
+                                },
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "1"
+                                },
+                                grid = "5"
+                            }
+                        }
                     }
                 }
             };
@@ -171,6 +198,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     CircuitName = "SecondCircuit",
                                     GridPosition = 2
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 5
                                 }
                             }
                         }
@@ -285,6 +317,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     CircuitName = "SecondCircuit",
                                     GridPosition = 2
+                                },
+                                new FastestLapInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GridPosition = 5
                                 }
                             }
                         }
@@ -390,7 +427,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         "FirstName FirstFamily",
                         "SecondName SecondFamily"
                     },
-                    RacesCount = 2
+                    RacesCount = 3
                 }
             };
 
@@ -462,7 +499,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         "FirstConstructor",
                         "SecondConstructor"
                     },
-                    RacesCount = 2
+                    RacesCount = 3
                 }
             };
 

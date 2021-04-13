@@ -67,7 +67,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 grid = "2",
                                 Time = new TimeDataResponse
                                 {
-                                    time = "+2.548"
+                                    time = "+2.548s"
                                 }
                             }
                         }
@@ -143,6 +143,48 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             {
                                 Driver = new DriverDataResponse
                                 {
+                                    familyName = "FirstFamily",
+                                    givenName= "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
+                                },
+                                position = "2",
+                                grid = "2",
+                                Time = new TimeDataResponse
+                                {
+                                    time = "+2"
+                                }
+                            }
+                        }
+                    },
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
+                        Results = new List<ResultsDataResponse>
+                        {
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "FirstFamily",
+                                    givenName = "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
+                                },
+                                position = "1",
+                                grid = "1"
+                            },
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
                                     familyName = "SecondFamily",
                                     givenName= "SecondName"
                                 },
@@ -154,7 +196,25 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 grid = "2",
                                 Time = new TimeDataResponse
                                 {
-                                    time = "+2"
+                                    time = "0.334"
+                                }
+                            },
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "ThirdFamily",
+                                    givenName= "ThirdName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "SecondConstructor"
+                                },
+                                position = "3",
+                                grid = "3",
+                                Time = new TimeDataResponse
+                                {
+                                    time = "0.554"
                                 }
                             }
                         }
@@ -200,6 +260,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     CircuitName = "SecondCircuit",
                                     GapToSecond = 0.548,
+                                    GridPosition = 1
+                                },
+                                new WinInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GapToSecond = 0.334,
                                     GridPosition = 1
                                 }
                             }
@@ -319,6 +385,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     CircuitName = "SecondCircuit",
                                     GapToSecond = 0.548,
                                     GridPosition = 1
+                                },
+                                new WinInformationModel
+                                {
+                                    CircuitName = "FirstCircuit",
+                                    GapToSecond = 0.334,
+                                    GridPosition = 1
                                 }
                             }
                         }
@@ -412,14 +484,20 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 new AverageWinsModel 
                 {
                     Name = "FirstName FirstFamily", 
-                    WinCount = 2,
-                    ParticipationCount = 2 
+                    WinCount = 3,
+                    ParticipationCount = 4 
                 },
                 new AverageWinsModel 
                 {
                     Name = "SecondName SecondFamily", 
                     WinCount = 1, 
                     ParticipationCount = 4 
+                },
+                new AverageWinsModel
+                {
+                    Name = "ThirdName ThirdFamily",
+                    WinCount = 0,
+                    ParticipationCount = 1
                 }
             };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
@@ -475,14 +553,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 new AverageWinsModel 
                 {
                     Name = "FirstConstructor", 
-                    WinCount = 2, 
-                    ParticipationCount = 2 
+                    WinCount = 3, 
+                    ParticipationCount = 4 
                 },
                 new AverageWinsModel 
                 {
                     Name = "SecondConstructor", 
                     WinCount = 1, 
-                    ParticipationCount = 3 
+                    ParticipationCount = 4 
                 }
             };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
@@ -543,8 +621,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         new WinsAndParticipationsModel
                         {
                             Name = "FirstName FirstFamily",
-                            WinCount = 1,
-                            ParticipationsCount = 1
+                            WinCount = 2,
+                            ParticipationsCount = 2
+                        },
+                        new WinsAndParticipationsModel
+                        {
+                            Name = "SecondName SecondFamily",
+                            WinCount = 0,
+                            ParticipationsCount = 2
                         }
                     }
                 },
@@ -558,6 +642,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             Name = "FirstName FirstFamily",
                             WinCount = 1,
                             ParticipationsCount = 1
+                        },
+                        new WinsAndParticipationsModel
+                        {
+                            Name = "SecondName SecondFamily",
+                            WinCount = 0,
+                            ParticipationsCount = 1
                         }
                     }
                 },
@@ -570,7 +660,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         {
                             Name = "SecondName SecondFamily",
                             WinCount = 1,
-                            ParticipationsCount = 2
+                            ParticipationsCount = 1
+                        },
+                        new WinsAndParticipationsModel
+                        {
+                            Name = "FirstName FirstFamily",
+                            WinCount = 0,
+                            ParticipationsCount = 1
                         }
                     }
                 }
@@ -648,7 +744,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         "FirstName FirstFamily",
                         "SecondName SecondFamily"
                     },
-                    RacesCount = 2
+                    RacesCount = 3
                 }
             };
 
@@ -719,7 +815,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         "FirstConstructor",
                         "SecondConstructor"
                     },
-                    RacesCount = 2
+                    RacesCount = 3
                 }
             };
 
@@ -771,7 +867,29 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedWinnersFromPole = new List<WinnersFromPoleModel> { new WinnersFromPoleModel { Season = 1, RacesCount = 1, WinnersFromPole = new List<string> { "FirstName FirstFamily" } }, new WinnersFromPoleModel { Season = 2, RacesCount = 2, WinnersFromPole = new List<string> { "FirstName FirstFamily", "SecondName SecondFamily" } } };
+            var expectedWinnersFromPole = new List<WinnersFromPoleModel> 
+            {
+                new WinnersFromPoleModel 
+                {
+                    Season = 1, 
+                    RacesCount = 1, 
+                    WinnersFromPole = new List<string> 
+                    {
+                        "FirstName FirstFamily" 
+                    }
+                },
+                new WinnersFromPoleModel 
+                {
+                    Season = 2, 
+                    RacesCount = 3, 
+                    WinnersFromPole = new List<string> 
+                    {
+                        "FirstName FirstFamily", 
+                        "FirstName FirstFamily",
+                        "SecondName SecondFamily" 
+                    }
+                }
+            };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
 
@@ -828,6 +946,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     GridPosition = 1,
                     WinInformation = new List<WinByGridInformationModel>
                     {
+                        new WinByGridInformationModel
+                        {
+                            CircuitName = "FirstCircuit",
+                            WinnerName = "FirstName FirstFamily"
+                        },
                         new WinByGridInformationModel
                         {
                             CircuitName = "FirstCircuit",

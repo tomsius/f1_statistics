@@ -132,7 +132,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "FirstConstructor"
                                 },
-                                Q3 = "59.754"
+                                Q2 = "59.754"
                             },
                             new QualifyingResultsDataResponse
                             {
@@ -145,7 +145,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "SecondConstructor"
                                 },
-                                Q3 = "1:2.754"
+                                Q2 = "1:2.754"
                             }
                         }
                     },
@@ -168,6 +168,58 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "SecondConstructor"
+                                }
+                            }
+                        },
+                        QualifyingResults = new List<QualifyingResultsDataResponse>
+                        {
+                            new QualifyingResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "SecondFamily",
+                                    givenName = "SecondName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "SecondConstructor"
+                                },
+                                Q1 = "2:20.755"
+                            },
+                            new QualifyingResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "FirstFamily",
+                                    givenName = "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
+                                },
+                                Q1 = "2:22.731"
+                            }
+                        }
+                    },
+                    new RacesDataResponse
+                    {
+                        round = "3",
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "ThirdCircuit"
+                        },
+                        Results = new List<ResultsDataResponse>
+                        {
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    familyName = "ThirdFamily",
+                                    givenName = "ThirdName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "ThirdConstructor"
                                 }
                             }
                         },
@@ -259,6 +311,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new PoleInformationModel
                                 {
                                     CircuitName = "SecondCircuit",
+                                    GapToSecond = 1.976
+                                },
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
                                     GapToSecond = 1.976
                                 }
                             }
@@ -374,6 +431,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     CircuitName = "SecondCircuit",
                                     GapToSecond = 1.976
+                                },
+                                new PoleInformationModel
+                                {
+                                    CircuitName = "ThirdCircuit",
+                                    GapToSecond = 1.976
                                 }
                             }
                         }
@@ -441,11 +503,32 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel> { new UniqueSeasonPoleSittersModel { Season = 1, QualificationsCount = 1, PoleSitters = new List<string> { "FirstName FirstFamily" } }, new UniqueSeasonPoleSittersModel { Season = 2, QualificationsCount = 2, PoleSitters = new List<string> { "FirstName FirstFamily" , "SecondName SecondFamily" } } };
+            var expectedUniquePoleSittersDrivers = new List<UniqueSeasonPoleSittersModel> 
+            {
+                new UniqueSeasonPoleSittersModel 
+                {
+                    Season = 1, 
+                    QualificationsCount = 1, 
+                    PoleSitters = new List<string> 
+                    {
+                        "FirstName FirstFamily" 
+                    }
+                },
+                new UniqueSeasonPoleSittersModel 
+                {
+                    Season = 2, 
+                    QualificationsCount = 3, 
+                    PoleSitters = new List<string> 
+                    {
+                        "FirstName FirstFamily",
+                        "SecondName SecondFamily"
+                    }
+                }
+            };
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetUniquePoleSittersDrivers(from, to);
@@ -459,6 +542,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Assert.AreEqual(expectedUniquePoleSittersDrivers[i].Season, actual[i].Season);
                     Assert.AreEqual(expectedUniquePoleSittersDrivers[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
                     Assert.AreEqual(expectedUniquePoleSittersDrivers[i].QualificationsCount, actual[i].QualificationsCount);
+
+                    for (int j = 0; j < expectedUniquePoleSittersDrivers[0].PoleSitters.Count; j++)
+                    {
+
+                        Assert.AreEqual(expectedUniquePoleSittersDrivers[0].PoleSitters[j], actual[0].PoleSitters[j]);
+                    }
                 } 
             }
         }
@@ -473,15 +562,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(new List<RacesDataResponse>());
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(new List<RacesDataResponse>());
 
-            for (int i = 0; i < 10000; i++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetUniquePoleSittersDrivers(from, to);
 
                 // Assert
                 Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[0].PoleSitters.Count, actual[0].PoleSitters.Count);
-                Assert.AreEqual(expectedUniquePoleSittersDrivers[1].PoleSitters.Count, actual[1].PoleSitters.Count); 
             }
         }
 
@@ -491,11 +578,32 @@ namespace F1Statistics.Library.Tests.DataAggregation
             // Arrange
             var from = 1;
             var to = 2;
-            var expectedUniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel> { new UniqueSeasonPoleSittersModel { Season = 1, QualificationsCount = 1, PoleSitters = new List<string> { "FirstName FirstFamily" } }, new UniqueSeasonPoleSittersModel { Season = 2, QualificationsCount = 2, PoleSitters = new List<string> { "FirstName FirstFamily", "SecondName SecondFamily" } } };
+            var expectedUniquePoleSittersConstructors = new List<UniqueSeasonPoleSittersModel> 
+            {
+                new UniqueSeasonPoleSittersModel 
+                {
+                    Season = 1, 
+                    QualificationsCount = 1, 
+                    PoleSitters = new List<string> 
+                    {
+                        "FirstConstructor" 
+                    }
+                },
+                new UniqueSeasonPoleSittersModel 
+                {
+                    Season = 2, 
+                    QualificationsCount = 3,
+                    PoleSitters = new List<string> 
+                    {
+                        "FirstConstructor", 
+                        "SecondConstructor"
+                    }
+                }
+            };
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingDataAccess) => qualifyingDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
 
-            for (int k = 0; k < 10000; k++)
+            for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetUniquePoleSittersConstructors(from, to);
@@ -509,7 +617,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Assert.AreEqual(expectedUniquePoleSittersConstructors[i].Season, actual[i].Season);
                     Assert.AreEqual(expectedUniquePoleSittersConstructors[i].UniquePoleSittersCount, actual[i].UniquePoleSittersCount);
                     Assert.AreEqual(expectedUniquePoleSittersConstructors[i].QualificationsCount, actual[i].QualificationsCount);
-                } 
+
+                    for (int j = 0; j < expectedUniquePoleSittersConstructors[i].PoleSitters.Count; j++)
+                    {
+
+                        Assert.AreEqual(expectedUniquePoleSittersConstructors[i].PoleSitters[j], actual[i].PoleSitters[j]);
+                    }
+                }
             }
         }
 
@@ -530,8 +644,6 @@ namespace F1Statistics.Library.Tests.DataAggregation
 
                 // Assert
                 Assert.AreEqual(expectedUniquePoleSittersConstructors.Count, actual.Count);
-                Assert.AreEqual(expectedUniquePoleSittersConstructors[0].PoleSitters.Count, actual[0].PoleSitters.Count);
-                Assert.AreEqual(expectedUniquePoleSittersConstructors[1].PoleSitters.Count, actual[1].PoleSitters.Count); 
             }
         }
     }

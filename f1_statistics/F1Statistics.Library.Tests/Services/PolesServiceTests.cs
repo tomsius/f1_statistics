@@ -89,7 +89,7 @@ namespace F1Statistics.Library.Tests.Services
                             {
                                 new PoleInformationModel
                                 {
-                                    CircuitName = "Forth",
+                                    CircuitName = "Fourth",
                                     GapToSecond = 2
                                 }
                             }

@@ -84,7 +84,7 @@ namespace F1Statistics.Tests.Controllers
                             {
                                 new PoleInformationModel
                                 {
-                                    CircuitName = "Forth",
+                                    CircuitName = "Fourth",
                                     GapToSecond = 2
                                 }
                             }

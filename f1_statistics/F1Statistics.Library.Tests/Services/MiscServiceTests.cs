@@ -331,7 +331,7 @@ namespace F1Statistics.Library.Tests.Services
                     {
                         new FinishingPositionModel
                         {
-                            FinishingPosition = 1,
+                            FinishingPosition = 2,
                             FinishingPositionInformation = new List<FinishingPositionInformationModel>
                             {
                                 new FinishingPositionInformationModel
@@ -599,7 +599,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateHatTricks_ReturnSortedAggregatedHatTricksList_IfThereAreAnyDriversWithHatTricks()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { YearFrom = 2004, YearTo = 2005 };
             var expectedHatTricks = GenerateHatTricks();
             expectedHatTricks.Sort((x, y) => y.HatTrickCount.CompareTo(x.HatTrickCount));
             _aggregator.Setup((aggregator) => aggregator.GetHatTricks(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateHatTricks());
@@ -617,6 +617,23 @@ namespace F1Statistics.Library.Tests.Services
                 Assert.AreEqual(expectedHatTricks[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedHatTricks[i].HatTrickCount, actual[i].HatTrickCount);
             }
+        }
+
+        [TestMethod]
+        public void AggregateHatTricks_ReturnEmptyList_IfThereAreNoDriversWithHatTricks()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2004 };
+            var expectedHatTricks = new List<HatTrickModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetHatTricks(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHatTricks);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
+
+            // Act
+            var actual = _service.AggregateHatTricks(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedHatTricks.Count, actual.Count);
         }
 
         [TestMethod]
@@ -645,7 +662,7 @@ namespace F1Statistics.Library.Tests.Services
         public void AggregateGrandSlams_ReturnSortedAggregatedGrandSlamsList_IfThereAreAnyDriversWithGrandSlams()
         {
             // Arrange
-            var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
+            var options = new OptionsModel { YearFrom = 2004, YearTo = 2005 };
             var expectedGrandslams = GenerateGrandSlams();
             expectedGrandslams.Sort((x, y) => y.GrandSlamCount.CompareTo(x.GrandSlamCount));
             _aggregator.Setup((aggregator) => aggregator.GetGrandSlams(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateGrandSlams());
@@ -663,6 +680,23 @@ namespace F1Statistics.Library.Tests.Services
                 Assert.AreEqual(expectedGrandslams[i].Name, actual[i].Name);
                 Assert.AreEqual(expectedGrandslams[i].GrandSlamCount, actual[i].GrandSlamCount);
             }
+        }
+
+        [TestMethod]
+        public void AggregateGrandSlams_ReturnEmptyList_IfThereAreNoDriversWithGrandSlams()
+        {
+            // Arrange
+            var options = new OptionsModel { Season = 2004 };
+            var expectedGrandSlams = new List<GrandSlamModel>();
+            _aggregator.Setup((aggregator) => aggregator.GetGrandSlams(It.IsAny<int>(), It.IsAny<int>())).Returns(expectedGrandSlams);
+            _validator.Setup((validator) => validator.AreFastestLapYearsValid(options)).Returns(true);
+
+            // Act
+            var actual = _service.AggregateGrandSlams(options);
+
+            // Assert
+            _validator.Verify((validator) => validator.NormalizeOptionsModel(It.IsAny<OptionsModel>()), Times.Once());
+            Assert.AreEqual(expectedGrandSlams.Count, actual.Count);
         }
 
         [TestMethod]
@@ -847,6 +881,7 @@ namespace F1Statistics.Library.Tests.Services
             // Arrange
             var options = new OptionsModel { YearFrom = 2000, YearTo = 2001 };
             var expectedDriversFinishingPositions = GenerateDriversFinishingPositions();
+            expectedDriversFinishingPositions[1].FinishingPositions.Add(new FinishingPositionModel { FinishingPosition = 1, FinishingPositionInformation = new List<FinishingPositionInformationModel>() });
             expectedDriversFinishingPositions.ForEach(driver => driver.FinishingPositions.Sort((x, y) => x.FinishingPosition.CompareTo(y.FinishingPosition)));
             expectedDriversFinishingPositions.Sort((x, y) => x.Name.CompareTo(y.Name));
             _aggregator.Setup((aggregator) => aggregator.GetDriversFinishingPositions(It.IsAny<int>(), It.IsAny<int>())).Returns(GenerateDriversFinishingPositions());

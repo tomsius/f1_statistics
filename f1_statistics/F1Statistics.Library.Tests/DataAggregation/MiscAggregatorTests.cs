@@ -171,7 +171,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     familyName = "SecondFamily",
                                     givenName = "SecondName"
                                 },
-                                status = "+2",
+                                status = "Illness",
                                 grid = "1",
                                 position = "1",
                                 FastestLap = new FastestLapDataResponse
@@ -182,7 +182,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "SecondConstructor"
                                 },
-                                laps = "15"
+                                laps = "10"
                             },
                             new ResultsDataResponse
                             {
@@ -204,6 +204,42 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                     name = "SecondConstructor"
                                 },
                                 laps = "15"
+                            }
+                        }
+                    }
+                },
+                new List<RacesDataResponse>
+                {
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
+                        round = "1",
+                        raceName = "FirstRace",
+                        Results = new List<ResultsDataResponse>
+                        {
+                            new ResultsDataResponse
+                            {
+                                Driver = new DriverDataResponse
+                                {
+                                    driverId = "1",
+                                    familyName = "FirstFamily",
+                                    givenName = "FirstName"
+                                },
+                                status = "Finished",
+                                grid = "1",
+                                position = "1",
+                                FastestLap = new FastestLapDataResponse
+                                {
+                                    rank = "1"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "FirstConstructor"
+                                },
+                                laps = "50"
                             }
                         }
                     }
@@ -317,6 +353,76 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 Constructor = new ConstructorDataResponse
                                 {
                                     name = "Second"
+                                }
+                            }
+                        }
+                    }
+                },
+                new List<RacesDataResponse>
+                {
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "FirstCircuit"
+                        },
+                        round = "1",
+                        QualifyingResults = new List<QualifyingResultsDataResponse>
+                        {
+                            new QualifyingResultsDataResponse
+                            {
+                                position = "1",
+                                Driver = new DriverDataResponse
+                                {
+                                    driverId = "1",
+                                    familyName = "FirstFamily",
+                                    givenName= "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "First"
+                                }
+                            }
+                        }
+                    }
+                },
+                new List<RacesDataResponse>
+                {
+                    new RacesDataResponse
+                    {
+                        Circuit = new CircuitDataResponse
+                        {
+                            circuitName = "SecondCircuit"
+                        },
+                        round = "1",
+                        QualifyingResults = new List<QualifyingResultsDataResponse>
+                        {
+                            new QualifyingResultsDataResponse
+                            {
+                                position = "1",
+                                Driver = new DriverDataResponse
+                                {
+                                    driverId = "1",
+                                    familyName = "FirstFamily",
+                                    givenName= "FirstName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "First"
+                                }
+                            },
+                            new QualifyingResultsDataResponse
+                            {
+                                position = "2",
+                                Driver = new DriverDataResponse
+                                {
+                                    driverId = "2",
+                                    familyName = "SecondFamily",
+                                    givenName= "SecondName"
+                                },
+                                Constructor = new ConstructorDataResponse
+                                {
+                                    name = "First"
                                 }
                             }
                         }
@@ -673,15 +779,18 @@ namespace F1Statistics.Library.Tests.DataAggregation
         {
             // Arrange
             var from = 1;
-            var to = 2;
-            var expectedGrandslams = new List<GrandSlamModel> { new GrandSlamModel { Name = "FirstName FirstFamily", GrandSlamCount = 1 } };
+            var to = 3;
+            var expectedGrandslams = new List<GrandSlamModel> { new GrandSlamModel { Name = "FirstName FirstFamily", GrandSlamCount = 2 } };
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(1)).Returns(GenerateRaces()[0]);
             _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(2)).Returns(GenerateRaces()[1]);
+            _resultsDataAccess.Setup((resultsDataAccess) => resultsDataAccess.GetResultsFrom(3)).Returns(GenerateRaces()[2]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
+            _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(3)).Returns(GenerateQualifyings()[2]);
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(1, 1)).Returns(GenerateLaps()[1]);
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(2, 1)).Returns(GenerateLaps()[0]);
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(2, 2)).Returns(GenerateLaps()[2]);
+            _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(3, 1)).Returns(GenerateLaps()[0]);
 
             for (int k = 0; k < 10000; k++)
             {
@@ -754,6 +863,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     CircuitName = "FirstCircuit",
                                     LapsCompleted = 0
+                                },
+                                new DidNotFinishInformationModel
+                                {
+                                    CircuitName = "SecondCircuit",
+                                    LapsCompleted = 10
                                 }
                             }
                         }
@@ -984,7 +1098,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
         {
             // Arrange
             var from = 1;
-            var to = 2;
+            var to = 3;
             var expectedConstructorsFrontRows = new List<FrontRowModel>
             {
                 new FrontRowModel
@@ -996,6 +1110,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
                         {
                             CircuitName = "FirstCircuit",
                             CircuitFrontRowCount = 2
+                        },
+                        new FrontRowInformationModel
+                        {
+                            CircuitName = "SecondCircuit",
+                            CircuitFrontRowCount = 1
                         }
                     }
                 },
@@ -1014,12 +1133,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             };
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(1)).Returns(GenerateQualifyings()[0]);
             _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(2)).Returns(GenerateQualifyings()[1]);
+            _qualifyingsDataAccess.Setup((qualifyingsDataAccess) => qualifyingsDataAccess.GetQualifyingsFrom(3)).Returns(GenerateQualifyings()[3]);
 
             for (int t = 0; t < 10000; t++)
             {
                 // Act
                 var actual = _aggregator.GetConstructorsFrontRows(from, to);
                 actual.Sort((x, y) => y.TotalFrontRowCount.CompareTo(x.TotalFrontRowCount));
+                actual.ForEach(model => model.FrontRowInformation.Sort((x, y) => y.CircuitFrontRowCount.CompareTo(x.CircuitFrontRowCount)));
 
                 // Assert
                 Assert.AreEqual(expectedConstructorsFrontRows.Count, actual.Count);
@@ -1116,7 +1237,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 new FinishingPositionInformationModel
                                 {
                                     CircuitName = "SecondCircuit",
-                                    FinishedRace = true
+                                    FinishedRace = false
                                 }
                             }
                         },
@@ -1516,7 +1637,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 },
                 new RacePositionChangesModel
                 {
-                    Name = "Forth",
+                    Name = "Fourth",
                     Laps = new List<LapPositionModel>
                     {
                         new LapPositionModel
@@ -1570,7 +1691,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("1")).Returns("First");
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("2")).Returns("Second");
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("3")).Returns("Third");
-            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("4")).Returns("Forth");
+            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("4")).Returns("Fourth");
 
             for (int k = 0; k < 10000; k++)
             {
@@ -1634,7 +1755,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                 },
                 new LapTimesModel
                 {
-                    Name = "Forth",
+                    Name = "Fourth",
                     Timings = new List<double>
                     {
                         65,
@@ -1664,7 +1785,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("1")).Returns("First");
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("2")).Returns("Second");
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("3")).Returns("Third");
-            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("4")).Returns("Forth");
+            _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("4")).Returns("Fourth");
 
             for (int k = 0; k < 10000; k++)
             {

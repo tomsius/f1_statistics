@@ -126,8 +126,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     new DriverDataResponse
                     {
                         nationality = "ThirdNationality",
-                        familyName = "ForthFamily",
-                        givenName = "ForthName"
+                        familyName = "FourthFamily",
+                        givenName = "FourthName"
                     }
                 }
             };
@@ -210,7 +210,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Nationality="ThirdNationality",
                     Drivers = new List<string>
                     {
-                        "ForthName ForthFamily",
+                        "FourthName FourthFamily",
                     }
                 }
             };
