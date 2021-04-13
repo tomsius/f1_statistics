@@ -35,7 +35,6 @@ namespace F1Statistics.Library.Services
             }
 
             seasons.Sort((x, y) => x.Year.CompareTo(y.Year));
-            seasons.ForEach(season => season.Races.Sort((x, y) => x.Round.CompareTo(y.Round)));
 
             return seasons;
         }
