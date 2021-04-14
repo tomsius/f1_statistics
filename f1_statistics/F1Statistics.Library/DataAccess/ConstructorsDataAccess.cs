@@ -10,7 +10,7 @@ namespace F1Statistics.Library.DataAccess
 {
     public class ConstructorsDataAccess : IConstructorsDataAccess
     {
-        public string GetDriverConstructor(int year, int round, string leadingDriverId)
+        public string GetConstructorByDriver(int year, int round, string leadingDriverId)
         {
             var client = new RestClient($"http://ergast.com/api/f1/{year}/{round}/drivers/{leadingDriverId}/constructors.json");
             client.Timeout = -1;
@@ -18,6 +18,11 @@ namespace F1Statistics.Library.DataAccess
             var response = client.Execute(request);
 
             var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
+
+            if (result.MRData.ConstructorTable.Constructors.Count == 0)
+            {
+                return "";
+            }
 
             return result.MRData.ConstructorTable.Constructors[0].name;
         }

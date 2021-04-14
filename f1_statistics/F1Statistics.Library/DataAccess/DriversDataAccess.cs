@@ -19,6 +19,11 @@ namespace F1Statistics.Library.DataAccess
 
             var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
 
+            if (result.MRData.DriverTable.Drivers.Count == 0)
+            {
+                return "";
+            }
+
             return $"{result.MRData.DriverTable.Drivers[0].givenName} {result.MRData.DriverTable.Drivers[0].familyName}";
         }
 

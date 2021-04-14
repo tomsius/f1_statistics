@@ -121,7 +121,7 @@ namespace F1Statistics.Library.DataAggregation
                             }
                             else
                             {
-                                leadingConstructor = _constructorsDataAccess.GetDriverConstructor(year, round, leadingDriverId);
+                                leadingConstructor = _constructorsDataAccess.GetConstructorByDriver(year, round, leadingDriverId);
                                 constructorNames.Add(leadingDriverId, leadingConstructor);
                             }
                         }

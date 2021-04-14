@@ -19,6 +19,11 @@ namespace F1Statistics.Library.DataAccess
 
             var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
 
+            if (result.MRData.StandingsTable.StandingsLists.Count == 0)
+            {
+                return new List<DriverStandingsDataResponse>();
+            }
+
             return result.MRData.StandingsTable.StandingsLists[0].DriverStandings;
         }
 
@@ -30,6 +35,11 @@ namespace F1Statistics.Library.DataAccess
             var response = client.Execute(request);
 
             var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
+
+            if (result.MRData.StandingsTable.StandingsLists.Count == 0)
+            {
+                return new List<ConstructorStandingsDataResponse>();
+            }
 
             return result.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
         }
@@ -43,6 +53,11 @@ namespace F1Statistics.Library.DataAccess
 
             var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
 
+            if (result.MRData.StandingsTable.StandingsLists.Count == 0)
+            {
+                return new List<DriverStandingsDataResponse>();
+            }
+
             return result.MRData.StandingsTable.StandingsLists[0].DriverStandings;
         }
 
@@ -54,6 +69,11 @@ namespace F1Statistics.Library.DataAccess
             var response = client.Execute(request);
 
             var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
+
+            if (result.MRData.StandingsTable.StandingsLists.Count == 0)
+            {
+                return new List<ConstructorStandingsDataResponse>();
+            }
 
             return result.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
         }

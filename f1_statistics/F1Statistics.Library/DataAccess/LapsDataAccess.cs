@@ -19,6 +19,11 @@ namespace F1Statistics.Library.DataAccess
 
             var result = JsonConvert.DeserializeObject<MRDataResponse>(response.Content);
 
+            if (result.MRData.RaceTable.Races.Count == 0)
+            {
+                return new List<LapsDataResponse>();
+            }
+
             return result.MRData.RaceTable.Races[0].Laps;
         }
     }

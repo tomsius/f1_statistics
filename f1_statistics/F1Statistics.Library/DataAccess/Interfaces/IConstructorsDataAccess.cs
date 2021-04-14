@@ -6,6 +6,6 @@ namespace F1Statistics.Library.DataAccess.Interfaces
 {
     public interface IConstructorsDataAccess
     {
-        string GetDriverConstructor(int year, int round, string leadingDriverId);
+        string GetConstructorByDriver(int year, int round, string leadingDriverId);
     }
 }

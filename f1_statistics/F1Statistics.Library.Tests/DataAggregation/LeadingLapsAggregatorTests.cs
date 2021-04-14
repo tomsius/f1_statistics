@@ -33,9 +33,9 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("2")).Returns("SecondName SecondFamily");
             _driversDataAccess.Setup((driversDataAccess) => driversDataAccess.GetDriverName("3")).Returns("ThirdName ThirdFamily");
 
-            _constructorsDataAccess.Setup((constructorsDataAccess) => constructorsDataAccess.GetDriverConstructor(It.IsAny<int>(), It.IsAny<int>(), "1")).Returns("FirstConstructor");
-            _constructorsDataAccess.Setup((constructorsDataAccess) => constructorsDataAccess.GetDriverConstructor(It.IsAny<int>(), It.IsAny<int>(), "2")).Returns("SecondConstructor");
-            _constructorsDataAccess.Setup((constructorsDataAccess) => constructorsDataAccess.GetDriverConstructor(It.IsAny<int>(), It.IsAny<int>(), "3")).Returns("ThirdConstructor");
+            _constructorsDataAccess.Setup((constructorsDataAccess) => constructorsDataAccess.GetConstructorByDriver(It.IsAny<int>(), It.IsAny<int>(), "1")).Returns("FirstConstructor");
+            _constructorsDataAccess.Setup((constructorsDataAccess) => constructorsDataAccess.GetConstructorByDriver(It.IsAny<int>(), It.IsAny<int>(), "2")).Returns("SecondConstructor");
+            _constructorsDataAccess.Setup((constructorsDataAccess) => constructorsDataAccess.GetConstructorByDriver(It.IsAny<int>(), It.IsAny<int>(), "3")).Returns("ThirdConstructor");
             
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(1, 1)).Returns(GenerateLaps()[0]);
             _lapsDataAccess.Setup((lapsDataAccess) => lapsDataAccess.GetLapsFrom(1, 2)).Returns(GenerateLaps()[1]);
