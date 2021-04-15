@@ -32,7 +32,8 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     var winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
                     var circuitName = race.Circuit.circuitName;
-                    var gapToSecond = ConvertGapFromStringToDouble(race.Results[1].Time.time);
+                    var time = race.Results[1].Time != null ? race.Results[1].Time.time : "0";
+                    var gapToSecond = ConvertGapFromStringToDouble(time);
                     var gridPosition = int.Parse(race.Results[0].grid);
                     var newWinInformationModel = new WinInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond, GridPosition = gridPosition };
 
@@ -89,6 +90,7 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     var winner = $"{race.Results[0].Constructor.name}";
                     var circuitName = race.Circuit.circuitName;
+                    var time = race.Results[1].Time != null ? race.Results[1].Time.time : "0";
                     var gapToSecond = ConvertGapFromStringToDouble(race.Results[1].Time.time);
                     var gridPosition = int.Parse(race.Results[0].grid);
                     var newWinInformationModel = new WinInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond, GridPosition = gridPosition };
@@ -136,7 +138,6 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        // Fill participations
                         foreach (var result in race.Results)
                         {
                             var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
@@ -152,7 +153,6 @@ namespace F1Statistics.Library.DataAggregation
                             }
                         }
 
-                        // Fill winner
                         var winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
 
                         driversAverageWins.Where(driver => driver.Name == winner).First().WinCount++;  
@@ -177,7 +177,6 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     lock (lockObject)
                     {
-                        // Fill participations
                         foreach (var result in race.Results)
                         {
                             var constructorName = $"{result.Constructor.name}";
@@ -198,7 +197,6 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockIncrement)
                     {
-                        // Fill winner
                         var winner = $"{race.Results[0].Constructor.name}";
 
                         constructorsAverageWins.Where(driver => driver.Name == winner).First().WinCount++; 
@@ -209,7 +207,6 @@ namespace F1Statistics.Library.DataAggregation
             return constructorsAverageWins;
         }
 
-        // TODO - galbut iskelti
         private void RemoveDoubleCarCountingInARace(List<AverageWinsModel> constructorsAverageWins, RacesDataResponse race)
         {
             foreach (var constructor in constructorsAverageWins)
