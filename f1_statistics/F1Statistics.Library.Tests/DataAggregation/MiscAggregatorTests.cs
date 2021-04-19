@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using F1Statistics.Library.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,7 +34,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _standingsDataAccess = new Mock<IStandingsDataAccess>();
             _driversDataAccess = new Mock<IDriversDataAccess>();
 
-            _aggregator = new MiscAggregator(_racesDataAccess.Object, _resultsDataAccess.Object, _qualifyingsDataAccess.Object, _lapsDataAccess.Object, _standingsDataAccess.Object, _driversDataAccess.Object);
+            Mock<INameHelper> nameHelper = new Mock<INameHelper>();
+            nameHelper.Setup(helper => helper.GetDriverName(It.IsAny<DriverDataResponse>())).Returns<DriverDataResponse>(driver => $"{driver.givenName} {driver.familyName}");
+            nameHelper.Setup(helper => helper.GetConstructorName(It.IsAny<ConstructorDataResponse>())).Returns<ConstructorDataResponse>(constructor => $"{constructor.name}");
+
+            Mock<ITimeHelper> timeHelper = new Mock<ITimeHelper>();
+            timeHelper.Setup(helper => helper.ConvertTimeToSeconds(It.IsAny<string>())).Returns<string>(time => double.Parse(time));
+
+            _aggregator = new MiscAggregator(_racesDataAccess.Object, _resultsDataAccess.Object, _qualifyingsDataAccess.Object, _lapsDataAccess.Object, _standingsDataAccess.Object, _driversDataAccess.Object, nameHelper.Object, timeHelper.Object);
         }
 
         private List<List<RacesDataResponse>> GenerateRaces()
@@ -448,25 +456,25 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             {
                                 driverId = "1",
                                 position = "1",
-                                time = "0:1.1"
+                                time = "1.1"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "3",
                                 position = "2",
-                                time = "1:2.0"
+                                time = "2.0"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "4",
                                 position = "3",
-                                time = "1:5"
+                                time = "5"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "2",
                                 position = "4",
-                                time = "1:11"
+                                time = "11.7"
                             }
                         }
                     },
@@ -479,13 +487,13 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             {
                                 driverId = "1",
                                 position = "1",
-                                time = "1:2.25"
+                                time = "2.25"
                             },
                             new TimingsDataResponse
                             {
                                 driverId = "4",
                                 position = "2",
-                                time = "2:0.0"
+                                time = "01.0"
                             },
                             new TimingsDataResponse
                             {
@@ -497,7 +505,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                             {
                                 driverId = "3",
                                 position = "4",
-                                time = "1:55.05"
+                                time = "55.05"
                             }
                         }
                     }
@@ -1750,7 +1758,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Timings = new List<double>
                     {
                         1.1,
-                        62.25
+                        2.25
                     }
                 },
                 new LapTimesModel
@@ -1758,8 +1766,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Name = "Fourth",
                     Timings = new List<double>
                     {
-                        65,
-                        120
+                        1,
+                        5
                     }
                 },
                 new LapTimesModel
@@ -1767,8 +1775,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Name = "Second",
                     Timings = new List<double>
                     {
-                        25.101,
-                        71
+                        11.7,
+                        25.101
                     }
                 },
                 new LapTimesModel
@@ -1776,8 +1784,8 @@ namespace F1Statistics.Library.Tests.DataAggregation
                     Name = "Third",
                     Timings = new List<double>
                     {
-                        62,
-                        115.05
+                        2,
+                        55.05
                     }
                 }
             };

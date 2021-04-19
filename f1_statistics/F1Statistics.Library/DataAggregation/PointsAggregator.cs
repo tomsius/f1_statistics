@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
+using F1Statistics.Library.Helpers.Interfaces;
 
 namespace F1Statistics.Library.DataAggregation
 {
@@ -14,11 +15,13 @@ namespace F1Statistics.Library.DataAggregation
 
         private readonly IResultsDataAccess _resultsDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
+        private readonly INameHelper _nameHelper;
 
-        public PointsAggregator(IResultsDataAccess resultsDataAccess, IStandingsDataAccess standingsDataAccess)
+        public PointsAggregator(IResultsDataAccess resultsDataAccess, IStandingsDataAccess standingsDataAccess, INameHelper nameHelper)
         {
             _resultsDataAccess = resultsDataAccess;
             _standingsDataAccess = standingsDataAccess;
+            _nameHelper = nameHelper;
         }
 
         public List<SeasonPointsModel> GetDriversPointsPerSeason(int from, int to)
@@ -34,7 +37,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var standing in standings)
                 {
-                    var driverName = $"{standing.Driver.givenName} {standing.Driver.familyName}";
+                    var driverName = _nameHelper.GetDriverName(standing.Driver);
                     var driverScoredPoints = double.Parse(standing.points);
 
                     var newPointsModel = new PointsModel { Name = driverName, Points = driverScoredPoints };
@@ -63,7 +66,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var standing in standings)
                 {
-                    var constructorName = $"{standing.Constructor.name}";
+                    var constructorName = _nameHelper.GetConstructorName(standing.Constructor);
                     var constructorScoredPoints = double.Parse(standing.points);
 
                     var newPointsModel = new PointsModel { Name = constructorName, Points = constructorScoredPoints };
@@ -95,7 +98,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 var racesCount = _resultsDataAccess.GetResultsFrom(year).Count;
 
-                var winner = $"{standings[0].Driver.givenName} {standings[0].Driver.familyName}";
+                var winner = _nameHelper.GetDriverName(standings[0].Driver);
                 var points = int.Parse(standings[0].points);
 
                 var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Year = year, Winner = winner, Points = points, RacesCount = racesCount };
@@ -125,7 +128,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 var racesCount = _resultsDataAccess.GetResultsFrom(year).Count;
 
-                var winner = $"{standings[0].Constructor.name}";
+                var winner = _nameHelper.GetConstructorName(standings[0].Constructor);
                 var points = int.Parse(standings[0].points);
 
                 var newSeasonWinnersPointsModel = new SeasonWinnersPointsModel { Year = year, Winner = winner, Points = points, RacesCount = racesCount };
@@ -158,7 +161,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < standings.Count; i++)
                     {
-                        var driverName = $"{standings[i].Driver.givenName} {standings[i].Driver.familyName}";
+                        var driverName = _nameHelper.GetDriverName(standings[i].Driver);
                         var points = double.Parse(standings[i].points);
                         var position = i + 1;
 
@@ -201,7 +204,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < standings.Count; i++)
                     {
-                        var constructorName = $"{standings[i].Constructor.name}";
+                        var constructorName = _nameHelper.GetConstructorName(standings[i].Constructor);
                         var points = double.Parse(standings[i].points);
                         var position = i + 1;
 

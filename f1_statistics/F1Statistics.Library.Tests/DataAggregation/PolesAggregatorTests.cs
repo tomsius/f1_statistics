@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using F1Statistics.Library.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,7 +24,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
         {
             _qualifyingsDataAccess = new Mock<IQualifyingDataAccess>();
 
-            _aggregator = new PolesAggregator(_qualifyingsDataAccess.Object);
+            Mock<INameHelper> nameHelper = new Mock<INameHelper>();
+            nameHelper.Setup(helper => helper.GetDriverName(It.IsAny<DriverDataResponse>())).Returns<DriverDataResponse>(driver => $"{driver.givenName} {driver.familyName}");
+            nameHelper.Setup(helper => helper.GetConstructorName(It.IsAny<ConstructorDataResponse>())).Returns<ConstructorDataResponse>(constructor => $"{constructor.name}");
+
+            Mock<ITimeHelper> timeHelper = new Mock<ITimeHelper>();
+            timeHelper.Setup(helper => helper.GetTimeDifference(It.IsAny<string>(), It.IsAny<string>())).Returns<string, string>((time1, time2) => Math.Round(double.Parse(time2) - double.Parse(time1), 3));
+
+            _aggregator = new PolesAggregator(_qualifyingsDataAccess.Object, nameHelper.Object, timeHelper.Object);
         }
 
         private List<List<RacesDataResponse>> GenerateQualifyings()
@@ -77,7 +85,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "FirstConstructor"
                                 },
-                                Q3 = "1:03.555"
+                                Q3 = "03.555"
                             },
                             new QualifyingResultsDataResponse
                             {
@@ -90,7 +98,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "SecondConstructor"
                                 },
-                                Q3 = "1:04.755"
+                                Q3 = "4.755"
                             }
                         }
                     }
@@ -145,7 +153,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "SecondConstructor"
                                 },
-                                Q2 = "1:2.754"
+                                Q2 = "62.754"
                             }
                         }
                     },
@@ -184,7 +192,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "SecondConstructor"
                                 },
-                                Q1 = "2:20.755"
+                                Q1 = "20.755"
                             },
                             new QualifyingResultsDataResponse
                             {
@@ -197,7 +205,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "FirstConstructor"
                                 },
-                                Q1 = "2:22.731"
+                                Q1 = "22.731"
                             }
                         }
                     },
@@ -236,7 +244,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "SecondConstructor"
                                 },
-                                Q3 = "2:20.755"
+                                Q3 = "17.755"
                             },
                             new QualifyingResultsDataResponse
                             {
@@ -249,7 +257,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 {
                                     name = "FirstConstructor"
                                 },
-                                Q3 = "2:22.731"
+                                Q3 = "19.731"
                             }
                         }
                     }

@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using F1Statistics.Library.Models.Responses;
 using System;
@@ -13,10 +14,14 @@ namespace F1Statistics.Library.DataAggregation
     public class WinsAggregator : IWinsAggregator
     {
         private readonly IResultsDataAccess _resultsDataAccess;
+        private readonly INameHelper _nameHelper;
+        private readonly ITimeHelper _timeHelper;
 
-        public WinsAggregator(IResultsDataAccess resultsDataAccess)
+        public WinsAggregator(IResultsDataAccess resultsDataAccess, INameHelper nameHelper, ITimeHelper timeHelper)
         {
             _resultsDataAccess = resultsDataAccess;
+            _nameHelper = nameHelper;
+            _timeHelper = timeHelper;
         }
 
         public List<WinsModel> GetDriversWins(int from, int to)
@@ -30,10 +35,10 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    var winner = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    var winner = _nameHelper.GetDriverName(race.Results[0].Driver);
                     var circuitName = race.Circuit.circuitName;
                     var time = race.Results[1].Time != null ? race.Results[1].Time.time : "0";
-                    var gapToSecond = ConvertGapFromStringToDouble(time);
+                    var gapToSecond = _timeHelper.ConvertGapFromStringToDouble(time);
                     var gridPosition = int.Parse(race.Results[0].grid);
                     var newWinInformationModel = new WinInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond, GridPosition = gridPosition };
 
@@ -66,17 +71,6 @@ namespace F1Statistics.Library.DataAggregation
             return driversWins;
         }
 
-        // TODO - iskelti
-        private double ConvertGapFromStringToDouble(string time)
-        {
-            if (time[time.Length - 1] == 's')
-            {
-                time = time.Substring(0, time.Length - 1);
-            }
-
-            return double.Parse(time);
-        }
-
         public List<WinsModel> GetConstructorsWins(int from, int to)
         {
             var constructorsWins = new List<WinsModel>(to - from + 1);
@@ -88,10 +82,10 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    var winner = $"{race.Results[0].Constructor.name}";
+                    var winner = _nameHelper.GetConstructorName(race.Results[0].Constructor);
                     var circuitName = race.Circuit.circuitName;
                     var time = race.Results[1].Time != null ? race.Results[1].Time.time : "0";
-                    var gapToSecond = ConvertGapFromStringToDouble(race.Results[1].Time.time);
+                    var gapToSecond = _timeHelper.ConvertGapFromStringToDouble(race.Results[1].Time.time);
                     var gridPosition = int.Parse(race.Results[0].grid);
                     var newWinInformationModel = new WinInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond, GridPosition = gridPosition };
 
@@ -140,7 +134,7 @@ namespace F1Statistics.Library.DataAggregation
                     {
                         foreach (var result in race.Results)
                         {
-                            var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+                            var driverName = _nameHelper.GetDriverName(result.Driver);
 
                             if (!driversAverageWins.Where(driver => driver.Name == driverName).Any())
                             {
@@ -179,7 +173,7 @@ namespace F1Statistics.Library.DataAggregation
                     {
                         foreach (var result in race.Results)
                         {
-                            var constructorName = $"{result.Constructor.name}";
+                            var constructorName = _nameHelper.GetConstructorName(result.Constructor);
 
                             if (!constructorsAverageWins.Where(constructor => constructor.Name == constructorName).Any())
                             {
@@ -247,13 +241,13 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var circuitName = race.Circuit.circuitName;
-                    var winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    var winnerName = _nameHelper.GetDriverName(race.Results[0].Driver);
 
                     lock (lockObject)
                     {
                         foreach (var result in race.Results)
                         {
-                            var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+                            var driverName = _nameHelper.GetDriverName(result.Driver);
                             var newWinsAndParticipationsModel = new WinsAndParticipationsModel { Name = driverName, WinCount = 0, ParticipationsCount = 1 };
 
                             if (!circuitWinners.Where(circuit => circuit.Name == circuitName).Any())
@@ -296,7 +290,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    var winnerName = $"{race.Results[0].Driver.givenName} {race.Results[0].Driver.familyName}";
+                    var winnerName = _nameHelper.GetDriverName(race.Results[0].Driver);
 
                     lock (lockObject)
                     {
@@ -330,7 +324,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var race in races)
                 {
-                    var winnerName = $"{race.Results[0].Constructor.name}";
+                    var winnerName = _nameHelper.GetConstructorName(race.Results[0].Constructor);
 
                     lock (lockObject)
                     {
@@ -367,7 +361,7 @@ namespace F1Statistics.Library.DataAggregation
                     var gridPosition = winnerInformation.grid;
                     var finishPosition = winnerInformation.position;
 
-                    var winnerName = $"{winnerInformation.Driver.givenName} {winnerInformation.Driver.familyName}";
+                    var winnerName = _nameHelper.GetDriverName(winnerInformation.Driver);
 
                     if (gridPosition == finishPosition)
                     {
@@ -397,7 +391,7 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     var winnerInformation = race.Results[0];
                     var gridPosition = int.Parse(winnerInformation.grid);
-                    var winnerName = $"{winnerInformation.Driver.givenName} {winnerInformation.Driver.familyName}";
+                    var winnerName = _nameHelper.GetDriverName(winnerInformation.Driver);
                     var circuitName = race.Circuit.circuitName;
                     var newWinByGridInformationModel = new WinByGridInformationModel { WinnerName = winnerName, CircuitName = circuitName };
 

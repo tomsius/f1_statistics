@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace F1Statistics.Library.DataAggregation
     public class PodiumsAggregator : IPodiumsAggregator
     {
         private readonly IResultsDataAccess _resultsDataAccess;
+        private readonly INameHelper _nameHelper;
 
-        public PodiumsAggregator(IResultsDataAccess resultsDataAccess)
+        public PodiumsAggregator(IResultsDataAccess resultsDataAccess, INameHelper nameHelper)
         {
             _resultsDataAccess = resultsDataAccess;
+            _nameHelper = nameHelper;
         }
 
         public List<PodiumsModel> GetDriversPodiums(int from, int to)
@@ -33,7 +36,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < 3; i++)
                     {
-                        var podiumFinisher = $"{race.Results[i].Driver.givenName} {race.Results[i].Driver.familyName}";
+                        var podiumFinisher = _nameHelper.GetDriverName(race.Results[i].Driver);
                         var gridPosition = int.Parse(race.Results[i].grid);
                         var podiumPosition = int.Parse(race.Results[i].position);
                         var newPodiumInformationModel = new PodiumInformationModel { CircuitName = circuitName, PodiumPosition = podiumPosition, GridPosition = gridPosition };
@@ -83,7 +86,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < 3; i++)
                     {
-                        var podiumFinisher = $"{race.Results[i].Constructor.name}";
+                        var podiumFinisher = _nameHelper.GetConstructorName(race.Results[i].Constructor);
                         var gridPosition = int.Parse(race.Results[i].grid);
                         var podiumPosition = int.Parse(race.Results[i].position);
                         var newPodiumInformationModel = new PodiumInformationModel { CircuitName = circuitName, PodiumPosition = podiumPosition, GridPosition = gridPosition };
@@ -135,7 +138,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < 3; i++)
                     {
-                        var podiumFinisher = $"{race.Results[i].Driver.givenName} {race.Results[i].Driver.familyName}";
+                        var podiumFinisher = _nameHelper.GetDriverName(race.Results[i].Driver);
                         podiumFinishers.Add(podiumFinisher);
                     }
 
@@ -210,7 +213,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < 3; i++)
                     {
-                        var podiumFinisher = $"{race.Results[i].Constructor.name}";
+                        var podiumFinisher = _nameHelper.GetConstructorName(race.Results[i].Constructor);
                         podiumFinishers.Add(podiumFinisher);
                     }
 

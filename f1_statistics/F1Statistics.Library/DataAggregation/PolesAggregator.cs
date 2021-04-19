@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,14 @@ namespace F1Statistics.Library.DataAggregation
     public class PolesAggregator : IPolesAggregator
     {
         private readonly IQualifyingDataAccess _qualifyingDataAccess;
+        private readonly INameHelper _nameHelper;
+        private readonly ITimeHelper _timeHelper;
 
-        public PolesAggregator(IQualifyingDataAccess qualifyingDataAccess)
+        public PolesAggregator(IQualifyingDataAccess qualifyingDataAccess, INameHelper nameHelper, ITimeHelper timeHelper)
         {
             _qualifyingDataAccess = qualifyingDataAccess;
+            _nameHelper = nameHelper;
+            _timeHelper = timeHelper;
         }
 
         public List<PolesModel> GetPoleSittersDrivers(int from, int to)
@@ -29,7 +34,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    var poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
+                    var poleSitter = _nameHelper.GetDriverName(qualifying.QualifyingResults[0].Driver);
                     var circuitName = qualifying.Circuit.circuitName;
 
                     string poleSitterQualifyingTime;
@@ -50,7 +55,7 @@ namespace F1Statistics.Library.DataAggregation
                         secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q1;
                     }
 
-                    var gapToSecond = GetTimeDifference(poleSitterQualifyingTime, secondDriverQualifyingTime);
+                    var gapToSecond = _timeHelper.GetTimeDifference(poleSitterQualifyingTime, secondDriverQualifyingTime);
                     var newPoleInformationModel = new PoleInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond };
 
                     lock (lockObject)
@@ -82,40 +87,6 @@ namespace F1Statistics.Library.DataAggregation
             return driversPoles;
         }
 
-        // TODO - iskelti
-        private double GetTimeDifference(string poleSitterTime, string secondDriverTime)
-        {
-            var poleSitter = ConvertTimeToSeconds(poleSitterTime);
-            var secondDriver = ConvertTimeToSeconds(secondDriverTime);
-
-            var gap = Math.Round(secondDriver - poleSitter, 3);
-
-            return gap;
-        }
-
-        // TODO - iskelti
-        private double ConvertTimeToSeconds(string time)
-        {
-            int minutes = 0;
-            double seconds = 0;
-
-            if (time.Contains(':'))
-            {
-                var splitMinutesFromRest = time.Split(':');
-
-                int.TryParse(splitMinutesFromRest[0], out minutes);
-                double.TryParse(splitMinutesFromRest[1], out seconds);
-            }
-            else
-            {
-                double.TryParse(time, out seconds);
-            }
-
-            var timeInSeconds = Math.Round(minutes * 60 + seconds, 3);
-
-            return timeInSeconds;
-        }
-
         public List<PolesModel> GetPoleSittersConstructors(int from, int to)
         {
             var constructorsPoles = new List<PolesModel>(to - from + 1);
@@ -127,7 +98,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    var poleSitter = $"{qualifying.QualifyingResults[0].Constructor.name}";
+                    var poleSitter = _nameHelper.GetConstructorName(qualifying.QualifyingResults[0].Constructor);
                     var circuitName = qualifying.Circuit.circuitName;
 
                     string poleSitterQualifyingTime;
@@ -148,7 +119,7 @@ namespace F1Statistics.Library.DataAggregation
                         secondDriverQualifyingTime = qualifying.QualifyingResults[1].Q1;
                     }
 
-                    var gapToSecond = GetTimeDifference(poleSitterQualifyingTime, secondDriverQualifyingTime);
+                    var gapToSecond = _timeHelper.GetTimeDifference(poleSitterQualifyingTime, secondDriverQualifyingTime);
                     var newPoleInformationModel = new PoleInformationModel { CircuitName = circuitName, GapToSecond = gapToSecond };
 
                     lock (lockObject)
@@ -194,7 +165,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    var poleSitter = $"{qualifying.QualifyingResults[0].Driver.givenName} {qualifying.QualifyingResults[0].Driver.familyName}";
+                    var poleSitter = _nameHelper.GetDriverName(qualifying.QualifyingResults[0].Driver);
 
                     lock (lockObject)
                     {
@@ -228,7 +199,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    var winnerName = $"{qualifying.QualifyingResults[0].Constructor.name}";
+                    var winnerName = _nameHelper.GetConstructorName(qualifying.QualifyingResults[0].Constructor);
 
                     lock (lockObject)
                     {

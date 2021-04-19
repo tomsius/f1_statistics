@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using F1Statistics.Library.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,7 +26,11 @@ namespace F1Statistics.Library.Tests.DataAggregation
             _resultsDataAccess = new Mock<IResultsDataAccess>();
             _standingsDataAccess = new Mock<IStandingsDataAccess>();
 
-            _aggregator = new PointsAggregator(_resultsDataAccess.Object, _standingsDataAccess.Object);
+            Mock<INameHelper> nameHelper = new Mock<INameHelper>();
+            nameHelper.Setup(helper => helper.GetDriverName(It.IsAny<DriverDataResponse>())).Returns<DriverDataResponse>(driver => $"{driver.givenName} {driver.familyName}");
+            nameHelper.Setup(helper => helper.GetConstructorName(It.IsAny<ConstructorDataResponse>())).Returns<ConstructorDataResponse>(constructor => $"{constructor.name}");
+
+            _aggregator = new PointsAggregator(_resultsDataAccess.Object, _standingsDataAccess.Object, nameHelper.Object);
         }
 
         private List<List<RacesDataResponse>> GenerateRaces()

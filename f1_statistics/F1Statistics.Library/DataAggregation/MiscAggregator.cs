@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -22,13 +23,17 @@ namespace F1Statistics.Library.DataAggregation
         private readonly ILapsDataAccess _lapsDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
         private readonly IDriversDataAccess _driversDataAccess;
+        private readonly INameHelper _nameHelper;
+        private readonly ITimeHelper _timeHelper;
 
         public MiscAggregator(IRacesDataAccess racesDataAccess, 
                               IResultsDataAccess resultsDataAccess, 
                               IQualifyingDataAccess qualifyingDataAccess,
                               ILapsDataAccess lapsDataAccess,
                               IStandingsDataAccess standingsDataAccess,
-                              IDriversDataAccess driversDataAccess)
+                              IDriversDataAccess driversDataAccess,
+                              INameHelper nameHelper,
+                              ITimeHelper timeHelper)
         {
             _racesDataAccess = racesDataAccess;
             _resultsDataAccess = resultsDataAccess;
@@ -36,6 +41,8 @@ namespace F1Statistics.Library.DataAggregation
             _lapsDataAccess = lapsDataAccess;
             _standingsDataAccess = standingsDataAccess;
             _driversDataAccess = driversDataAccess;
+            _nameHelper = nameHelper;
+            _timeHelper = timeHelper;
         }
 
         public List<SeasonRacesModel> GetRaceCountPerSeason(int from, int to)
@@ -69,10 +76,10 @@ namespace F1Statistics.Library.DataAggregation
 
                 for (int i = 0; i < qualifyings.Count; i++)
                 {
-                    var poleSitter = $"{qualifyings[i].QualifyingResults[0].Driver.givenName} {qualifyings[i].QualifyingResults[0].Driver.familyName}";
+                    var poleSitter = _nameHelper.GetDriverName(qualifyings[i].QualifyingResults[0].Driver);
 
                     var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
-                    var winnerName = $"{winner.givenName} {winner.familyName}";
+                    var winnerName = _nameHelper.GetDriverName(winner);
                     var winnerNationality = winner.nationality;
 
                     var fastestRank = races.Where(race => race.round == qualifyings[i].round).First().Results[0].FastestLap.rank;
@@ -110,10 +117,10 @@ namespace F1Statistics.Library.DataAggregation
 
                 for (int i = 0; i < qualifyings.Count; i++)
                 {
-                    var poleSitter = $"{qualifyings[i].QualifyingResults[0].Driver.givenName} {qualifyings[i].QualifyingResults[0].Driver.familyName}";
+                    var poleSitter = _nameHelper.GetDriverName(qualifyings[i].QualifyingResults[0].Driver);
 
                     var winner = races.Where(race => race.round == qualifyings[i].round).First().Results[0].Driver;
-                    var winnerName = $"{winner.givenName} {winner.familyName}";
+                    var winnerName = _nameHelper.GetDriverName(winner);
                     var winnerNationality = winner.nationality;
 
                     var fastestRank = races.Where(race => race.round == qualifyings[i].round).First().Results[0].FastestLap.rank;
@@ -174,7 +181,7 @@ namespace F1Statistics.Library.DataAggregation
 
                         if (status != FINISHED_STATUS && !status.Contains(LAPPED_STATUS))
                         {
-                            var driverName = $"{result.Driver.givenName} {result.Driver.familyName}";
+                            var driverName = _nameHelper.GetDriverName(result.Driver);
                             var lapsCompleted = int.Parse(result.laps);
                             var newDidNotFinishInformationModel = new DidNotFinishInformationModel { CircuitName = circuitName, LapsCompleted = lapsCompleted };
 
@@ -229,7 +236,7 @@ namespace F1Statistics.Library.DataAggregation
                     foreach (var result in race.Results)
                     {
                         var driver = result.Driver;
-                        var driverName = $"{driver.givenName} {driver.familyName}";
+                        var driverName = _nameHelper.GetDriverName(driver);
                         var gridPosition = int.Parse(result.grid);
                         var finishPosition = int.Parse(result.position);
                         var positionChange = gridPosition - finishPosition;
@@ -250,7 +257,7 @@ namespace F1Statistics.Library.DataAggregation
                 for (int i = 0; i < standings.Count; i++)
                 {
                     var driver = standings[i].Driver;
-                    var driverName = $"{driver.givenName} {driver.familyName}";
+                    var driverName = _nameHelper.GetDriverName(driver);
                     var championshipPosition = i + 1;
 
                     seasonPositionChanges.PositionChanges.Where(driver => driver.Name == driverName).First().ChampionshipPosition = championshipPosition;
@@ -276,8 +283,11 @@ namespace F1Statistics.Library.DataAggregation
 
                 foreach (var qualifying in qualifyings)
                 {
-                    var firstOnGrid = $"{qualifying.QualifyingResults.Where(result => result.position == "1").FirstOrDefault()?.Constructor.name}";
-                    var secondOnGrid = $"{qualifying.QualifyingResults.Where(result => result.position == "2").FirstOrDefault()?.Constructor.name}";
+                    var firstConstructor = qualifying.QualifyingResults.Where(result => result.position == "1").FirstOrDefault();
+                    var secondConstructor = qualifying.QualifyingResults.Where(result => result.position == "2").FirstOrDefault();
+
+                    var firstOnGrid = firstConstructor != null ? _nameHelper.GetConstructorName(firstConstructor.Constructor) : null;
+                    var secondOnGrid = secondConstructor != null ? _nameHelper.GetConstructorName(secondConstructor.Constructor) : null;
 
                     if (firstOnGrid == secondOnGrid && firstOnGrid != null)
                     {
@@ -328,7 +338,7 @@ namespace F1Statistics.Library.DataAggregation
                     foreach (var result in race.Results)
                     {
                         var driver = result.Driver;
-                        var driverName = $"{driver.givenName} {driver.familyName}";
+                        var driverName = _nameHelper.GetDriverName(driver);
                         var driverFinishingPosition = int.Parse(result.position);
                         var status = result.status;
                         var finishedRace = (status != FINISHED_STATUS && !status.Contains(LAPPED_STATUS)) ? false : true;
@@ -385,7 +395,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < standings.Count; i++)
                     {
-                        var driverName = $"{standings[i].Driver.givenName} {standings[i].Driver.familyName}";
+                        var driverName = _nameHelper.GetDriverName(standings[i].Driver);
                         var points = double.Parse(standings[i].points);
                         var position = i + 1;
 
@@ -428,7 +438,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     for (int i = 0; i < standings.Count; i++)
                     {
-                        var constructorName = $"{standings[i].Constructor.name}";
+                        var constructorName = _nameHelper.GetConstructorName(standings[i].Constructor);
                         var points = double.Parse(standings[i].points);
                         var position = i + 1;
                         var newRoundModel = new RoundModel { Round = round, RoundName = roundName, Points = points, Position = position };
@@ -522,12 +532,11 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var timing in lap.Timings)
                 {
                     var driverId = timing.driverId;
-                    var lapTime = ConvertTimeToSeconds(timing.time);
+                    var lapTime =_timeHelper. ConvertTimeToSeconds(timing.time);
                     string driverName;
 
                     lock (lockCheck)
                     {
-                        //TODO - iskelti
                         if (driversNames.ContainsKey(driverId))
                         {
                             driverName = driversNames[driverId];
@@ -557,29 +566,6 @@ namespace F1Statistics.Library.DataAggregation
             });
 
             return driversLapTimes;
-        }
-
-        // TODO - iskelti
-        private double ConvertTimeToSeconds(string time)
-        {
-            int minutes = 0;
-            double seconds = 0;
-
-            if (time.Contains(':'))
-            {
-                var splitMinutesFromRest = time.Split(':');
-
-                int.TryParse(splitMinutesFromRest[0], out minutes);
-                double.TryParse(splitMinutesFromRest[1], out seconds);
-            }
-            else
-            {
-                double.TryParse(time, out seconds);
-            }
-
-            var timeInSeconds = Math.Round(minutes * 60 + seconds, 3);
-
-            return timeInSeconds;
         }
     }
 }

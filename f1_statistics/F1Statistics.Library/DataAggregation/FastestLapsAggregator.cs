@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace F1Statistics.Library.DataAggregation
     public class FastestLapsAggregator : IFastestLapsAggregator
     {
         private readonly IResultsDataAccess _resultsDataAccess;
+        private readonly INameHelper _nameHelper;
 
-        public FastestLapsAggregator(IResultsDataAccess resultsDataAccess)
+        public FastestLapsAggregator(IResultsDataAccess resultsDataAccess, INameHelper nameHelper)
         {
             _resultsDataAccess = resultsDataAccess;
+            _nameHelper = nameHelper;
         }
 
         public List<FastestLapModel> GetDriversFastestLaps(int from, int to)
@@ -30,7 +33,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestDriver = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Driver).First();
-                    var fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
+                    var fastestLapper = _nameHelper.GetDriverName(fastestDriver);
                     var circuitName = race.Circuit.circuitName;
                     var gridPosition = int.Parse(race.Results[0].grid);
                     var newFastestLapInformationModel = new FastestLapInformationModel { CircuitName = circuitName, GridPosition = gridPosition };
@@ -76,7 +79,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
-                    var fastestLapper = $"{fastestConstructor.name}";
+                    var fastestLapper = _nameHelper.GetConstructorName(fastestConstructor);
                     var circuitName = race.Circuit.circuitName;
                     var gridPosition = int.Parse(race.Results[0].grid);
                     var newFastestLapInformationModel = new FastestLapInformationModel { CircuitName = circuitName, GridPosition = gridPosition };
@@ -125,7 +128,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestDriver = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Driver).First();
-                    var fastestLapper = $"{fastestDriver.givenName} {fastestDriver.familyName}";
+                    var fastestLapper = _nameHelper.GetDriverName(fastestDriver);
 
                     lock (lockObject)
                     {
@@ -160,7 +163,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var race in races)
                 {
                     var fastestConstructor = race.Results.Where(r => r.FastestLap.rank == "1").Select(r => r.Constructor).First();
-                    var fastestLapper = $"{fastestConstructor.name}";
+                    var fastestLapper = _nameHelper.GetConstructorName(fastestConstructor);
 
                     lock (lockObject)
                     {

@@ -2,6 +2,8 @@ using F1Statistics.Library.DataAccess;
 using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation;
 using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Helpers;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Services;
 using F1Statistics.Library.Services.Interfaces;
 using F1Statistics.Library.Validators;
@@ -46,6 +48,8 @@ namespace F1Statistics
             });
 
             services.AddTransient<IOptionsValidator, OptionsValidator>();
+            services.AddTransient<INameHelper, NameHelper>();
+            services.AddTransient<ITimeHelper, TimeHelper>();
 
             services.AddTransient<IResultsDataAccess, ResultsDataAccess>();
             services.AddTransient<IQualifyingDataAccess, QualifyingDataAccess>();

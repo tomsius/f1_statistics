@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation.Interfaces;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,14 @@ namespace F1Statistics.Library.DataAggregation
         private readonly IDriversDataAccess _driversDataAccess;
         private readonly IResultsDataAccess _resultsDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
+        private readonly INameHelper _nameHelper;
 
-        public NationalitiesAggregator(IDriversDataAccess driversDataAccess, IResultsDataAccess resultsDataAccess, IStandingsDataAccess standingsDataAccess)
+        public NationalitiesAggregator(IDriversDataAccess driversDataAccess, IResultsDataAccess resultsDataAccess, IStandingsDataAccess standingsDataAccess, INameHelper nameHelper)
         {
             _driversDataAccess = driversDataAccess;
             _resultsDataAccess = resultsDataAccess;
             _standingsDataAccess = standingsDataAccess;
+            _nameHelper = nameHelper;
         }
 
         public List<NationalityDriversModel> GetDriversNationalities(int from, int to)
@@ -34,7 +37,7 @@ namespace F1Statistics.Library.DataAggregation
                 foreach (var driver in drivers)
                 {
                     var driverNationality = driver.nationality;
-                    var driverName = $"{driver.givenName} {driver.familyName}";
+                    var driverName = _nameHelper.GetDriverName(driver);
 
                     lock (lockObject)
                     {
@@ -70,7 +73,7 @@ namespace F1Statistics.Library.DataAggregation
                 {
                     var raceWinner = race.Results[0].Driver;
                     var raceWinnerNationality = raceWinner.nationality;
-                    var raceWinnerName = $"{raceWinner.givenName} {raceWinner.familyName}";
+                    var raceWinnerName = _nameHelper.GetDriverName(raceWinner);
 
                     lock (lockObject)
                     {
@@ -106,7 +109,7 @@ namespace F1Statistics.Library.DataAggregation
 
                 var seasonWinner = standings[0].Driver;
                 var seasonWinnerNationality = seasonWinner.nationality;
-                var seasonWinnerName = $"{seasonWinner.givenName} {seasonWinner.familyName}";
+                var seasonWinnerName = _nameHelper.GetDriverName(seasonWinner);
 
                 lock (lockObject)
                 {

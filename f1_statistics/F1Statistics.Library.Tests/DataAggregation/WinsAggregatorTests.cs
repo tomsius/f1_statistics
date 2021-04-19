@@ -1,5 +1,6 @@
 ﻿using F1Statistics.Library.DataAccess.Interfaces;
 using F1Statistics.Library.DataAggregation;
+using F1Statistics.Library.Helpers.Interfaces;
 using F1Statistics.Library.Models;
 using F1Statistics.Library.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +22,14 @@ namespace F1Statistics.Library.Tests.DataAggregation
         {
             _resultsDataAccess = new Mock<IResultsDataAccess>();
 
-            _aggregator = new WinsAggregator(_resultsDataAccess.Object);
+            Mock<INameHelper> nameHelper = new Mock<INameHelper>();
+            nameHelper.Setup(helper => helper.GetDriverName(It.IsAny<DriverDataResponse>())).Returns<DriverDataResponse>(driver => $"{driver.givenName} {driver.familyName}");
+            nameHelper.Setup(helper => helper.GetConstructorName(It.IsAny<ConstructorDataResponse>())).Returns<ConstructorDataResponse>(constructor => $"{constructor.name}");
+
+            Mock<ITimeHelper> timeHelper = new Mock<ITimeHelper>();
+            timeHelper.Setup(helper => helper.ConvertGapFromStringToDouble(It.IsAny<string>())).Returns<string>(time => double.Parse(time));
+
+            _aggregator = new WinsAggregator(_resultsDataAccess.Object, nameHelper.Object, timeHelper.Object);
         }
 
         private List<List<RacesDataResponse>> GenerateRaces()
@@ -67,7 +75,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
                                 grid = "2",
                                 Time = new TimeDataResponse
                                 {
-                                    time = "+2.548s"
+                                    time = "+2.548"
                                 }
                             }
                         }
