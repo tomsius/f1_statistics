@@ -8,7 +8,7 @@ using System.Text;
 
 namespace F1Statistics.Library.DataAccess
 {
-    public class QualifyingDataAccess : IQualifyingDataAccess
+    public class QualifyingsDataAccess : IQualifyingsDataAccess
     {
         public List<RacesDataResponse> GetQualifyingsFrom(int year)
         {

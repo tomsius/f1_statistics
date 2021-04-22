@@ -19,7 +19,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
         private MiscAggregator _aggregator;
         private Mock<IRacesDataAccess> _racesDataAccess;
         private Mock<IResultsDataAccess> _resultsDataAccess;
-        private Mock<IQualifyingDataAccess> _qualifyingsDataAccess;
+        private Mock<IQualifyingsDataAccess> _qualifyingsDataAccess;
         private Mock<ILapsDataAccess> _lapsDataAccess;
         private Mock<IStandingsDataAccess> _standingsDataAccess;
         private Mock<IDriversDataAccess> _driversDataAccess;
@@ -29,7 +29,7 @@ namespace F1Statistics.Library.Tests.DataAggregation
         {
             _racesDataAccess = new Mock<IRacesDataAccess>();
             _resultsDataAccess = new Mock<IResultsDataAccess>();
-            _qualifyingsDataAccess = new Mock<IQualifyingDataAccess>();
+            _qualifyingsDataAccess = new Mock<IQualifyingsDataAccess>();
             _lapsDataAccess = new Mock<ILapsDataAccess>();
             _standingsDataAccess = new Mock<IStandingsDataAccess>();
             _driversDataAccess = new Mock<IDriversDataAccess>();

@@ -12,11 +12,11 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class PolesAggregator : IPolesAggregator
     {
-        private readonly IQualifyingDataAccess _qualifyingDataAccess;
+        private readonly IQualifyingsDataAccess _qualifyingDataAccess;
         private readonly INameHelper _nameHelper;
         private readonly ITimeHelper _timeHelper;
 
-        public PolesAggregator(IQualifyingDataAccess qualifyingDataAccess, INameHelper nameHelper, ITimeHelper timeHelper)
+        public PolesAggregator(IQualifyingsDataAccess qualifyingDataAccess, INameHelper nameHelper, ITimeHelper timeHelper)
         {
             _qualifyingDataAccess = qualifyingDataAccess;
             _nameHelper = nameHelper;

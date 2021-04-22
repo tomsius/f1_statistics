@@ -10,12 +10,12 @@ namespace F1Statistics.Library.IntegrationTests.DataAccess
     [TestClass]
     public class QualifyingDataAccessTests
     {
-        private QualifyingDataAccess _dataAccess;
+        private QualifyingsDataAccess _dataAccess;
 
         [TestInitialize]
         public void Setup()
         {
-            _dataAccess = new QualifyingDataAccess();
+            _dataAccess = new QualifyingsDataAccess();
         }
 
         [TestMethod]

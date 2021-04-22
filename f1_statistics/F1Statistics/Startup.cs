@@ -52,7 +52,7 @@ namespace F1Statistics
             services.AddTransient<ITimeHelper, TimeHelper>();
 
             services.AddTransient<IResultsDataAccess, ResultsDataAccess>();
-            services.AddTransient<IQualifyingDataAccess, QualifyingDataAccess>();
+            services.AddTransient<IQualifyingsDataAccess, QualifyingsDataAccess>();
             services.AddTransient<IStandingsDataAccess, StandingsDataAccess>();
             services.AddTransient<ILapsDataAccess, LapsDataAccess>();
             services.AddTransient<IDriversDataAccess, DriversDataAccess>();

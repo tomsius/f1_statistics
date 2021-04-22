@@ -19,7 +19,7 @@ namespace F1Statistics.Library.DataAggregation
 
         private readonly IRacesDataAccess _racesDataAccess;
         private readonly IResultsDataAccess _resultsDataAccess;
-        private readonly IQualifyingDataAccess _qualifyingsDataAccess;
+        private readonly IQualifyingsDataAccess _qualifyingsDataAccess;
         private readonly ILapsDataAccess _lapsDataAccess;
         private readonly IStandingsDataAccess _standingsDataAccess;
         private readonly IDriversDataAccess _driversDataAccess;
@@ -28,7 +28,7 @@ namespace F1Statistics.Library.DataAggregation
 
         public MiscAggregator(IRacesDataAccess racesDataAccess, 
                               IResultsDataAccess resultsDataAccess, 
-                              IQualifyingDataAccess qualifyingDataAccess,
+                              IQualifyingsDataAccess qualifyingDataAccess,
                               ILapsDataAccess lapsDataAccess,
                               IStandingsDataAccess standingsDataAccess,
                               IDriversDataAccess driversDataAccess,

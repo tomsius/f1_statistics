@@ -17,12 +17,12 @@ namespace F1Statistics.Library.Tests.DataAggregation
     public class PolesAggregatorTests
     {
         private PolesAggregator _aggregator;
-        private Mock<IQualifyingDataAccess> _qualifyingsDataAccess;
+        private Mock<IQualifyingsDataAccess> _qualifyingsDataAccess;
 
         [TestInitialize]
         public void Setup()
         {
-            _qualifyingsDataAccess = new Mock<IQualifyingDataAccess>();
+            _qualifyingsDataAccess = new Mock<IQualifyingsDataAccess>();
 
             Mock<INameHelper> nameHelper = new Mock<INameHelper>();
             nameHelper.Setup(helper => helper.GetDriverName(It.IsAny<DriverDataResponse>())).Returns<DriverDataResponse>(driver => $"{driver.givenName} {driver.familyName}");
