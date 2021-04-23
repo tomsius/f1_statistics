@@ -144,7 +144,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        if (IsUniquePodiumFinishers(sameDriversPodiums, podiumFinishers))
+                        if (ArePodiumFinishersUnique(sameDriversPodiums, podiumFinishers))
                         {
                             var newSamePodiumsModel = new SamePodiumsModel { PodiumFinishers = podiumFinishers, SamePodiumCount = 1, Circuits = new List<string> { circuitName } };
                             sameDriversPodiums.Add(newSamePodiumsModel);
@@ -160,7 +160,7 @@ namespace F1Statistics.Library.DataAggregation
             return sameDriversPodiums;
         }
 
-        private bool IsUniquePodiumFinishers(List<SamePodiumsModel> samePodiums, List<string> podiumFinishers)
+        private bool ArePodiumFinishersUnique(List<SamePodiumsModel> samePodiums, List<string> podiumFinishers)
         {
             foreach (var podium in samePodiums)
             {
@@ -219,7 +219,7 @@ namespace F1Statistics.Library.DataAggregation
 
                     lock (lockObject)
                     {
-                        if (IsUniquePodiumFinishers(sameConstructorsPodiums, podiumFinishers))
+                        if (ArePodiumFinishersUnique(sameConstructorsPodiums, podiumFinishers))
                         {
                             var newSamePodiumsModel = new SamePodiumsModel { PodiumFinishers = podiumFinishers, SamePodiumCount = 1, Circuits = new List<string> { circuitName } };
                             sameConstructorsPodiums.Add(newSamePodiumsModel);

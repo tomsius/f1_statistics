@@ -114,12 +114,12 @@ namespace F1Statistics.Library.Validators
         {
             if (IsYearTooSmall(options.YearFrom))
             {
-                options.YearFrom = SetDefaultYearFrom();
+                options.YearFrom = GetDefaultYearFrom();
             }
 
             if (IsYearTooBigOrInvalid(options.YearTo))
             {
-                options.YearTo = SetDefaultYearTo();
+                options.YearTo = GetDefaultYearTo();
             }
 
             SwapYearsIfNeeded(options);
@@ -130,7 +130,7 @@ namespace F1Statistics.Library.Validators
             return year < FIRST_SEASON;
         }
 
-        private int SetDefaultYearFrom()
+        private int GetDefaultYearFrom()
         {
             if (int.TryParse(_configuration.GetSection("DefaultYearFrom").Value, out int defaultYearFrom))
             {
@@ -147,7 +147,7 @@ namespace F1Statistics.Library.Validators
             return year > GetThisYear() || IsYearTooSmall(year);
         }
 
-        private int SetDefaultYearTo()
+        private int GetDefaultYearTo()
         {
             if (int.TryParse(_configuration.GetSection("DefaultYearTo").Value, out int defaultYearTo))
             {
@@ -163,7 +163,7 @@ namespace F1Statistics.Library.Validators
         {
             if (!IsSeasonValid(options))
             {
-                SetDefaultSeason(options);
+                options.Season = GetDefaultSeason(options);
             }
         }
 
@@ -172,11 +172,11 @@ namespace F1Statistics.Library.Validators
             return options.Season >= FIRST_SEASON && options.Season <= GetThisYear();
         }
 
-        private void SetDefaultSeason(OptionsModel options)
+        private int GetDefaultSeason(OptionsModel options)
         {
             if (int.TryParse(_configuration.GetSection("DefaultSeason").Value, out int defaultSeason))
             {
-                options.Season = defaultSeason; 
+                return defaultSeason; 
             }
             else
             {

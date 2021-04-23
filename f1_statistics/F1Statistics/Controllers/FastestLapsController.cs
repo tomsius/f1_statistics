@@ -66,7 +66,7 @@ namespace F1Statistics.Controllers
         }
 
         [HttpPost("constructors/uniqueperseason")]
-        public ActionResult<List<UniqueSeasonFastestLapModel>> GetUniqueConstructorsFastestLapsPerseason(OptionsModel options)
+        public ActionResult<List<UniqueSeasonFastestLapModel>> GetUniqueConstructorsFastestLapsPerSeason(OptionsModel options)
         {
             try
             {

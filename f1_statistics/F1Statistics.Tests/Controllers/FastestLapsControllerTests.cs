@@ -344,7 +344,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestConstructors);
 
             // Act
-            var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options).Value;
+            var actual = _controller.GetUniqueConstructorsFastestLapsPerSeason(options).Value;
 
             // Assert
             Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
@@ -366,7 +366,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Returns(expectedUniqueFastestConstructors);
 
             // Act
-            var actual = _controller.GetUniqueConstructorsFastestLapsPerseason(options).Value;
+            var actual = _controller.GetUniqueConstructorsFastestLapsPerSeason(options).Value;
 
             // Assert
             Assert.AreEqual(expectedUniqueFastestConstructors.Count, actual.Count);
@@ -382,7 +382,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueConstructorsFastestLapsPerseason(It.IsAny<OptionsModel>())).Throws(new ArgumentException("Duomenys prieinami nuo 2004 metų."));
 
             // Act
-            var actual = (BadRequestObjectResult)_controller.GetUniqueConstructorsFastestLapsPerseason(options).Result;
+            var actual = (BadRequestObjectResult)_controller.GetUniqueConstructorsFastestLapsPerSeason(options).Result;
 
             // Assert
             Assert.AreEqual(expectedMessage, actual.Value);

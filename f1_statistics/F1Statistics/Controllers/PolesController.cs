@@ -37,7 +37,7 @@ namespace F1Statistics.Controllers
         }
 
         [HttpPost("drivers/uniqueperseason")]
-        public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonDriverPoleSitters(OptionsModel options)
+        public List<UniqueSeasonPoleSittersModel> GetUniqueSeasonDriversPoleSitters(OptionsModel options)
         {
             var data = _service.AggregateUniqueSeasonPoleSittersDrivers(options);
 

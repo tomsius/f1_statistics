@@ -8,6 +8,6 @@ namespace F1Statistics.Library.Helpers.Interfaces
     {
         double ConvertGapFromStringToDouble(string time);
         double ConvertTimeToSeconds(string time);
-        double GetTimeDifference(string firsttime, string secondTime);
+        double GetTimeDifference(string firstTime, string secondTime);
     }
 }

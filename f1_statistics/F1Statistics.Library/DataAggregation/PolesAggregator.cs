@@ -12,13 +12,13 @@ namespace F1Statistics.Library.DataAggregation
 {
     public class PolesAggregator : IPolesAggregator
     {
-        private readonly IQualifyingsDataAccess _qualifyingDataAccess;
+        private readonly IQualifyingsDataAccess _qualifyingsDataAccess;
         private readonly INameHelper _nameHelper;
         private readonly ITimeHelper _timeHelper;
 
-        public PolesAggregator(IQualifyingsDataAccess qualifyingDataAccess, INameHelper nameHelper, ITimeHelper timeHelper)
+        public PolesAggregator(IQualifyingsDataAccess qualifyingsDataAccess, INameHelper nameHelper, ITimeHelper timeHelper)
         {
-            _qualifyingDataAccess = qualifyingDataAccess;
+            _qualifyingsDataAccess = qualifyingsDataAccess;
             _nameHelper = nameHelper;
             _timeHelper = timeHelper;
         }
@@ -30,7 +30,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
+                var qualifyings = _qualifyingsDataAccess.GetQualifyingsFrom(year);
 
                 foreach (var qualifying in qualifyings)
                 {
@@ -94,7 +94,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
+                var qualifyings = _qualifyingsDataAccess.GetQualifyingsFrom(year);
 
                 foreach (var qualifying in qualifyings)
                 {
@@ -159,7 +159,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year =>
             {
-                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
+                var qualifyings = _qualifyingsDataAccess.GetQualifyingsFrom(year);
 
                 var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, QualificationsCount = qualifyings.Count, PoleSitters = new List<string>() };
 
@@ -193,7 +193,7 @@ namespace F1Statistics.Library.DataAggregation
 
             Parallel.For(from, to + 1, year => 
             {
-                var qualifyings = _qualifyingDataAccess.GetQualifyingsFrom(year);
+                var qualifyings = _qualifyingsDataAccess.GetQualifyingsFrom(year);
 
                 var newUniqueSeasonPoleSittersModel = new UniqueSeasonPoleSittersModel { Season = year, QualificationsCount = qualifyings.Count, PoleSitters = new List<string>() };
 

@@ -226,7 +226,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueSeasonPoleSittersDrivers(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
 
             // Act
-            var actual = _controller.GetUniqueSeasonDriverPoleSitters(options);
+            var actual = _controller.GetUniqueSeasonDriversPoleSitters(options);
 
             // Assert
             Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
@@ -248,7 +248,7 @@ namespace F1Statistics.Tests.Controllers
             _service.Setup((service) => service.AggregateUniqueSeasonPoleSittersDrivers(It.IsAny<OptionsModel>())).Returns(expectedUniquePoleSittersDrivers);
 
             // Act
-            var actual = _controller.GetUniqueSeasonDriverPoleSitters(options);
+            var actual = _controller.GetUniqueSeasonDriversPoleSitters(options);
 
             // Assert
             Assert.AreEqual(expectedUniquePoleSittersDrivers.Count, actual.Count);
