@@ -1,6 +1,7 @@
 ﻿using F1Statistics.Library.Models;
 using F1Statistics.Library.Validators;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -24,7 +25,9 @@ namespace F1Statistics.Library.Tests.Validators
             _configuration.Setup((configuration) => configuration.GetSection("DefaultYearTo").Value).Returns("2010");
             _configuration.Setup((configuration) => configuration.GetSection("DefaultSeason").Value).Returns("2020");
 
-            _validator = new OptionsValidator(_configuration.Object);
+            Mock<ILogger> logger = new Mock<ILogger>();
+
+            _validator = new OptionsValidator(_configuration.Object, logger.Object);
         }
 
         [TestMethod]
