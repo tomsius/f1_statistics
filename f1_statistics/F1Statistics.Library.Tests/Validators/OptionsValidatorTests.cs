@@ -26,7 +26,23 @@ namespace F1Statistics.Library.Tests.Validators
             _configuration.Setup((configuration) => configuration.GetSection("DefaultSeason").Value).Returns("2020");
 
             Mock<ILogger<OptionsValidator>> logger = new Mock<ILogger<OptionsValidator>>();
-            logger.Setup(log => log.LogError(It.IsAny<string>())).Verifiable();
+            logger.Setup(x => x.Log(
+                It.IsAny<LogLevel>(),
+                It.IsAny<EventId>(),
+                It.IsAny<It.IsAnyType>(),
+                It.IsAny<Exception>(),
+                (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()))
+                .Callback(new InvocationAction(invocation =>
+                {
+                    var logLevel = (LogLevel)invocation.Arguments[0];
+                    var eventId = (EventId)invocation.Arguments[1];
+                    var state = invocation.Arguments[2];
+                    var exception = (Exception)invocation.Arguments[3];
+                    var formatter = invocation.Arguments[4];
+
+                    var invokeMethod = formatter.GetType().GetMethod("Invoke");
+                    var logMessage = (string)invokeMethod?.Invoke(formatter, new[] { state, exception });
+                }));
 
             _validator = new OptionsValidator(_configuration.Object, logger.Object);
         }
