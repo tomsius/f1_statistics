@@ -26,6 +26,7 @@ namespace F1Statistics.Library.Tests.Validators
             _configuration.Setup((configuration) => configuration.GetSection("DefaultSeason").Value).Returns("2020");
 
             Mock<ILogger> logger = new Mock<ILogger>();
+            logger.Setup(log => log.LogError(It.IsAny<string>())).Verifiable();
 
             _validator = new OptionsValidator(_configuration.Object, logger.Object);
         }
