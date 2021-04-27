@@ -1,6 +1,7 @@
 ﻿using F1Statistics.Library.Models;
 using F1Statistics.Library.Validators;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -24,11 +25,13 @@ namespace F1Statistics.Library.Tests.Validators
             _configuration.Setup((configuration) => configuration.GetSection("DefaultYearTo").Value).Returns("2010");
             _configuration.Setup((configuration) => configuration.GetSection("DefaultSeason").Value).Returns("2020");
 
-            _validator = new OptionsValidator(_configuration.Object);
+            Mock<ILogger> logger = new Mock<ILogger>();
+
+            _validator = new OptionsValidator(_configuration.Object, logger.Object);
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnOptionsModel_IfYearsFromAndYearsToAreCorrectlySet()
+        public void NormalizeOptionsModel_ReturnOptionsModel_IfYearsFromAndYearsToAreCorrectlySet()
         {
             // Arrange
             var optionsModel = new OptionsModel { YearFrom = 2000, YearTo = 2010 };
@@ -49,7 +52,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnOptionsModel_IfSeasonCorrectlySet()
+        public void NormalizeOptionsModel_ReturnOptionsModel_IfSeasonCorrectlySet()
         {
             // Arrange
             var optionsModel = new OptionsModel { Season = 2000 };
@@ -70,7 +73,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnCorrectedOptionsModel_IfYearsFromIsBiggerThanYearsTo()
+        public void NormalizeOptionsModel_ReturnCorrectedOptionsModel_IfYearsFromIsBiggerThanYearsTo()
         {
             // Arrange
             var optionsModel = new OptionsModel { YearFrom = 2010, YearTo = 2000 };
@@ -91,7 +94,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnCorrectedOptionsModel_IfOnlyYearsFromIsGiven()
+        public void NormalizeOptionsModel_ReturnCorrectedOptionsModel_IfOnlyYearsFromIsGiven()
         {
             // Arrange
             var optionsModel = new OptionsModel { YearFrom = 2000 };
@@ -133,7 +136,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnCorrectedOptionsModel_IfInvalidYearsAreGiven()
+        public void NormalizeOptionsModel_ReturnCorrectedOptionsModel_IfInvalidYearsAreGiven()
         {
             // Arrange
             var optionsModel = new OptionsModel { YearFrom = 1900, YearTo = 2030 };
@@ -154,7 +157,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnCorrectedOptionsModel_IfSeasonIsSmallerThanSupposedToBe()
+        public void NormalizeOptionsModel_ReturnCorrectedOptionsModel_IfSeasonIsSmallerThanSupposedToBe()
         {
             // Arrange
             var optionsModel = new OptionsModel { Season = 1900 };
@@ -175,7 +178,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnCorrectedOptionsModel_IfSeasonIsBiggerThanSupposedToBe()
+        public void NormalizeOptionsModel_ReturnCorrectedOptionsModel_IfSeasonIsBiggerThanSupposedToBe()
         {
             // Arrange
             var optionsModel = new OptionsModel { Season = 2030 };
@@ -196,7 +199,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ReturnCorrectedOptionsModel_IfSeasonAndYearsAreGiven()
+        public void NormalizeOptionsModel_ReturnCorrectedOptionsModel_IfSeasonAndYearsAreGiven()
         {
             // Arrange
             var optionsModel = new OptionsModel { Season = 2030, YearFrom = 2000, YearTo = 2010 };
@@ -217,7 +220,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ThrowsException_IfDefaultYearFromIsNotAnInteger()
+        public void NormalizeOptionsModel_ThrowsException_IfDefaultYearFromIsNotAnInteger()
         {
             // Arrange
             var optionsModel = new OptionsModel { Season = 0, YearFrom = 0, YearTo = 0 };
@@ -242,7 +245,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ThrowsException_IfDefaultYearToIsNotAnInteger()
+        public void NormalizeOptionsModel_ThrowsException_IfDefaultYearToIsNotAnInteger()
         {
             // Arrange
             var optionsModel = new OptionsModel { Season = 0, YearFrom = 2000, YearTo = 20000 };
@@ -267,7 +270,7 @@ namespace F1Statistics.Library.Tests.Validators
         }
 
         [TestMethod]
-        public void ValidateOptionsModel_ThrowsException_IfDefaultSeasonIsNotAnInteger()
+        public void NormalizeOptionsModel_ThrowsException_IfDefaultSeasonIsNotAnInteger()
         {
             // Arrange
             var optionsModel = new OptionsModel { Season = 20000, YearFrom = 0, YearTo = 0 };
