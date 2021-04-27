@@ -21,6 +21,12 @@ namespace F1Statistics
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureLogging(logging =>
+                    {
+                        logging.ClearProviders();
+                        logging.AddAzureWebAppDiagnostics();
+                        logging.AddConsole();
+                    });
                 });
     }
 }

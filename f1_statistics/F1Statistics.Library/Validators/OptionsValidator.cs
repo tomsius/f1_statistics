@@ -1,6 +1,7 @@
 ﻿using F1Statistics.Library.Models;
 using F1Statistics.Library.Validators.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,10 +15,12 @@ namespace F1Statistics.Library.Validators
         private const int MINIMUM_LAP_TIMES_DATA_YEAR = 1996;
 
         private IConfiguration _configuration;
+        private ILogger _logger;
 
-        public OptionsValidator(IConfiguration configuration)
+        public OptionsValidator(IConfiguration configuration, ILogger logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public void NormalizeOptionsModel(OptionsModel options)
@@ -138,6 +141,7 @@ namespace F1Statistics.Library.Validators
             }
             else
             {
+                _logger.LogCritical("DefaultYearFrom nėra sveikas skaičius.");
                 throw new ArgumentException("DefaultYearFrom setting has to be an integer value.");
             }
         }
@@ -151,10 +155,12 @@ namespace F1Statistics.Library.Validators
         {
             if (int.TryParse(_configuration.GetSection("DefaultYearTo").Value, out int defaultYearTo))
             {
+
                 return defaultYearTo;
             }
             else
             {
+                _logger.LogCritical("DefaultYearTo nėra sveikas skaičius.");
                 throw new ArgumentException("DefaultYearTo setting has to be an integer value.");
             }
         }
@@ -180,6 +186,7 @@ namespace F1Statistics.Library.Validators
             }
             else
             {
+                _logger.LogCritical("DefaultSeason nėra sveikas skaičius.");
                 throw new ArgumentException("DefaultSeason setting has to be an integer value.");
             }
         }
