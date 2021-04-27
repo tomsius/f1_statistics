@@ -15,9 +15,9 @@ namespace F1Statistics.Library.Validators
         private const int MINIMUM_LAP_TIMES_DATA_YEAR = 1996;
 
         private IConfiguration _configuration;
-        private ILogger _logger;
+        private ILogger<OptionsValidator> _logger;
 
-        public OptionsValidator(IConfiguration configuration, ILogger logger)
+        public OptionsValidator(IConfiguration configuration, ILogger<OptionsValidator> logger)
         {
             _configuration = configuration;
             _logger = logger;
